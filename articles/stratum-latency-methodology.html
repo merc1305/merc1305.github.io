@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Methodology: Browser-Based Stratum Latency | merc1305 Lab</title>
+    <meta name="description"
+        content="A technical deep-dive into how we measure Bitcoin Stratum pool latency directly from the browser using cross-origin network timing.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../index.css">
+
+    <style>
+        .article-content {
+            max-width: 800px;
+            margin: 4rem auto;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        .article-content h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .article-content h2 {
+            margin: 3rem 0 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .article-content code {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: monospace;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+
+        .back-link:hover {
+            color: var(--accent-primary);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+    <main class="container article-content">
+        <a href="../index.html" class="back-link">← Back to Lab</a>
+
+        <header>
+            <span class="badge">Research & Methodology</span>
+            <h1>Stratum Latency Measurement Methodology</h1>
+            <p>How we measure network proximity without raw TCP access.</p>
+        </header>
+
+        <section>
+            <h2>The Challenge: Browser Restrictions</h2>
+            <p>
+                Modern web browsers are built with a "Shared-Nothing" security model. For safety,
+                code running in the browser (JavaScript) is strictly forbidden from opening
+                raw TCP sockets. This creates a problem: how do you measure latency to a
+                Stratum pool that communicates over TCP (usually on port 3333)?
+            </p>
+
+            <h2>The Solution: Cross-Origin Timing</h2>
+            <p>
+                While we cannot speak the Stratum protocol, we can still "knock on the door."
+                The <a href="../mining-stratum/index.html">Stratum Pool Pinger</a> uses the
+                <code>fetch()</code> API to initiate an HTTP request to the Stratum endpoint.
+            </p>
+            <p>
+                Since the Stratum server isn't an HTTP server, it will eventually reject the
+                connection or close the socket. However, the time it takes for the browser
+                to reach the <strong>Connection Refused</strong> or <strong>Timeout</strong>
+                state is highly correlated with the physical network distance.
+            </p>
+
+            <h2>Error Recognition</h2>
+            <p>
+                Our algorithm differentiates between different types of failure:
+            </p>
+            <ul>
+                <li><strong>TCP Handshake Success/Failure:</strong> Even if the protocol fails, the initial SYN/ACK
+                    handshake reveals the RTT.</li>
+                <li><strong>Protocol Mismatch:</strong> The time it takes for the server to say "I don't speak HTTP" is
+                    a valid latency measurement.</li>
+                <li><strong>Invalid Threshold:</strong> Latency below 9ms is often a local system rejection, which we
+                    flag as "Invalid."</li>
+            </ul>
+
+            <h2>Smoothing and Accuracy</h2>
+            <p>
+                Network jitter can skew individual measurements. To ensure professional-grade
+                data, we use an <strong>Exponential Weighted Moving Average (EWMA)</strong>:
+            </p>
+            <p>
+                <code>NewAvg = OldAvg * (1 - α) + NewSample * α</code>
+            </p>
+            <p>
+                This allows the tool to remain responsive to real network shifts while
+                ignoring random spikes from local Wi-Fi noise or ISP congestion.
+            </p>
+
+            <h2>Browser vs. CLI Tooling</h2>
+            <p>
+                It is important to understand that this tool measures <strong>network proximity</strong>.
+                It does not validate the pool's mining logic. For a complete test, including
+                <code>mining.subscribe</code> and <code>mining.authorize</code> validation, we
+                recommend using our CLI tool:
+                <a href="https://github.com/merc1305/dumb-stratum-proxy">dumb-stratum-proxy</a>.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 4rem 0;">
+            <p>&copy; 2026 Yauheni Shauchenka (merc1305). All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

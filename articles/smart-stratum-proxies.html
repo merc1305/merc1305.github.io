@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Smart Stratum Proxies: Professional Mining Efficiency | merc1305 Lab</title>
+    <meta name="description"
+        content="Discover how smart Stratum proxies can reduce stale shares, handle automatic failover, and simplify mining farm management.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../index.css">
+
+    <style>
+        .article-content {
+            max-width: 800px;
+            margin: 4rem auto;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        .article-content h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .article-content h2 {
+            margin: 3rem 0 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+
+        .back-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .contact-card {
+            background: rgba(88, 166, 255, 0.05);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            padding: 3rem;
+            border-radius: 16px;
+            text-align: center;
+            margin-top: 4rem;
+        }
+
+        .contact-card h3 {
+            color: #fff;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+        }
+
+        .btn-contact {
+            display: inline-block;
+            background: var(--accent-primary);
+            color: #fff;
+            padding: 1rem 2.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-top: 1.5rem;
+            transition: transform 0.2s, background 0.2s;
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-2px);
+            background: #8b29ff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+    <main class="container article-content">
+        <a href="../index.html" class="back-link">← Back to Lab</a>
+
+        <header>
+            <span class="badge">Advanced Tools</span>
+            <h1>Smart Stratum Proxies</h1>
+            <p>Automate your failover and eliminate manual endpoint management.</p>
+        </header>
+
+        <section>
+            <p>
+                Managing a mining farm manually is a recipe for downtime. When a pool endpoint goes offline
+                or experiences a sudden latency spike, your miners might spend hours submitting stale
+                shares or sitting idle before you notice.
+            </p>
+
+            <h2>What is a Smart Proxy?</h2>
+            <p>
+                A Smart Stratum Proxy acts as a localized "traffic controller" for your mining hardware.
+                Instead of pointing your miners directly to various global endpoints, you point them to
+                the proxy running on your local network.
+            </p>
+
+            <h2>Key Benefits</h2>
+            <ul>
+                <li><strong>Automatic Failover:</strong> The proxy constantly monitors multiple pool backends. If the
+                    primary connection slows down, it switches to a secondary link instantly, without restarting the
+                    miner.</li>
+                <li><strong>Connection Aggregation:</strong> Hundreds of miners can be seen by the pool as a single
+                    high-hashrate connection, reducing network overhead.</li>
+                <li><strong>Latency Optimization:</strong> The proxy can dynamically select the lowest-latency path
+                    based on real-time network conditions.</li>
+            </ul>
+
+            <div class="contact-card">
+                <h3>Interested in a Professional Setup?</h3>
+                <p>
+                    I develop specialized Stratum proxy solutions designed for stability and maximum revenue protection.
+                    These tools operate in the console environment for maximum performance.
+                </p>
+                <p style="font-size: 0.95rem; margin-top: 1rem;">
+                    Please write a few lines about your setup if you're interested in getting access.
+                </p>
+                <a href="mailto:merc1305@gmail.com?subject=Inquiry about Stratum Proxy Access"
+                    class="btn-contact">Contact via Email</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 4rem 0;">
+            <p>&copy; 2026 Yauheni Shauchenka (merc1305). All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

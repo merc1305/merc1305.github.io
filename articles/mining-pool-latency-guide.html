@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The Ultimate Guide to Mining Pool Latency | merc1305 Lab</title>
+    <meta name="description"
+        content="Learn how network latency affects your Bitcoin mining hashrate, why stale shares happen, and how to optimize your Stratum connection.">
+    <meta name="keywords"
+        content="mining pool latency, stratum protocol, stale shares, btc mining optimization, stratum pinger">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../index.css">
+
+    <style>
+        .article-content {
+            max-width: 800px;
+            margin: 4rem auto;
+            color: var(--text-primary);
+            line-height: 1.8;
+        }
+
+        .article-content h1 {
+            font-size: 3rem;
+            margin-bottom: 2rem;
+            color: #fff;
+            line-height: 1.2;
+        }
+
+        .article-content h2 {
+            margin: 3rem 0 1.5rem;
+            color: var(--accent-primary);
+        }
+
+        .article-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .article-content ul {
+            margin-bottom: 1.1rem;
+            padding-left: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 2rem;
+        }
+
+        .back-link:hover {
+            color: var(--accent-primary);
+        }
+
+        .highlight-box {
+            background: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--accent-primary);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient"></div>
+    <main class="container article-content">
+        <a href="../index.html" class="back-link">← Back to Lab</a>
+
+        <header>
+            <span class="badge">Mining Infrastructure</span>
+            <h1>The Ultimate Guide to Mining Pool Latency</h1>
+            <p>Why milliseconds matter more than you think in Bitcoin mining.</p>
+        </header>
+
+        <section>
+            <p>
+                In the competitive world of Bitcoin mining, every millisecond counts. While most miners focus
+                entirely on their hardware's terahash (TH/s) rating, professional farm operators know that
+                <strong>network latency</strong> is often the "hidden tax" that separates profitable setups
+                from mediocre ones.
+            </p>
+
+            <h2>What is Mining Pool Latency?</h2>
+            <p>
+                Latency is the time it takes for a data packet to travel from your miner to the mining pool's
+                server and back. In the context of the Stratum protocol, this round-trip time (RTT)
+                determines how quickly your miner receives new work and how fast it can submit solutions (shares).
+            </p>
+
+            <div class="highlight-box">
+                <strong>Why it matters:</strong> If your miner finds a solution but the pool has already
+                moved on to a new block by the time your share arrives, that share is marked as
+                <strong>stale</strong>. You did the work, but you won't get paid for it.
+            </div>
+
+            <h2>The Cost of Stale Shares</h2>
+            <p>
+                Stale shares directly reduce your <strong>effective hashrate</strong>. If your hardware reports
+                100 TH/s but your stale share rate is 2%, your effective (paid) hashrate is only 98 TH/s.
+                At scale, this becomes a significant financial loss.
+            </p>
+            <ul>
+                <li><strong>0-50ms:</strong> Excellent. Standard for professional setups.</li>
+                <li><strong>50-150ms:</strong> Acceptable, but room for improvement.</li>
+                <li><strong>150ms+:</strong> Critical. High risk of stale shares and reduced profits.</li>
+            </ul>
+
+            <h2>How to Optimize Your Connection</h2>
+            <p>
+                Optimizing latency isn't just about buying faster internet. It's about geographical
+                proximity and network path efficiency.
+            </p>
+            <p>
+                1. <strong>Choose the Nearest Node:</strong> Most global pools (EMCD, ViaBTC, AntPool)
+                provide endpoints in various regions (US, EU, Asia). Always benchmark which one is
+                actually closest to your network infrastructure.
+            </p>
+            <p>
+                2. <strong>Use specialized tools:</strong> Use our <a href="../mining-stratum/index.html">Stratum Pool
+                    Pinger</a>
+                to benchmark multiple pools simultaneously from your browser.
+            </p>
+            <p>
+                3. <strong>Implement Stratum Proxies:</strong> For large farms, using a tool like
+                <a href="https://github.com/merc1305/dumb-stratum-proxy">dumb-stratum-proxy</a> can
+                aggregate connections and stabilize the data flow.
+            </p>
+
+            <h2>Conclusion</h2>
+            <p>
+                Don't leave money on the table. Regular network benchmarking should be part of your
+                maintenance routine. A small shift in network path can often yield better returns
+                than a costly hardware upgrade.
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; padding: 4rem 0;">
+            <p>&copy; 2026 Yauheni Shauchenka (merc1305). All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+
+</html>

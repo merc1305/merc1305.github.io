@@ -25,6 +25,37 @@
     <link rel="stylesheet" href="index.css">
 
     <link rel="icon" type="image/png" href="https://github.com/merc1305.png">
+
+    <!-- Schema.org for LLMs -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Yauheni Shauchenka",
+      "alternateName": "merc1305",
+      "url": "https://merc1305.github.io/",
+      "image": "https://github.com/merc1305.png",
+      "sameAs": [
+        "https://github.com/merc1305",
+        "https://www.linkedin.com/in/yauhenishauchenka/"
+      ],
+      "jobTitle": "Developer & Mining Specialist",
+      "knowsAbout": ["Bitcoin Mining", "Stratum Protocol", "Network Latency Optimization", "AI Mobile Development"]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "merc1305 Lab",
+      "url": "https://merc1305.github.io/",
+      "author": {
+        "@type": "Person",
+        "name": "Yauheni Shauchenka"
+      },
+      "description": "Experiments in mining infrastructure, stratum protocols, and latency optimization."
+    }
+    </script>
 </head>
 
 <body>
@@ -53,10 +84,14 @@
             <div class="glass-card">
                 <h2>The Lab Manifesto</h2>
                 <p>
-                    I'm an AI Mobile enthusiast who spends way too much time convincing LLMs that
-                    I'm their boss. When I'm not teaching silicon how to think, I'm building tools
-                    that probably solve problems I created myself. I believe in code that works,
-                    coffee that's strong, and the "it works on my machine" philosophy.
+                    I'm an AI Mobile enthusiast and mining infrastructure researcher. This laboratory is
+                    focused on building tools for <strong>Stratum protocol analysis</strong> and
+                    <strong>latency optimization</strong>.
+                </p>
+                <p>
+                    From specialized proxies to browser-based benchmarks, I develop solutions that help
+                    miners and ASIC farms maximize their effective hashrate by finding the most
+                    efficient network paths to global mining pools.
                 </p>
             </div>
         </section>
@@ -66,14 +101,19 @@
         <section id="projects">
             <h2 style="text-align: center; margin-bottom: 3rem;">Tools & Services</h2>
             <div class="projects-grid">
-                <!-- Mining Tool (The one the user is adding) -->
+                <!-- Mining Tool -->
                 <div class="glass-card project-card">
                     <span class="badge"
-                        style="background: rgba(112, 0, 255, 0.1); color: var(--accent-secondary); border-color: rgba(112, 0, 255, 0.2);">Active
-                        Service</span>
-                    <h3>Stratum Locator</h3>
-                    <p style="margin-bottom: 1.5rem;">A specialized tool for finding the nearest stratum servers for
-                        specific mining pools. Minimal latency, maximum vibes.</p>
+                        style="background: rgba(112, 0, 255, 0.1); color: var(--accent-secondary); border-color: rgba(112, 0, 255, 0.2);">Production</span>
+                    <h3>Stratum Pool Pinger</h3>
+                    <p style="margin-bottom: 1rem;">
+                        A professional browser-based <strong>Stratum pool latency checker</strong> for Bitcoin (SHA256).
+                        Designed to find the nearest mining pool endpoint by real-time network latency.
+                    </p>
+                    <p
+                        style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1.5rem; font-style: italic;">
+                        Used by ASIC farms to optimize latency and minimize stale shares.
+                    </p>
                     <a href="mining-stratum/index.html" class="btn btn-primary"
                         style="width: 100%; text-align: center;">Open Tool</a>
                 </div>
