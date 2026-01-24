@@ -498,23 +498,45 @@
             const timeout = setTimeout(() => controller.abort(), 2000);
 
             try {
-                // We use fetch to a dummy http endpoint to measure connection time
-                await fetch(`http://${addr}`, { mode: 'no-cors', signal: controller.signal });
-            } catch (e) { } finally {
+                // Detect current protocol. On GitHub Pages (HTTPS), fetching HTTP will be blocked as Mixed Content.
+                // We use the same protocol as the page to ensure the request at least reaches 
+                // the TCP connection phase before failing (due to protocol mismatch or SSL handshake failure).
+                const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
+
+                // Cache-buster helps ensure the browser doesn't skip the connection attempt.
+                const url = `${protocol}//${addr}/?_t=${Date.now()}`;
+
+                await fetch(url, {
+                    mode: 'no-cors',
+                    signal: controller.signal,
+                    cache: 'no-cache',
+                    referrerPolicy: 'no-referrer'
+                });
+            } catch (e) {
+                // Errors are expected (e.g. SSL mismatch, Connection refused)
+                // The time until error reveals the network latency.
+            } finally {
                 clearTimeout(timeout);
                 const end = performance.now();
                 const diff = Math.max(1, Math.round(end - start));
 
                 let stats = latencyData.get(addr);
                 if (!stats) {
-                    // First sample: just take the value
-                    latencyData.set(addr, { avg: diff, count: 1 });
+                    latencyData.set(addr, { avg: diff, count: 1, sum: diff });
                 } else {
-                    // Adjust smoothing based on sample count
                     const count = stats.count + 1;
-                    const alpha = Math.max(0.1, 1 / count); // Start with heavy weight for new data
-                    const newAvg = Math.round(stats.avg * (1 - alpha) + diff * alpha);
-                    latencyData.set(addr, { avg: newAvg, count: Math.min(count, 20) });
+                    const sum = (stats.sum || (stats.avg * stats.count)) + diff;
+
+                    let newAvg;
+                    if (count <= 5) {
+                        // For the first 5 samples, use simple arithmetic mean for maximum accuracy
+                        newAvg = Math.round(sum / count);
+                    } else {
+                        // After that, use EWMA to smooth out jitter but stay responsive
+                        const alpha = 0.3;
+                        newAvg = Math.round(stats.avg * (1 - alpha) + diff * alpha);
+                    }
+                    latencyData.set(addr, { avg: newAvg, count: Math.min(count, 20), sum: sum });
                 }
             }
         }
@@ -527,9 +549,15 @@
 
         async function updateAll() {
             const all = [...poolConfigs.flatMap(p => p.addrs), ...customAddrs];
-            await Promise.all(all.map(addr => measureLatency(addr)));
-            renderGrid();
-            renderManual();
+            // Stagger pings to avoid browser connection pool congestion
+            for (let i = 0; i < all.length; i++) {
+                measureLatency(all[i]).then(() => {
+                    renderGrid();
+                    renderManual();
+                });
+                // Small delay between starts to prevent simultaneous overhead
+                if (i % 3 === 0) await new Promise(r => setTimeout(r, 50));
+            }
         }
 
         renderGrid();
