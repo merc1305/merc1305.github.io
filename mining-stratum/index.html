@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- AEO / GEO / SEO Optimization -->
+    <title>Stratum Pool Pinger | Find Lowest Latency SHA256 Mining Pools</title>
+    <meta name="description"
+        content="Free tool to discover and test the fastest SHA256 Stratum mining pool links. Benchmark network latency directly from your browser to find nodes closest to your network for maximum mining efficiency. Supports EMCD, ViaBTC, F2Pool, and more.">
+    <meta name="keywords"
+        content="stratum pinger, mining pool latency, sha256 pool test, btc mining latency, emcd ping, viabtc ping, f2pool ping, mining efficiency tool">
+    <meta name="author" content="DSP Team">
+
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Stratum Pool Pinger | Lowest Latency Finder">
+    <meta property="og:description"
+        content="Benchmark Stratum pool latency directly from your browser. Find the nodes closest to your mining hardware.">
+    <meta property="og:type" content="website">
+
+    <!-- JSON-LD for AI Models (AEO) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Stratum Pool Pinger",
+      "description": "A specialized tool for miners to measure network latency to SHA256 Stratum pools directly from the browser.",
+      "applicationCategory": "Utilities",
+      "operatingSystem": "Web Browser",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #0d1117;
+            --card-bg: #161b22;
+            --border-color: #30363d;
+            --text-primary: #c9d1d9;
+            --text-secondary: #8b949e;
+            --accent-color: #58a6ff;
+            --success-color: #3fb950;
+            --error-color: #f85149;
+            --warning-color: #d29922;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.5;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 0.75rem;
+        }
+
+        .description {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            max-width: 850px;
+        }
+
+        .info-box {
+            background: rgba(88, 166, 255, 0.05);
+            border: 1px solid rgba(88, 166, 255, 0.2);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            transition: transform 0.2s, border-color 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            border-color: var(--accent-color);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .card h2 {
+            font-size: 1.25rem;
+            color: #fff;
+        }
+
+        .pool-link {
+            font-size: 0.8rem;
+            color: var(--accent-color);
+            text-decoration: none;
+            opacity: 0.8;
+        }
+
+        .pool-link:hover {
+            opacity: 1;
+            text-decoration: underline;
+        }
+
+        .stats-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .stats-table tr {
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .stats-table tr:hover {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .stats-table td {
+            padding: 10px 4px;
+            border-bottom: 1px solid #21262d;
+        }
+
+        .stats-table td:last-child {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .addr {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .latency-value {
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .low {
+            color: var(--success-color);
+        }
+
+        .med {
+            color: var(--warning-color);
+        }
+
+        .high {
+            color: var(--error-color);
+        }
+
+        .invalid {
+            color: var(--text-secondary);
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .loading {
+            color: var(--text-secondary);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: 0.5;
+            }
+
+            50% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0.5;
+            }
+        }
+
+        .manual-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .manual-section h3 {
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+        }
+
+        input {
+            background: #0d1117;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: 'JetBrains Mono', monospace;
+            flex-grow: 1;
+        }
+
+        button {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent-color);
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: none;
+            z-index: 1000;
+        }
+
+        footer {
+            margin-top: 4rem;
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                    stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+                </svg>
+                Stratum Pool Pinger
+            </h1>
+            <div class="description">
+                Finding the closest mining pool node is critical for reducing stale shares and maximizing your hashrate.
+                This tool benchmarks the network proximity from your specific network to global SHA256 mining pools.
+            </div>
+        </header>
+
+        <div class="info-box">
+            <b>How it works:</b> We measure the round-trip time (RTT) from your browser to each Stratum node.
+            Links with latency under <b>9ms</b> are typically flagged as invalid/unreachable (unless you are on a local
+            network).
+            <b>Click any row to copy the Stratum URL.</b>
+        </div>
+
+        <div id="pool-grid" class="grid">
+            <!-- Pool cards will be rendered here -->
+        </div>
+
+        <div class="manual-section">
+            <h3>Test Custom Stratum Links</h3>
+            <div class="input-group">
+                <input type="text" id="custom-url" placeholder="e.g. btc.f2pool.com:3333">
+                <button onclick="addCustom()">Add & Benchmark</button>
+            </div>
+            <div id="custom-results">
+                <table class="stats-table" id="manual-table" style="display: none;">
+                    <thead>
+                        <tr style="text-align: left; color: var(--text-secondary); font-size: 0.75rem;">
+                            <th style="padding-bottom: 10px;">Address</th>
+                            <th style="text-align: right; padding-bottom: 10px;">Your Latency</th>
+                        </tr>
+                    </thead>
+                    <tbody id="manual-body"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            Built for the global mining community to optimize network paths.
+            All measurements are performed locally in your browser.
+        </footer>
+    </div>
+
+    <div id="toast" class="toast">Link copied to clipboard!</div>
+
+    <script>
+        const poolConfigs = [
+            {
+                name: "EMCD",
+                link: "https://emcd.io/referral/invite/539653",
+                addrs: ["gate.emcd.network:3333", "eu.emcd.network:3333", "kz.emcd.network:3333", "cn.emcd.network:3333", "us.emcd.network:3333"]
+            },
+            {
+                name: "ViaBTC",
+                link: "https://www.viabtc.com/signup?refer=1940972&source=1",
+                addrs: ["btc.viabtc.io:3333", "btc.viabtc.io:25", "btc.viabtc.io:443", "bitcoin.viabtc.io:3333", "btc.powhashing.com:443", "btc.viabtc.cc:3333", "btc.viabtc.top:3333"]
+            },
+            {
+                name: "F2Pool",
+                link: "https://www.f2pool.com/",
+                addrs: ["btc.f2pool.com:3333", "btc.f2pool.com:1314", "btc-asia.f2pool.com:3333", "btc-euro.f2pool.com:1314", "btc-na.f2pool.com:1314"]
+            },
+            {
+                name: "BinancePool",
+                link: "https://pool.binance.com/",
+                addrs: ["sha256.poolbinance.com:8888", "sha256.poolbinance.com:3333", "sha256.poolbinance.com:1800", "sha256.poolbinance.com:443"]
+            },
+            {
+                name: "AntPool",
+                link: "https://www.antpool.com/",
+                addrs: ["ss.antpool.com:3333", "ss.antpool.com:443", "ss.antpool.com:25"]
+            },
+            {
+                name: "BTC.com",
+                link: "https://pool.btc.com/",
+                addrs: ["us.ss.btc.com:1800", "us.ss.btc.com:443"]
+            },
+            {
+                name: "SpiderPool",
+                link: "https://www.spiderpool.com/",
+                addrs: ["btc-us.spiderpool.com:3333", "btc-us.spiderpool.com:443", "btc-as.spiderpool.com:3333", "btc-as.spiderpool.com:443"]
+            }
+        ];
+
+        const latencyData = new Map(); // stores { avg: number, count: number }
+        const customAddrs = new Set();
+
+        function renderGrid() {
+            const grid = document.getElementById('pool-grid');
+            grid.innerHTML = poolConfigs.map(pool => {
+                const sortedAddrs = [...pool.addrs].sort((a, b) => {
+                    const lA = getSortLatency(a);
+                    const lB = getSortLatency(b);
+                    return lA - lB;
+                });
+
+                return `
+                    <div class="card">
+                        <div class="card-header">
+                            <h2>${pool.name}</h2>
+                            <a href="${pool.link}" target="_blank" class="pool-link">Visit Pool ↗</a>
+                        </div>
+                        <table class="stats-table">
+                            ${sortedAddrs.map(addr => {
+                    const stats = latencyData.get(addr);
+                    const lat = stats ? stats.avg : undefined;
+                    const isInvalid = lat !== undefined && lat < 9 && !isLocal(addr);
+                    return `
+                                    <tr onclick="copyLink('${addr}')" title="Click to copy stratum link">
+                                        <td><span class="addr" title="${addr}">${addr}</span></td>
+                                        <td id="ping-${addr}" class="${lat !== undefined ? 'latency-value ' + (isInvalid ? 'invalid' : getLatencyClass(lat)) : 'loading'}">
+                                            ${lat !== undefined ? (isInvalid ? 'Invalid' : lat + 'ms') : '...'}
+                                        </td>
+                                    </tr>
+                                `;
+                }).join('')}
+                        </table>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function getSortLatency(addr) {
+            const stats = latencyData.get(addr);
+            if (!stats) return 99999;
+            const l = stats.avg;
+            if (l < 9 && !isLocal(addr)) return 99998;
+            return l;
+        }
+
+        function isLocal(addr) {
+            return addr.includes('localhost') || addr.includes('127.0.0.1') || addr.startsWith('192.168.') || addr.startsWith('10.');
+        }
+
+        function copyLink(addr) {
+            const fullLink = (addr.includes('://') ? '' : 'stratum+tcp://') + addr;
+            navigator.clipboard.writeText(fullLink).then(() => {
+                showToast(`Copied: ${fullLink}`);
+            });
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.textContent = msg;
+            toast.style.display = 'block';
+            setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        function addCustom() {
+            const input = document.getElementById('custom-url');
+            const addr = input.value.trim();
+
+            // Validation: must have a port and look like a hostname
+            const regex = /^[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(:[0-9]+)?$/;
+            if (!regex.test(addr) && !addr.includes('localhost') && !addr.includes('127.0.0.1')) {
+                alert("Please enter a valid address with port (e.g. host:port or ip:port)");
+                return;
+            }
+
+            customAddrs.add(addr);
+            input.value = '';
+            document.getElementById('manual-table').style.display = 'table';
+            measureLatency(addr).then(() => renderManual());
+        }
+
+        function renderManual() {
+            const body = document.getElementById('manual-body');
+            const sorted = Array.from(customAddrs).sort((a, b) => getSortLatency(a) - getSortLatency(b));
+
+            body.innerHTML = sorted.map(addr => {
+                const stats = latencyData.get(addr);
+                const lat = stats ? stats.avg : undefined;
+                const isInvalid = lat !== undefined && lat < 9 && !isLocal(addr);
+                return `
+                    <tr onclick="copyLink('${addr}')" title="Click to copy stratum link">
+                        <td><span class="addr">${addr}</span></td>
+                        <td class="${lat !== undefined ? 'latency-value ' + (isInvalid ? 'invalid' : getLatencyClass(lat)) : 'loading'}">
+                            ${lat !== undefined ? (isInvalid ? 'Invalid' : lat + 'ms') : '...'}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        async function measureLatency(addr) {
+            const start = performance.now();
+            const controller = new AbortController();
+            const timeout = setTimeout(() => controller.abort(), 2000);
+
+            try {
+                // We use fetch to a dummy http endpoint to measure connection time
+                await fetch(`http://${addr}`, { mode: 'no-cors', signal: controller.signal });
+            } catch (e) { } finally {
+                clearTimeout(timeout);
+                const end = performance.now();
+                const diff = Math.max(1, Math.round(end - start));
+
+                let stats = latencyData.get(addr);
+                if (!stats) {
+                    // First sample: just take the value
+                    latencyData.set(addr, { avg: diff, count: 1 });
+                } else {
+                    // Adjust smoothing based on sample count
+                    const count = stats.count + 1;
+                    const alpha = Math.max(0.1, 1 / count); // Start with heavy weight for new data
+                    const newAvg = Math.round(stats.avg * (1 - alpha) + diff * alpha);
+                    latencyData.set(addr, { avg: newAvg, count: Math.min(count, 20) });
+                }
+            }
+        }
+
+        function getLatencyClass(v) {
+            if (v < 100) return 'low';
+            if (v < 250) return 'med';
+            return 'high';
+        }
+
+        async function updateAll() {
+            const all = [...poolConfigs.flatMap(p => p.addrs), ...customAddrs];
+            await Promise.all(all.map(addr => measureLatency(addr)));
+            renderGrid();
+            renderManual();
+        }
+
+        renderGrid();
+        updateAll();
+        setInterval(updateAll, 5000);
+    </script>
+</body>
+
+</html>
