@@ -7,6 +7,15 @@
 
     <!-- AEO / GEO / SEO Optimization -->
     <title>Stratum Pool Pinger | Find Lowest Latency SHA256 Mining Pools</title>
+
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQ8PPSPZ1K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-FQ8PPSPZ1K');
+    </script>
     <meta name="description"
         content="Free tool to discover and test the fastest SHA256 Stratum mining pool links. Benchmark network latency directly from your browser to find nodes closest to your network for maximum mining efficiency. Supports EMCD, ViaBTC, F2Pool, and more.">
     <meta name="keywords"
@@ -767,7 +776,7 @@
                     <div class="card">
                         <div class="card-header">
                             <h2>${pool.name}</h2>
-                            <a href="${pool.link}" target="_blank" class="pool-link">Visit Pool ↗</a>
+                            <a href="${pool.link}" target="_blank" class="pool-link" onclick="trackPoolClick('${pool.name}')">Visit Pool ↗</a>
                         </div>
                         <table class="stats-table">
                             ${sortedAddrs.map(addr => {
@@ -805,6 +814,15 @@
             const fullLink = (addr.includes('://') ? '' : 'stratum+tcp://') + addr;
             navigator.clipboard.writeText(fullLink).then(() => {
                 showToast(`Copied: ${fullLink}`);
+
+                // Track in Google Analytics
+                if (typeof gtag === 'function') {
+                    gtag('event', 'stratum_link_copied', {
+                        'event_category': 'engagement',
+                        'event_label': addr,
+                        'value': 1
+                    });
+                }
             });
         }
 
@@ -813,6 +831,15 @@
             toast.textContent = msg;
             toast.style.display = 'block';
             setTimeout(() => { toast.style.display = 'none'; }, 2500);
+        }
+
+        function trackPoolClick(poolName) {
+            if (typeof gtag === 'function') {
+                gtag('event', 'pool_link_clicked', {
+                    'event_category': 'referral',
+                    'event_label': poolName
+                });
+            }
         }
 
         function addCustom() {
