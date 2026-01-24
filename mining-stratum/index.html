@@ -874,18 +874,13 @@
             }).join('');
         }
 
-        async function measureLatency(addr) {
+        async function pingOnce(addr) {
             const start = performance.now();
             const controller = new AbortController();
             const timeout = setTimeout(() => controller.abort(), 2000);
 
             try {
-                // Detect current protocol. On GitHub Pages (HTTPS), fetching HTTP will be blocked as Mixed Content.
-                // We use the same protocol as the page to ensure the request at least reaches 
-                // the TCP connection phase before failing (due to protocol mismatch or SSL handshake failure).
                 const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
-
-                // Cache-buster helps ensure the browser doesn't skip the connection attempt.
                 const url = `${protocol}//${addr}/?_t=${Date.now()}`;
 
                 await fetch(url, {
@@ -895,31 +890,48 @@
                     referrerPolicy: 'no-referrer'
                 });
             } catch (e) {
-                // Errors are expected (e.g. SSL mismatch, Connection refused)
-                // The time until error reveals the network latency.
+                // Expected errors
             } finally {
                 clearTimeout(timeout);
                 const end = performance.now();
-                const diff = Math.max(1, Math.round(end - start));
+                return Math.max(1, Math.round(end - start));
+            }
+        }
 
-                let stats = latencyData.get(addr);
-                if (!stats) {
-                    latencyData.set(addr, { avg: diff, count: 1, sum: diff });
-                } else {
-                    const count = stats.count + 1;
-                    const sum = (stats.sum || (stats.avg * stats.count)) + diff;
+        async function measureLatency(addr) {
+            let stats = latencyData.get(addr);
 
-                    let newAvg;
-                    if (count <= 5) {
-                        // For the first 5 samples, use simple arithmetic mean for maximum accuracy
-                        newAvg = Math.round(sum / count);
-                    } else {
-                        // After that, use EWMA to smooth out jitter but stay responsive
-                        const alpha = 0.3;
-                        newAvg = Math.round(stats.avg * (1 - alpha) + diff * alpha);
-                    }
-                    latencyData.set(addr, { avg: newAvg, count: Math.min(count, 20), sum: sum });
+            if (!stats) {
+                // Initial burst for new addresses (DNS warmup + stabilization)
+                const samples = [];
+                for (let i = 0; i < 3; i++) {
+                    samples.push(await pingOnce(addr));
+                    // Tiny delay between burst samples
+                    if (i < 2) await new Promise(r => setTimeout(r, 50));
                 }
+
+                // Discard the highest value (most likely DNS resolution or initial overhead)
+                samples.sort((a, b) => a - b);
+                const validatedSamples = samples.slice(0, 2); // Keep the two lowest
+                const initialAvg = Math.round(validatedSamples.reduce((a, b) => a + b, 0) / validatedSamples.length);
+
+                latencyData.set(addr, { avg: initialAvg, count: 2, sum: initialAvg * 2 });
+            } else {
+                const diff = await pingOnce(addr);
+                const count = stats.count + 1;
+                const sum = (stats.sum || (stats.avg * stats.count)) + diff;
+
+                let newAvg;
+                if (count <= 10) {
+                    // Fast stabilization phase: higher alpha for EWMA
+                    const alpha = 0.5;
+                    newAvg = Math.round(stats.avg * (1 - alpha) + diff * alpha);
+                } else {
+                    // Stable phase: lower alpha to smooth out jitter
+                    const alpha = 0.3;
+                    newAvg = Math.round(stats.avg * (1 - alpha) + diff * alpha);
+                }
+                latencyData.set(addr, { avg: newAvg, count: Math.min(count, 30), sum: sum });
             }
         }
 
