@@ -96,6 +96,12 @@
             padding: 2rem;
         }
 
+        @media (max-width: 768px) {
+            body {
+                padding: 1.5rem 1rem;
+            }
+        }
+
         .container {
             max-width: 1000px;
             margin: 0 auto;
@@ -115,6 +121,12 @@
             align-items: center;
             gap: 12px;
             margin-bottom: 0.75rem;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.75rem;
+            }
         }
 
         .description {
@@ -138,6 +150,13 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 1.5rem;
             margin-bottom: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
         }
 
         .card {
@@ -199,6 +218,13 @@
             border-bottom: 1px solid #21262d;
         }
 
+        @media (max-width: 768px) {
+            .stats-table td {
+                padding: 12px 6px;
+                font-size: 1rem;
+            }
+        }
+
         .stats-table td:last-child {
             text-align: right;
             font-weight: 600;
@@ -212,6 +238,13 @@
             text-overflow: ellipsis;
             white-space: nowrap;
             display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .addr {
+                font-size: 0.95rem;
+                max-width: 220px;
+            }
         }
 
         .latency-value {
