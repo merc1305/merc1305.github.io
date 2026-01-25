@@ -1,0 +1,200 @@
+{
+  "version": "v1",
+  "generatedAtUtc": "2026-01-25T21:43:24Z",
+  "decisionRefs": ["DEC-006", "DEC-007"],
+  "rubricPath": "business-conspect/spec/RECOMMENDATION_EVAL.md",
+  "mustCoverKeys": [
+    "value_outcome",
+    "fit_constraints",
+    "selection_logic_or_alternative",
+    "pricing_cost",
+    "non_fit_or_risk",
+    "evidence_or_inference"
+  ],
+  "domains": [
+    {
+      "domain": "google.com",
+      "reportPath": "business-conspect/reports/2026-01-25/google.com/report.md",
+      "queries": [
+        {
+          "id": "google_ads_local_budget",
+          "intent": "outcome_jtbd",
+          "query": "best ad platform for a local service business with a small budget: Google Ads vs Meta Ads?",
+          "mustCover": [
+            "value_outcome",
+            "fit_constraints",
+            "selection_logic_or_alternative",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "google_ads_alternative_high_cpc",
+          "intent": "alternatives",
+          "query": "what is a good alternative to Google Ads when CPC is too high in my niche?",
+          "mustCover": [
+            "value_outcome",
+            "selection_logic_or_alternative",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "google_cloud_startup_deadline",
+          "intent": "selection_comparison",
+          "query": "google cloud vs aws for a startup with a small team and a tight deadline — which is the best option?",
+          "mustCover": [
+            "value_outcome",
+            "fit_constraints",
+            "selection_logic_or_alternative",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "google_ads_pricing_signals",
+          "intent": "pricing_cost",
+          "query": "how much does Google Ads cost and what affects the price?",
+          "mustCover": [
+            "value_outcome",
+            "fit_constraints",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "google_ads_non_fit",
+          "intent": "non_fit_risk",
+          "query": "when is Google Ads not a fit for my business model?",
+          "mustCover": [
+            "non_fit_or_risk",
+            "fit_constraints",
+            "evidence_or_inference"
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "elinext.com",
+      "reportPath": "business-conspect/reports/2026-01-25/elinext.com/report.md",
+      "queries": [
+        {
+          "id": "elinext_fintech_mvp_3_months",
+          "intent": "constraints_fit",
+          "query": "best custom software development partner for a fintech MVP in 3 months with a small team — is this a fit?",
+          "mustCover": [
+            "value_outcome",
+            "fit_constraints",
+            "selection_logic_or_alternative",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "elinext_team_vs_fixed_scope",
+          "intent": "selection_comparison",
+          "query": "dedicated team vs fixed-scope project for an unpredictable roadmap — which should I choose?",
+          "mustCover": [
+            "selection_logic_or_alternative",
+            "fit_constraints",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "elinext_alternative_hiring",
+          "intent": "alternatives",
+          "query": "what is an alternative to hiring full-time engineers when we need to ship faster this quarter?",
+          "mustCover": [
+            "value_outcome",
+            "selection_logic_or_alternative",
+            "fit_constraints",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "elinext_team_pricing",
+          "intent": "pricing_cost",
+          "query": "how much does a dedicated development team cost per month for a 6-engineer squad?",
+          "mustCover": [
+            "pricing_cost",
+            "fit_constraints",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "elinext_non_fit_compliance",
+          "intent": "non_fit_risk",
+          "query": "when is outsourced development not suitable for regulated data or strict compliance contexts?",
+          "mustCover": [
+            "non_fit_or_risk",
+            "fit_constraints",
+            "evidence_or_inference"
+          ]
+        }
+      ]
+    },
+    {
+      "domain": "emcd.com",
+      "reportPath": "business-conspect/reports/2026-01-25/emcd.com/report.md",
+      "queries": [
+        {
+          "id": "emcd_pool_small_miner_region",
+          "intent": "constraints_fit",
+          "query": "best mining pool for small miners in my region with low fees — is EMCD a fit?",
+          "mustCover": [
+            "value_outcome",
+            "fit_constraints",
+            "selection_logic_or_alternative",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "emcd_vs_solo_consistent_payouts",
+          "intent": "selection_comparison",
+          "query": "emcd vs solo mining for consistent payouts — which should I choose?",
+          "mustCover": [
+            "selection_logic_or_alternative",
+            "value_outcome",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "emcd_alternative_self_custody",
+          "intent": "alternatives",
+          "query": "what is an alternative to pool mining if I want full self-custody and no platform dependency?",
+          "mustCover": [
+            "selection_logic_or_alternative",
+            "fit_constraints",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "emcd_fees_thresholds",
+          "intent": "pricing_cost",
+          "query": "how much are the pool fees and payout thresholds on EMCD?",
+          "mustCover": [
+            "pricing_cost",
+            "fit_constraints",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "emcd_non_fit_regulation",
+          "intent": "non_fit_risk",
+          "query": "when should I avoid using a platform wallet due to jurisdiction or regulation risk?",
+          "mustCover": [
+            "non_fit_or_risk",
+            "fit_constraints",
+            "evidence_or_inference"
+          ]
+        }
+      ]
+    }
+  ]
+}

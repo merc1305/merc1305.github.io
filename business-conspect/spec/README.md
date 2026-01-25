@@ -7,4 +7,6 @@ This directory contains the formal specifications for the Business Conspect tool
 - [DECISIONS.md](DECISIONS.md): Log of key technical and design decisions.
 - [REPORT_CONTRACT.md](REPORT_CONTRACT.md): Canonical, testable contract for `report.md` with evidence and inference rules.
 - [SEARCH_INTENT_CONTRACT.md](SEARCH_INTENT_CONTRACT.md): Best-practice contract for modeling how people search and turning that into recommendation-grade dialogues.
+- [RECOMMENDATION_EVAL.md](RECOMMENDATION_EVAL.md): Rubric for evaluating whether reports support recommendation-quality answers and qualified traffic.
+- Evaluation queries: `business-conspect/spec/eval_queries.json`
 - Index automation: `business-conspect/scripts/update_index.py` scans `business-conspect/reports/`, regenerates the report list in `business-conspect/index.html`, and writes `business-conspect/index.json`.

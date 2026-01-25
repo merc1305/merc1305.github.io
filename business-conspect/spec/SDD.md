@@ -135,10 +135,58 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Verification: `python3 business-conspect/scripts/validate_report.py business-conspect/reports/2026-01-25/google.com` (and the same for `elinext.com` and `emcd.com`) exits with code 0.
 
 #### Task 10 — Add Recommendation Evaluation Bench (Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Replace guesswork with a repeatable, testable check of whether the report can drive recommendation-quality answers.
-- Deliverable: A machine-readable query bench such as `business-conspect/spec/eval_queries.json` plus a short rubric document such as `business-conspect/spec/RECOMMENDATION_EVAL.md` that defines what a "good recommendation answer" must contain (value, fit, selection logic, constraints, and non-fit).
+- Deliverable: `business-conspect/spec/eval_queries.json` (machine-readable query bench for the three reference domains) and `business-conspect/spec/RECOMMENDATION_EVAL.md` (rubric aligned to `DEC-006` and `DEC-007`, including an explicit pricing-intent rule).
 - Verification: `python3 -m json.tool business-conspect/spec/eval_queries.json` succeeds, and the rubric explicitly references `DEC-006` and `DEC-007`.
+
+#### Task 10A — Add Offline Evaluation Runner (Priority)
+- Status: Pending.
+- Goal: Make the evaluation bench executable in the current offline environment, so gaps are detected automatically rather than by manual review only.
+- Deliverable: A script such as `business-conspect/scripts/eval_report.py` that reads `business-conspect/spec/eval_queries.json`, checks that the report dialogue covers the query intents and key phrases, and prints a clear per-query pass/fail summary.
+- Verification: Running `python3 business-conspect/scripts/eval_report.py business-conspect/reports/2026-01-25/elinext.com` produces a per-query summary and a non-zero exit code when required coverage signals are missing.
+
+### Fast Launch Path (No LLM API, Concierge Mode)
+
+This path is optimized for the fastest route to real user usage without LLM APIs.
+It assumes a manual LLM loop and offline publication, with the public site acting
+as a request surface and showcase.
+
+#### Task 10B — Implement Offline Scraper (Fast Path, Priority)
+- Status: Pending.
+- Goal: Turn a URL into clean, reusable source material without any LLM API.
+- Deliverable: `business-conspect/scripts/scrape.py` that fetches one or more pages, extracts main content, and writes `raw/pages.json` under a target report directory.
+- Verification: Running `python3 business-conspect/scripts/scrape.py <url> --out <report-dir>` writes a non-empty `raw/pages.json` with timestamps and source URLs.
+
+#### Task 10C — Build Prompt Pack Generator (No API, Priority)
+- Status: Pending.
+- Goal: Make the manual LLM step high-quality and consistent by generating a complete prompt pack from scraped sources and contracts.
+- Deliverable: A script such as `business-conspect/scripts/build_prompt_pack.py` that reads `raw/pages.json` and produces `raw/prompt_pack.md` (and optionally `raw/prompt_pack.json`) including the report contract, search-intent contract, and clear output requirements.
+- Verification: Running the prompt-pack builder produces `raw/prompt_pack.md` that explicitly references `REPORT_CONTRACT.md` and `SEARCH_INTENT_CONTRACT.md` and contains copy-pasteable instructions.
+
+#### Task 10D — Define Manual LLM Answer Template (No API, Priority)
+- Status: Pending.
+- Goal: Reduce variance in manual LLM outputs so they can be ingested and validated quickly.
+- Deliverable: A template such as `business-conspect/spec/LLM_ANSWER_TEMPLATE.md` plus a lightweight scaffold script (for example `business-conspect/scripts/init_answer_template.py`) that pre-fills metadata and required headings for a new report.
+- Verification: Filling the template for a fixture domain and running `validate_report.py` succeeds without structural errors.
+
+#### Task 10E — Implement Manual Answer Ingestion (Fast Path, Priority)
+- Status: Pending.
+- Goal: Convert manual LLM outputs into canonical `report.md` reliably without any LLM API.
+- Deliverable: `business-conspect/scripts/ingest_llm_answers.py` that takes a manual answer file (Markdown or JSON), normalizes it into `report.md`, and runs validation.
+- Verification: Running the ingestion script on a filled answer template produces a `report.md` that passes `validate_report.py`.
+
+#### Task 10F — Implement Minimal Publish Pipeline (Fast Path, Priority)
+- Status: Pending.
+- Goal: Publish valid reports with one command, even before premium HTML rendering exists.
+- Deliverable: A publish script such as `business-conspect/scripts/publish_report.py` that runs validation, ensures an `index.html` exists (a minimal stub is acceptable), and runs `business-conspect/scripts/update_index.py`.
+- Verification: Running the publish script on a valid report directory updates `business-conspect/index.json` with the new report entry.
+
+#### Task 10G — Add Public Request Flow Without Backend (Priority)
+- Status: Pending.
+- Goal: Let real users start using the service now, even if the pipeline runs offline.
+- Deliverable: A request flow on the public site (for example a new `business-conspect/request.html` or an update to `business-conspect/index.html`) that generates a prefilled GitHub issue link containing the target URL, constraints, and instructions about the manual LLM loop.
+- Verification: The request UI produces a valid GitHub issue URL with the provided inputs embedded in the title/body.
 
 #### Task 11 — Implement Markdown → HTML Rendering
 - Status: Pending.
@@ -164,11 +212,11 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Deliverable: A small unittest suite such as `business-conspect/scripts/tests/test_update_index.py` and `business-conspect/scripts/tests/test_validate_report.py`.
 - Verification: Running `python3 -m unittest discover business-conspect/scripts/tests` completes successfully in a clean workspace.
 
-#### Task 15 — Create a Single Publish Entrypoint
+#### Task 15 — Harden the Publish Entrypoint (After Fast Path)
 - Status: Pending.
-- Goal: Make the correct workflow the easiest workflow.
-- Deliverable: A publish script such as `business-conspect/scripts/publish_report.py` that runs validation, rendering, and index updates in the right order.
-- Verification: Running `python3 business-conspect/scripts/publish_report.py <report-dir>` validates the report, (re)generates `index.html`, and updates `business-conspect/index.json`.
+- Goal: Expand the fast-path publish flow into a robust, repeatable pipeline that includes evaluation, rendering, and indexing with clear failure modes.
+- Deliverable: A hardened `publish_report.py` that runs validation, evaluation (Task 10A), rendering, and index updates in the right order, with a clear summary of what passed and failed.
+- Verification: Running `python3 business-conspect/scripts/publish_report.py <report-dir>` performs validation, evaluation, rendering, and indexing, and exits non-zero when required steps fail.
 
 #### Task 16 — Define LLM Output Contracts (Parser, Strategist, Dialogue)
 - Status: Pending.
@@ -176,17 +224,17 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Deliverable: Contract documents and/or JSON schemas under `business-conspect/spec/` that specify required fields for parser output, strategist output, and the dialogue section.
 - Verification: Each contract includes at least one minimal valid example and a short checklist that can be applied to raw LLM answers.
 
-#### Task 17 — Implement Content Scraping and Normalization (Offline)
+#### Task 17 — Harden Scraping and Normalization (After Fast Path)
 - Status: Pending.
-- Goal: Produce reproducible, auditable inputs for LLM reasoning.
-- Deliverable: A script such as `business-conspect/scripts/scrape.py` that saves normalized page snapshots into `raw/pages.json`.
-- Verification: Running the scraper against a known URL writes `raw/pages.json` with non-empty page content entries and timestamps.
+- Goal: Improve scraping quality, coverage, and reproducibility beyond the fast-path implementation.
+- Deliverable: Enhancements to `business-conspect/scripts/scrape.py` such as multi-page crawling rules, better boilerplate removal, and clearer metadata in `raw/pages.json`.
+- Verification: Scraping a known domain produces multiple high-signal page entries and stable metadata suitable for prompt-pack generation.
 
-#### Task 18 — Implement LLM Answer Ingestion into Canonical Markdown
+#### Task 18 — Harden LLM Answer Ingestion into Canonical Markdown (After Fast Path)
 - Status: Pending.
-- Goal: Convert raw LLM outputs into a contract-compliant `report.md`.
-- Deliverable: A script such as `business-conspect/scripts/ingest_llm_answers.py` that reads structured answers (for example `raw/llm-answers.json`) and produces a `report.md` scaffold that passes validation.
-- Verification: The generated `report.md` passes `validate_report.py` without manual edits for a valid fixture input.
+- Goal: Make ingestion more resilient to real-world manual LLM outputs and reduce cleanup work.
+- Deliverable: Improvements to `business-conspect/scripts/ingest_llm_answers.py` such as clearer error reporting, normalization helpers, and optional repair suggestions when contracts are violated.
+- Verification: Ingestion succeeds or fails with actionable messages across both clean and messy fixture inputs.
 
 #### Task 19 — Add Machine-Readable Summaries for LLMs
 - Status: Pending.

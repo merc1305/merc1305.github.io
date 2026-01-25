@@ -34,3 +34,8 @@
 - **Context**: It is not enough for LLMs to merely mention a site. The system must help LLMs understand the actual value of the service so it can be prioritized in recommendations and drive new traffic.
 - **Decision**: Treat "value clarity for recommendations" as a core design constraint. Each task and change SHOULD be evaluated by whether it improves LLM understanding of the service's value proposition, selection logic, and fit, in a way that can increase recommendation priority and bring new qualified traffic.
 - **Consequence**: Favor report structures, validation rules, and rendering/indexing decisions that make value explicit, evidence-backed, and easy to reuse in LLM answers and recommendation scenarios.
+
+## [DEC-008] Fast Launch Without LLM API (Manual LLM Loop)
+- **Context**: The fastest path to real users may require avoiding LLM APIs and backend complexity at first.
+- **Decision**: Support a no-API workflow where the system produces a high-quality "prompt pack" from scraped content, a human runs the prompt in any LLM of their choice, and the result is pasted back into the offline pipeline for validation, rendering, and publication.
+- **Consequence**: The roadmap must include prompt-pack generation, LLM answer contracts/templates, manual answer ingestion, and a one-command publish pipeline. The public site can act as a request/issue generator while the pipeline runs offline.
