@@ -201,10 +201,10 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/render_report.py business-conspect/reports/fixtures/invalid/report.md` exits non-zero and prints "Validation failed; HTML rendering skipped."
 
 #### Task 13 — Harden the Index Updater Around the Canonical Contract
-- Status: Pending.
+- Status: Completed.
 - Goal: Ensure the browse and search experience reflects the new source-of-truth rule.
 - Deliverable: Update `business-conspect/scripts/update_index.py` to optionally warn or skip entries that lack `report.md`, and to preserve stable ordering and links.
-- Verification: After running `python3 business-conspect/scripts/update_index.py`, `business-conspect/index.json` contains the expected entries and report.md links where available.
+- Verification: Running `python3 business-conspect/scripts/update_index.py` prints warnings for missing `report.md` when present and updates `business-conspect/index.json` with `reportMdPath` populated where available.
 
 #### Task 14 — Add Automated Tests for Indexing and Validation
 - Status: Pending.

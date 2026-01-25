@@ -12,8 +12,10 @@ It then:
 
 from __future__ import annotations
 
+import argparse
 import json
 import re
+import sys
 from dataclasses import dataclass
 from datetime import date
 from pathlib import Path
@@ -43,7 +45,12 @@ def _parse_date(value: str) -> date | None:
         return None
 
 
-def discover_reports(reports_root: Path, root: Path) -> List[ReportEntry]:
+def discover_reports(
+    reports_root: Path,
+    root: Path,
+    *,
+    include_missing_report_md: bool,
+) -> List[ReportEntry]:
     """Discover reports under the business-conspect/reports directory."""
     entries: List[ReportEntry] = []
 
@@ -67,9 +74,13 @@ def discover_reports(reports_root: Path, root: Path) -> List[ReportEntry]:
                 continue
 
             report_md = domain_dir / "report.md"
+            report_md_exists = report_md.is_file()
             report_md_rel_path = (
-                str(report_md.relative_to(root)) if report_md.is_file() else None
+                str(report_md.relative_to(root)) if report_md_exists else None
             )
+
+            if not report_md_exists and not include_missing_report_md:
+                continue
 
             entry = ReportEntry(
                 report_date=parsed_date,
@@ -169,13 +180,43 @@ def write_index_json(root: Path, entries: Iterable[ReportEntry]) -> None:
         encoding="utf-8",
     )
 
+def _build_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="Regenerate the Business Conspect report index."
+    )
+    parser.add_argument(
+        "--skip-missing-report-md",
+        action="store_true",
+        help="Skip report entries that do not have report.md.",
+    )
+    parser.add_argument(
+        "--no-warn-missing-report-md",
+        action="store_true",
+        help="Do not warn about entries missing report.md.",
+    )
+    return parser
 
-def main() -> None:
+
+def main(argv: list[str]) -> None:
+    parser = _build_parser()
+    args = parser.parse_args(argv)
+
     script_path = Path(__file__).resolve()
     root = script_path.parents[1]
     reports_root = root / "reports"
 
-    entries = discover_reports(reports_root, root)
+    entries = discover_reports(
+        reports_root,
+        root,
+        include_missing_report_md=not args.skip_missing_report_md,
+    )
+    if not args.no_warn_missing_report_md:
+        for entry in entries:
+            if entry.report_md_rel_path is None:
+                print(
+                    f"[warn] Missing report.md for {entry.domain} ({entry.date_str}).",
+                    file=sys.stderr,
+                )
     update_index_html(root, entries)
     write_index_json(root, entries)
 
@@ -185,4 +226,4 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    main(sys.argv[1:])
