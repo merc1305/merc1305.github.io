@@ -71,72 +71,96 @@ Artifacts in `raw/` support reproducibility and debugging for the offline pipeli
 
 This roadmap is structured as a sequence of testable tasks that can be completed by agents with minimal ambiguity. The intent is to prevent report drift, improve citation quality, and make the project genuinely useful as a first step toward LLM recommendations and citations.
 
-### Task 1 — Lock the Canonical Report Contract
+### Completed Tasks
+
+#### Task 1 — Lock the Canonical Report Contract
+- Status: Completed.
 - Goal: Define what "done" means for `report.md`, including evidence and inference rules.
 - Deliverable: A new contract document such as `business-conspect/spec/REPORT_CONTRACT.md` that references the canonical template and adds explicit evidence/inference conventions.
 - Verification: The contract includes all required sections and a short checklist that can be applied to any `report.md` without interpretation.
 
-### Task 2 — Implement a Report Validator
+### Pending Tasks (Do Next)
+
+#### Task 2 — Generate Three Reference Reports (Priority)
+- Status: Pending.
+- Goal: Create real report artifacts early so the rest of the pipeline can be tested against non-trivial inputs.
+- Deliverable: Three report directories under `business-conspect/reports/YYYY-MM-DD/` for `google.com`, `elinext.com`, and `emcd.com`, each containing a canonical `report.md`.
+- Verification: After running `python3 business-conspect/scripts/update_index.py`, `business-conspect/index.json` includes entries for `google.com`, `elinext.com`, and `emcd.com`, and each report contains all required headings from `REPORT_CONTRACT.md`.
+
+#### Task 3 — Implement a Report Validator
+- Status: Pending.
 - Goal: Automatically enforce the canonical contract before publication.
 - Deliverable: `business-conspect/scripts/validate_report.py` that checks required metadata fields, required section headings, and basic evidence/inference markers.
 - Verification: Running `python3 business-conspect/scripts/validate_report.py <path-to-report.md>` exits with code 0 for a valid report and non-zero for an invalid one.
 
-### Task 3 — Add Validation Fixtures
+#### Task 4 — Add Validation Fixtures
+- Status: Pending.
 - Goal: Make validation behavior easy to test and maintain.
 - Deliverable: Two minimal fixtures, for example `business-conspect/reports/fixtures/valid/report.md` and `business-conspect/reports/fixtures/invalid/report.md`.
 - Verification: The validator passes on the valid fixture and fails on the invalid fixture with a clear error message.
 
-### Task 4 — Implement Markdown → HTML Rendering
+#### Task 5 — Implement Markdown → HTML Rendering
+- Status: Pending.
 - Goal: Eliminate double maintenance while preserving human-friendly reports.
 - Deliverable: A renderer such as `business-conspect/scripts/render_report.py` and a template such as `business-conspect/scripts/templates/report.html`.
 - Verification: Rendering a valid fixture produces `index.html` that includes the metadata, all section titles, and a canonical link back to `report.md`.
 
-### Task 5 — Make Rendering Validation-Gated
+#### Task 6 — Make Rendering Validation-Gated
+- Status: Pending.
 - Goal: Prevent invalid reports from being published as HTML.
 - Deliverable: The renderer refuses to write `index.html` when validation fails (or supports a strict mode that does so by default).
 - Verification: Running the renderer on the invalid fixture does not overwrite the existing `index.html` and exits with a non-zero status.
 
-### Task 6 — Harden the Index Updater Around the Canonical Contract
+#### Task 7 — Harden the Index Updater Around the Canonical Contract
+- Status: Pending.
 - Goal: Ensure the browse and search experience reflects the new source-of-truth rule.
 - Deliverable: Update `business-conspect/scripts/update_index.py` to optionally warn or skip entries that lack `report.md`, and to preserve stable ordering and links.
 - Verification: After running `python3 business-conspect/scripts/update_index.py`, `business-conspect/index.json` contains the expected entries and report.md links where available.
 
-### Task 7 — Add Automated Tests for Indexing and Validation
+#### Task 8 — Add Automated Tests for Indexing and Validation
+- Status: Pending.
 - Goal: Reduce regressions in the most important offline scripts.
 - Deliverable: A small unittest suite such as `business-conspect/scripts/tests/test_update_index.py` and `business-conspect/scripts/tests/test_validate_report.py`.
 - Verification: Running `python3 -m unittest discover business-conspect/scripts/tests` completes successfully in a clean workspace.
 
-### Task 8 — Create a Single Publish Entrypoint
+#### Task 9 — Create a Single Publish Entrypoint
+- Status: Pending.
 - Goal: Make the correct workflow the easiest workflow.
 - Deliverable: A publish script such as `business-conspect/scripts/publish_report.py` that runs validation, rendering, and index updates in the right order.
 - Verification: Running `python3 business-conspect/scripts/publish_report.py <report-dir>` validates the report, (re)generates `index.html`, and updates `business-conspect/index.json`.
 
-### Task 9 — Define LLM Output Contracts (Parser, Strategist, Dialogue)
+#### Task 10 — Define LLM Output Contracts (Parser, Strategist, Dialogue)
+- Status: Pending.
 - Goal: Make manual or semi-automated LLM usage consistent and testable.
 - Deliverable: Contract documents and/or JSON schemas under `business-conspect/spec/` that specify required fields for parser output, strategist output, and the dialogue section.
 - Verification: Each contract includes at least one minimal valid example and a short checklist that can be applied to raw LLM answers.
 
-### Task 10 — Implement Content Scraping and Normalization (Offline)
+#### Task 11 — Implement Content Scraping and Normalization (Offline)
+- Status: Pending.
 - Goal: Produce reproducible, auditable inputs for LLM reasoning.
 - Deliverable: A script such as `business-conspect/scripts/scrape.py` that saves normalized page snapshots into `raw/pages.json`.
 - Verification: Running the scraper against a known URL writes `raw/pages.json` with non-empty page content entries and timestamps.
 
-### Task 11 — Implement LLM Answer Ingestion into Canonical Markdown
+#### Task 12 — Implement LLM Answer Ingestion into Canonical Markdown
+- Status: Pending.
 - Goal: Convert raw LLM outputs into a contract-compliant `report.md`.
 - Deliverable: A script such as `business-conspect/scripts/ingest_llm_answers.py` that reads structured answers (for example `raw/llm-answers.json`) and produces a `report.md` scaffold that passes validation.
 - Verification: The generated `report.md` passes `validate_report.py` without manual edits for a valid fixture input.
 
-### Task 12 — Add Machine-Readable Summaries for LLMs
+#### Task 13 — Add Machine-Readable Summaries for LLMs
+- Status: Pending.
 - Goal: Improve discoverability and citation fidelity beyond HTML and Markdown.
 - Deliverable: A compact `summary.json` per report and an update to `business-conspect/index.json` generation to include key summary fields when present.
 - Verification: `summary.json` files are valid JSON and can be parsed by `python3 -m json.tool`, and the index contains summary-derived fields when available.
 
-### Task 13 — Ship LLM Discoverability Artifacts
+#### Task 14 — Ship LLM Discoverability Artifacts
+- Status: Pending.
 - Goal: Make the project easy for LLMs and AI search tools to understand and cite.
 - Deliverable: Add `llms.txt` (and optionally `llms-full.txt`) within `business-conspect/` that explains the purpose, structure, and canonical artifacts, and links to the browse and search pages.
 - Verification: The files exist, are plain text, and include correct public URLs under `https://merc1305.github.io/business-conspect/`.
 
-### Task 14 — Embed Structured Data in Generated Reports
+#### Task 15 — Embed Structured Data in Generated Reports
+- Status: Pending.
 - Goal: Align human-readable reports with machine-readable hints used by search and AI systems.
 - Deliverable: The HTML renderer embeds a JSON-LD block (for example a `CreativeWork` or `Report` representation) that includes domain, date, canonical URLs, and a short summary.
 - Verification: The JSON-LD block can be extracted and parsed as valid JSON, and its canonical URL fields match the published report paths.
