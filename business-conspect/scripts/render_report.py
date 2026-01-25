@@ -9,12 +9,14 @@ import os
 from datetime import datetime, timezone
 from pathlib import Path
 import re
+import subprocess
 import sys
 
 
 ROOT = Path(__file__).resolve().parents[2]
 TEMPLATE_PATH = ROOT / "business-conspect/scripts/templates/report.html"
 ROOT_INDEX_PATH = ROOT / "business-conspect/index.html"
+VALIDATOR_PATH = ROOT / "business-conspect/scripts/validate_report.py"
 
 
 TITLE_PREFIX = "# Business Conspect — "
@@ -181,6 +183,11 @@ def _build_parser() -> argparse.ArgumentParser:
         default="",
         help="Optional custom output path (defaults to <report-dir>/index.html).",
     )
+    parser.add_argument(
+        "--skip-validation",
+        action="store_true",
+        help="Skip report validation before rendering.",
+    )
     return parser
 
 
@@ -194,6 +201,18 @@ def main(argv: list[str]) -> int:
 
     out_path = Path(args.out).resolve() if args.out else report_path.parent / "index.html"
 
+    if not args.skip_validation:
+        if not VALIDATOR_PATH.is_file():
+            print(f"Missing validator: {VALIDATOR_PATH}", file=sys.stderr)
+            return 1
+        result = subprocess.run(
+            [sys.executable, str(VALIDATOR_PATH), str(report_path)],
+            check=False,
+        )
+        if result.returncode != 0:
+            print("Validation failed; HTML rendering skipped.", file=sys.stderr)
+            return result.returncode
+
     try:
         written = render_report(report_path, out_path=out_path)
     except Exception as exc:
@@ -206,4 +225,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-

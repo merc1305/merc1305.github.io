@@ -195,10 +195,10 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/render_report.py business-conspect/reports/fixtures/valid/report.md --out business-conspect/reports/fixtures/valid/index.html` produces HTML that includes the metadata, all section titles, and a canonical link to `report.md`.
 
 #### Task 12 — Make Rendering Validation-Gated
-- Status: Pending.
+- Status: Completed.
 - Goal: Prevent invalid reports from being published as HTML.
 - Deliverable: The renderer refuses to write `index.html` when validation fails (or supports a strict mode that does so by default).
-- Verification: Running the renderer on the invalid fixture does not overwrite the existing `index.html` and exits with a non-zero status.
+- Verification: Running `python3 business-conspect/scripts/render_report.py business-conspect/reports/fixtures/invalid/report.md` exits non-zero and prints "Validation failed; HTML rendering skipped."
 
 #### Task 13 — Harden the Index Updater Around the Canonical Contract
 - Status: Pending.
