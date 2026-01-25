@@ -1,0 +1,12 @@
+# merc1305.github.io Development Rules
+
+You are assisting with the maintenance and development of the merc1305 laboratory.
+To prevent regressions, you MUST follow these rules:
+
+1. **Read DEVELOPMENT_PRINCIPLES.md**: Always read the principles in the project root before making any changes.
+2. **Preserve Mobile Optimizations**: Never remove viewport tags, @media queries, or specific mobile spacing. 
+3. **Surgical Edits**: Use `multi_replace_file_content` instead of replacing large blocks to avoid losing "invisible" layout features.
+4. **Mobile Verification**: Any UI change must be verified for mobile responsiveness (< 768px).
+5. **Content Hierarchy**: Respect the established order of informational blocks unless relocation is explicitly requested.
+
+Refer to DEVELOPMENT_PRINCIPLES.md for the full specification of these rules.
