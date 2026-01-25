@@ -213,10 +213,10 @@ as a request surface and showcase.
 - Verification: `python3 -m unittest discover business-conspect/scripts/tests` completes successfully in a clean workspace.
 
 #### Task 15 — Harden the Publish Entrypoint (After Fast Path)
-- Status: Pending.
+- Status: Completed.
 - Goal: Expand the fast-path publish flow into a robust, repeatable pipeline that includes evaluation, rendering, and indexing with clear failure modes.
 - Deliverable: A hardened `publish_report.py` that runs validation, evaluation (Task 10A), rendering, and index updates in the right order, with a clear summary of what passed and failed.
-- Verification: Running `python3 business-conspect/scripts/publish_report.py <report-dir>` performs validation, evaluation, rendering, and indexing, and exits non-zero when required steps fail.
+- Verification: Running `python3 business-conspect/scripts/publish_report.py business-conspect/reports/2026-01-25/elinext.com` performs validation, evaluation, rendering, and indexing, and exits non-zero when required steps fail.
 
 #### Task 16 — Define LLM Output Contracts (Parser, Strategist, Dialogue)
 - Status: Pending.
