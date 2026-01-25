@@ -9,7 +9,9 @@ Business Conspect is a tool designed to analyze websites and generate structured
 - **Web Interface**: A premium, "lab" style UI.
 - **URL Input**: Users can input a website URL.
 - **Process Execution**: A button to start the analysis/summarization process.
-- **Report Generation**: (Future) Generating reports in HTML/Markdown formats.
+  - **Current State**: The button triggers a demo interaction in the static UI only (no backend execution on GitHub Pages).
+  - **Planned State**: The actual analysis is executed offline via CLI/scripts; the UI may later connect to a backend.
+- **Report Generation**: (Future) Generating reports in HTML/Markdown formats via offline scripts.
 - **English Documentation**: All user-facing documentation must be in English.
 
 ### 2.2 Non-Functional Requirements
@@ -22,7 +24,35 @@ Business Conspect is a tool designed to analyze websites and generate structured
 ### 3.1 Frontend
 - **HTML5**: Semantic structure.
 - **Vanilla CSS**: Custom styling based on root "lab" theme.
-- **JavaScript**: UI interactivity (handling button clicks, input validation).
+- **JavaScript**: UI interactivity (handling button clicks, input validation, demo alerts).
+
+### 3.2 Analysis Pipeline (Offline Generation)
+The analysis pipeline is executed outside GitHub Pages and produces static artifacts that are committed into the repository.
+
+1) **Data Input**: URL + optional clarifications (niche, geography, pricing, promised outcome, competitors).  
+2) **Content Collection & Normalization**: Scrape HTML, extract main content, remove boilerplate, and store snapshots.  
+3) **Business Parser**: Analyze cleaned content and output a structured business card (TA, products/services, value proposition, constraints, proof).  
+4) **GEO/LLM Strategist**: Identify gaps and recommendations for AI search visibility and LLM accuracy.  
+5) **Optional Dialogue**: Expert ↔ interlocutor exchange to refine conclusions.  
+6) **Report Generation**: Aggregate outputs into `index.html` and optional `report.md`.
+
+### 3.3 Artifacts & Storage Layout
+Reports are stored as static artifacts to keep GitHub Pages simple and reproducible:
+
+```text
+/business-conspect/
+  YYYY-MM-DD/
+    domain.tld/
+      index.html
+      report.md (optional)
+      raw/ (optional)
+        prompts.json
+        llm-answers.json
+        pages.json
+        meta.json
+```
+
+Artifacts in `raw/` support reproducibility and debugging for the offline pipeline.
 
 
 ## 4. UI Components
@@ -82,4 +112,5 @@ These steps are designed to achieve a working MVP using the "Offline Generation"
 ### Step 10: Automatic Index Updater
 - **Goal**: Update the "Browse Reports" list.
 - **Action**: Create a script that scans the `business-conspect/` directory for reports and regenerates the main `business-conspect/index.html` list to include the new report.
+- **Current State**: `business-conspect/index.html` contains a static, demo listing only.
 - **Deliverable**: `scripts/update_index.py`.
