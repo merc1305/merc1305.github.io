@@ -46,6 +46,22 @@ NON_FIT_RE = re.compile(
     r"\b(non[- ]?fit|not (a )?fit|not suitable|not for|should not|shouldn't|avoid)\b",
     re.IGNORECASE,
 )
+OUTCOME_INTENT_RE = re.compile(
+    r"\b(need|want|goal|result|results|outcome|outcomes|achieve|improve|increase|reduce|solve|fix|help me|how do i|how can i|how to)\b",
+    re.IGNORECASE,
+)
+PRICING_INTENT_RE = re.compile(
+    r"\b(price|pricing|cost|costs|budget|rate|rates|fee|fees|how much|quote|estimate|expensive|cheap)\b",
+    re.IGNORECASE,
+)
+CONSTRAINT_INTENT_RE = re.compile(
+    r"\b(fit|suitable|budget|deadline|timeline|by when|geo|region|country|language|team size|team|stack|tech stack|framework|platform|industry|company size|small business|enterprise|jurisdiction|compliance|regulation|limited)\b",
+    re.IGNORECASE,
+)
+RISK_INTENT_RE = re.compile(
+    r"\b(risk|risks|mistake|mistakes|failure|fail|go wrong|limitation|limitations|pitfall|pitfalls|avoid)\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -275,26 +291,57 @@ def _validate_dialogue_section(
         result.error("Dialogue section is empty.")
         return
 
-    has_client = any(line.strip().startswith("Client:") for line in section_text.splitlines())
-    has_expert = any(line.strip().startswith("Expert:") for line in section_text.splitlines())
+    section_lines = section_text.splitlines()
+    has_client = any(line.strip().startswith("Client:") for line in section_lines)
+    has_expert = any(line.strip().startswith("Expert:") for line in section_lines)
 
     if not has_client:
         result.error("Dialogue section must contain at least one 'Client:' line.")
     if not has_expert:
         result.error("Dialogue section must contain at least one 'Expert:' line.")
 
-    has_selection_logic = bool(SELECTION_LOGIC_RE.search(section_text))
-    if not has_selection_logic:
-        result.error(
-            "Dialogue section must include selection logic "
-            "(e.g., choose, vs, alternative, which service, when should I)."
-        )
+    client_queries = [
+        line.strip()[len("Client:") :].strip()
+        for line in section_lines
+        if line.strip().startswith("Client:")
+    ]
 
-    has_non_fit = bool(NON_FIT_RE.search(section_text))
-    if not has_non_fit:
+    def _covers(pattern: re.Pattern[str]) -> bool:
+        return any(pattern.search(query) for query in client_queries)
+
+    outcome_ok = _covers(OUTCOME_INTENT_RE)
+    selection_ok = _covers(SELECTION_LOGIC_RE)
+    pricing_ok = _covers(PRICING_INTENT_RE)
+    constraint_ok = _covers(CONSTRAINT_INTENT_RE)
+    non_fit_risk_ok = any(
+        NON_FIT_RE.search(query) or RISK_INTENT_RE.search(query)
+        for query in client_queries
+    )
+
+    if not outcome_ok:
         result.error(
-            "Dialogue section must include at least one non-fit signal "
-            "(e.g., not a fit, not suitable, should not, avoid)."
+            "Dialogue must cover search intent: Outcome / JTBD "
+            "(e.g., need, want, results, outcome)."
+        )
+    if not selection_ok:
+        result.error(
+            "Dialogue must cover search intent: Selection / Comparison "
+            "(e.g., choose, vs, alternative)."
+        )
+    if not pricing_ok:
+        result.error(
+            "Dialogue must cover search intent: Pricing / Cost "
+            "(e.g., pricing, cost, budget, how much)."
+        )
+    if not constraint_ok:
+        result.error(
+            "Dialogue must cover search intent: Constraints / Fit "
+            "(e.g., fit, team size, stack, geo, deadline)."
+        )
+    if not non_fit_risk_ok:
+        result.error(
+            "Dialogue must cover search intent: Non-Fit / Risk "
+            "(e.g., not a fit, risks, mistakes, avoid)."
         )
 
     if not (EVIDENCE_RE.search(section_text) or INFERENCE_RE.search(section_text)):

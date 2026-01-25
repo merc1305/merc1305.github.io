@@ -117,10 +117,10 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Verification: `business-conspect/spec/SEARCH_INTENT_CONTRACT.md` exists, includes required minimum categories, and defines a minimal coverage checklist in a form that can later be validated by a script.
 
 #### Task 7 — Implement Search-Intent Coverage Validation
-- Status: Pending.
+- Status: Completed.
 - Goal: Ensure dialogues are not only structured, but also resemble real search behavior and support recommendation-quality answers.
-- Deliverable: Extend `business-conspect/scripts/validate_report.py` (or add a companion validator) to check for search-intent coverage signals (for example: presence of comparison/vs intent, constraint intent, alternatives intent, and pricing intent).
-- Verification: Validation fails when key search-intent categories are missing, and passes when they are present in the dialogue.
+- Deliverable: `business-conspect/scripts/validate_report.py` now validates required minimum search-intent coverage on `Client:` lines: Outcome / JTBD, Selection / Comparison, Pricing / Cost, Constraints / Fit, and Non-Fit / Risk. The valid fixture has been updated to cover pricing intent explicitly.
+- Verification: `python3 business-conspect/scripts/validate_report.py business-conspect/reports/2026-01-25/google.com` (and the same for `elinext.com`, `emcd.com`, and `reports/fixtures/valid/report.md`) exits with code 0, while `reports/fixtures/invalid/report.md` exits non-zero.
 
 #### Task 8 — Add Search-Intent Fixtures and Query Sets
 - Status: Pending.

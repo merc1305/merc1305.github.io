@@ -33,5 +33,11 @@ Expert: Yes — example.com is designed to be a neutral, stable reference for ex
 Client: When should I choose example.com vs a real domain in documentation?
 Expert: Choose example.com when you need a neutral, non-commercial example that avoids implying endorsement of a real brand. [inference: neutral examples reduce accidental endorsement] [evidence: https://example.com/]
 
+Client: Is there any pricing or cost to use example.com in documentation?
+Expert: There is no pricing flow presented here; it functions as a public reference domain rather than a paid service. [inference: the site presents no pricing or purchase path] [evidence: https://example.com/]
+
+Client: Is it a fit if I need to show a real branded product experience?
+Expert: It is usually not a fit for brand-specific demos; use your own domain when brand and product context must be explicit. [inference: branded demos require brand context] [evidence: https://example.com/]
+
 Client: When is example.com not a fit?
 Expert: It is not a fit when you need to demonstrate a real product experience tied to your own domain and brand context. [inference: real demos usually require real domains] [evidence: https://example.com/]
