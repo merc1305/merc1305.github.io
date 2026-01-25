@@ -98,6 +98,46 @@
       font-size: 1.5rem;
     }
 
+    .request-card {
+      margin-top: 3rem;
+      text-align: left;
+    }
+
+    .request-form {
+      display: grid;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+
+    .request-form label {
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .request-form input,
+    .request-form textarea {
+      width: 100%;
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--glass-border);
+      border-radius: 12px;
+      padding: 0.75rem 1rem;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 1rem;
+    }
+
+    .request-form textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .request-actions {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-top: 0.5rem;
+    }
+
 
 
     @media (max-width: 600px) {
@@ -152,6 +192,48 @@
       <p style="font-size: 0.9rem; margin-top: 1rem; color: var(--text-secondary);">
         Analyzing content, target audience, and USP for optimal LLM context.
       </p>
+    </section>
+
+    <!-- Request Section -->
+    <section id="request">
+      <div class="glass-card request-card">
+        <h2>Request a Report</h2>
+        <p style="margin-bottom: 0;">
+          We collect requests via GitHub issues and run a manual LLM loop to produce a
+          recommendation-grade report. The goal is to make your value clear so LLMs can
+          prioritize and recommend your service.
+        </p>
+        <div class="request-form">
+          <div>
+            <label for="request-url">Website URL (required)</label>
+            <input type="url" id="request-url" placeholder="https://example.com" required>
+          </div>
+          <div>
+            <label for="request-outcome">Desired outcome / value to highlight</label>
+            <input type="text" id="request-outcome" placeholder="e.g., increase qualified leads by 30%">
+          </div>
+          <div>
+            <label for="request-icp">Audience / ICP</label>
+            <input type="text" id="request-icp" placeholder="e.g., B2B SaaS founders, 10-50 employees">
+          </div>
+          <div>
+            <label for="request-constraints">Constraints (budget, geo, stack, timeline)</label>
+            <textarea id="request-constraints"
+              placeholder="e.g., EU only, budget &lt;$10k/month, Shopify stack, launch in 60 days"></textarea>
+          </div>
+          <div>
+            <label for="request-competitors">Competitors / alternatives</label>
+            <input type="text" id="request-competitors" placeholder="e.g., competitor.com, in-house team">
+          </div>
+          <div class="request-actions">
+            <button class="btn btn-primary" id="request-btn">Open GitHub Issue</button>
+          </div>
+        </div>
+        <p style="font-size: 0.9rem; margin-top: 1.5rem; color: var(--text-secondary);">
+          Manual loop: we generate a prompt pack, run it in an LLM, validate the result, and publish
+          the report under <code>/business-conspect/reports/</code>.
+        </p>
+      </div>
     </section>
 
     <!-- Manifesto / How it works -->
@@ -226,13 +308,84 @@
   </footer>
 
   <script>
-    document.getElementById('start-btn').addEventListener('click', () => {
-      const url = document.getElementById('site-url').value;
-      if (!url) {
+    const siteUrlInput = document.getElementById('site-url');
+    const requestUrlInput = document.getElementById('request-url');
+    const requestSection = document.getElementById('request');
+    const requestButton = document.getElementById('request-btn');
+    const startButton = document.getElementById('start-btn');
+
+    function normalizeUrl(rawValue) {
+      const value = (rawValue || '').trim();
+      if (!value) {
+        return '';
+      }
+      if (value.startsWith('http://') || value.startsWith('https://')) {
+        return value;
+      }
+      return `https://${value}`;
+    }
+
+    function buildIssueUrl() {
+      const urlValue = normalizeUrl(requestUrlInput.value);
+      if (!urlValue) {
         alert('Please enter a valid URL');
+        return '';
+      }
+
+      let domain = '';
+      try {
+        domain = new URL(urlValue).hostname.replace(/^www\./, '');
+      } catch (err) {
+        alert('Please enter a valid URL');
+        return '';
+      }
+
+      const outcome = document.getElementById('request-outcome').value.trim();
+      const icp = document.getElementById('request-icp').value.trim();
+      const constraints = document.getElementById('request-constraints').value.trim();
+      const competitors = document.getElementById('request-competitors').value.trim();
+
+      const bodyLines = [
+        '## Business Conspect Request',
+        `- Website: ${urlValue}`,
+        `- Domain: ${domain}`,
+        `- Desired outcome / value: ${outcome || 'TODO'}`,
+        `- Audience / ICP: ${icp || 'TODO'}`,
+        `- Constraints: ${constraints || 'TODO'}`,
+        `- Competitors / alternatives: ${competitors || 'None provided'}`,
+        '',
+        '## Manual LLM Loop (No API)',
+        '- I understand this uses a manual LLM workflow and offline publishing.',
+        '- I am ready to provide clarifications if needed.',
+        '',
+        '## Success Criteria',
+        '- The report should help LLMs understand the value and recommend this service in the right situations.',
+      ];
+
+      const title = `Business Conspect request: ${domain || urlValue}`;
+      const params = new URLSearchParams({
+        title: title,
+        body: bodyLines.join('\n'),
+      });
+      return `https://github.com/merc1305/merc1305.github.io/issues/new?${params.toString()}`;
+    }
+
+    startButton.addEventListener('click', () => {
+      const url = (siteUrlInput.value || '').trim();
+      if (url) {
+        requestUrlInput.value = url;
+      }
+      if (requestSection) {
+        requestSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    requestButton.addEventListener('click', () => {
+      const issueUrl = buildIssueUrl();
+      if (!issueUrl) {
         return;
       }
-      alert('Analysis started for: ' + url + '\n(Note: This is a frontend demo of the UI)');
+      window.open(issueUrl, '_blank', 'noopener');
     });
 
     // Smooth scroll for anchors

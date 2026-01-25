@@ -183,10 +183,10 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/publish_report.py business-conspect/reports/2026-01-25/google.com` prints `[ok] Publish completed.` and updates `business-conspect/index.json` when needed.
 
 #### Task 10G — Add Public Request Flow Without Backend (Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Let real users start using the service now, even if the pipeline runs offline.
 - Deliverable: A request flow on the public site (for example a new `business-conspect/request.html` or an update to `business-conspect/index.html`) that generates a prefilled GitHub issue link containing the target URL, constraints, and instructions about the manual LLM loop.
-- Verification: The request UI produces a valid GitHub issue URL with the provided inputs embedded in the title/body.
+- Verification: Filling the request form on `business-conspect/index.html` and clicking "Open GitHub Issue" opens a prefilled issue URL containing the URL, constraints, and manual loop instructions.
 
 #### Task 11 — Implement Markdown → HTML Rendering
 - Status: Pending.
