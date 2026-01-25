@@ -44,8 +44,8 @@ Every website analysis is a separate directory:
   reports/
     YYYY-MM-DD/
       domain.tld/
-        index.html          # final human-readable report (showcase)
-        report.md           # markdown version (convenient for copying into LLM) (optional)
+        report.md           # canonical report (LLM-friendly, required)
+        index.html          # final human-readable report (generated from report.md)
         raw/                # everything for reproducibility (optional)
           prompts.json      # prompts, roles, system instructions
           llm-answers.json  # model responses (or dialogue tracing)
@@ -58,6 +58,8 @@ Where:
 - `reports/` — container for generated reports
 - `YYYY-MM-DD` — report generation date  
 - `domain.tld` — domain of the analyzed website
+- `report.md` — single source of truth; author or generate this file first
+- `index.html` — derived artifact; do not maintain it manually when automation exists
 
 ---
 
@@ -208,7 +210,8 @@ Required fields:
 - ideal customer profile (ICP)
 - a realistic client ↔ expert dialogue focused on understanding all services
 
-Use this template for `report.md` (and mirror the same structure in `index.html`):
+Use this template for `report.md`. The `index.html` version should be rendered
+from this canonical Markdown rather than maintained separately:
 
 ```md
 # Business Conspect — <domain.tld>

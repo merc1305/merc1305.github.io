@@ -11,9 +11,10 @@ Business Conspect is a tool designed to analyze websites and generate structured
 - **Process Execution**: A button to start the analysis/summarization process.
   - **Current State**: The button triggers a demo interaction in the static UI only (no backend execution on GitHub Pages).
   - **Planned State**: The actual analysis is executed offline via CLI/scripts; the UI may later connect to a backend.
-- **Report Generation**: (Future) Generating reports in HTML/Markdown formats via offline scripts.
+- **Report Generation**: (Planned) Offline scripts must produce a canonical `report.md` and a generated `index.html` mirror.
 - **Report Search**: (Implemented) `business-conspect/search.html` loads `index.json` and filters reports by domain and date.
-- **Canonical Report Template**: (Documented) Every report should follow a consistent template in `report.md` (with `index.html` as a mirror) and must include website address, generation time, summary, services, ICP, and a client ↔ expert dialogue that covers full buyer discovery.
+- **Canonical Report Template**: (Documented) Every report must follow a consistent template in `report.md` (single source of truth), including website address, generation time, summary, services, ICP, and a client ↔ expert dialogue that covers full buyer discovery.
+- **Traceability and Usefulness for LLMs**: (Planned) Reports should be citation-grade: key claims must be grounded in site evidence or explicitly marked as inference.
 - **English Documentation**: All user-facing documentation must be in English.
 
 ### 2.2 Non-Functional Requirements
@@ -36,7 +37,8 @@ The analysis pipeline is executed outside GitHub Pages and produces static artif
 3) **Business Parser**: Analyze cleaned content and output a structured business card (TA, products/services, value proposition, constraints, proof).  
 4) **GEO/LLM Strategist**: Identify gaps and recommendations for AI search visibility and LLM accuracy.  
 5) **Optional Dialogue**: Expert ↔ interlocutor exchange to refine conclusions.  
-6) **Report Generation**: Aggregate outputs into `index.html` and optional `report.md`.
+6) **Report Assembly (Canonical)**: Aggregate outputs into `report.md` using the canonical report contract and evidence rules.  
+7) **Report Rendering & Indexing**: Render `index.html` from `report.md`, then run `business-conspect/scripts/update_index.py`.
 
 ### 3.3 Artifacts & Storage Layout
 Reports are stored as static artifacts to keep GitHub Pages simple and reproducible:
@@ -46,8 +48,9 @@ Reports are stored as static artifacts to keep GitHub Pages simple and reproduci
   reports/
     YYYY-MM-DD/
       domain.tld/
-        index.html
-        report.md (optional)
+        report.md              # canonical, authored manually or generated offline
+        index.html             # generated from report.md
+        summary.json (optional)# machine-readable summary for indexing/LLMs
         raw/ (optional)
           prompts.json
           llm-answers.json
@@ -64,66 +67,76 @@ Artifacts in `raw/` support reproducibility and debugging for the offline pipeli
 - **Manifesto/Description**: Brief explanation of the tool's purpose.
 - **Report Search Page**: Client-side filtering over the machine-readable index.
 
-## 5. Implementation Roadmap (Next Steps)
+## 5. Implementation Roadmap (Agent-Ready Tasks)
 
-These steps are designed to achieve a working MVP using the "Offline Generation" approach, compatible with the current GitHub Pages hosting.
+This roadmap is structured as a sequence of testable tasks that can be completed by agents with minimal ambiguity. The intent is to prevent report drift, improve citation quality, and make the project genuinely useful as a first step toward LLM recommendations and citations.
 
-### Step 1: Initialize Analysis Environment
-- **Goal**: Create a dedicated `scripts/` directory for the generation logic.
-- **Action**: Set up a Python/Node.js environment with dependencies (e.g., `requests`, `beautifulsoup4`, `openai` or `langchain`).
-- **Deliverable**: `scripts/requirements.txt` and `scripts/main.py` skeleton.
+### Task 1 — Lock the Canonical Report Contract
+- Goal: Define what "done" means for `report.md`, including evidence and inference rules.
+- Deliverable: A new contract document such as `business-conspect/spec/REPORT_CONTRACT.md` that references the canonical template and adds explicit evidence/inference conventions.
+- Verification: The contract includes all required sections and a short checklist that can be applied to any `report.md` without interpretation.
 
-### Step 2: Implement Content Scraper
-- **Goal**: Fetch and clean website content.
-- **Action**: Create a function that accepts a URL, fetches HTML, strips boilerplate (nav, footer, scripts), and returns clean text/markdown.
-- **Deliverable**: `scripts/scraper.py` module.
+### Task 2 — Implement a Report Validator
+- Goal: Automatically enforce the canonical contract before publication.
+- Deliverable: `business-conspect/scripts/validate_report.py` that checks required metadata fields, required section headings, and basic evidence/inference markers.
+- Verification: Running `python3 business-conspect/scripts/validate_report.py <path-to-report.md>` exits with code 0 for a valid report and non-zero for an invalid one.
 
-### Step 3: Implement Prompt Builder
-- **Goal**: Construct complete prompts for the user.
-- **Action**: Create a function that merges the scraped content with the system prompts into a copy-pasteable format (e.g., `prompt.txt`).
-- **Deliverable**: `scripts/prompt_builder.py` module.
+### Task 3 — Add Validation Fixtures
+- Goal: Make validation behavior easy to test and maintain.
+- Deliverable: Two minimal fixtures, for example `business-conspect/reports/fixtures/valid/report.md` and `business-conspect/reports/fixtures/invalid/report.md`.
+- Verification: The validator passes on the valid fixture and fails on the invalid fixture with a clear error message.
 
-### Step 4: Develop "Business Parser" Prompt
-- **Goal**: Extract structured business logic.
-- **Action**: Design a system prompt to analyze cleaned text and output JSON with: Tagline, Target Audience, Products, and Value Proposition.
-- **Deliverable**: `prompts/parser.yaml` (or string constant).
+### Task 4 — Implement Markdown → HTML Rendering
+- Goal: Eliminate double maintenance while preserving human-friendly reports.
+- Deliverable: A renderer such as `business-conspect/scripts/render_report.py` and a template such as `business-conspect/scripts/templates/report.html`.
+- Verification: Rendering a valid fixture produces `index.html` that includes the metadata, all section titles, and a canonical link back to `report.md`.
 
-### Step 5: Develop "Strategist" Prompt
-- **Goal**: Critique compentency for AI Search.
-- **Action**: Design a system prompt to identify gaps (missing pricing, unclear USP) and "hallucination risks".
-- **Deliverable**: `prompts/strategist.yaml`.
+### Task 5 — Make Rendering Validation-Gated
+- Goal: Prevent invalid reports from being published as HTML.
+- Deliverable: The renderer refuses to write `index.html` when validation fails (or supports a strict mode that does so by default).
+- Verification: Running the renderer on the invalid fixture does not overwrite the existing `index.html` and exits with a non-zero status.
 
-### Step 6: Implement Response Handler
-- **Goal**: Process manually saved LLM outputs.
-- **Action**: Create a function to read `raw/llm-answers.json` (pasted by the user) and validate structure.
-- **Deliverable**: JSON validation and parsing logic.
+### Task 6 — Harden the Index Updater Around the Canonical Contract
+- Goal: Ensure the browse and search experience reflects the new source-of-truth rule.
+- Deliverable: Update `business-conspect/scripts/update_index.py` to optionally warn or skip entries that lack `report.md`, and to preserve stable ordering and links.
+- Verification: After running `python3 business-conspect/scripts/update_index.py`, `business-conspect/index.json` contains the expected entries and report.md links where available.
 
-### Step 7: Create HTML Report Template
-- **Goal**: Visual presentation of results.
-- **Action**: Design a Jinja2 (or similar) HTML template that inherits the "Lab" design system and displays the analysis data.
-- **Deliverable**: `scripts/templates/report.html`.
+### Task 7 — Add Automated Tests for Indexing and Validation
+- Goal: Reduce regressions in the most important offline scripts.
+- Deliverable: A small unittest suite such as `business-conspect/scripts/tests/test_update_index.py` and `business-conspect/scripts/tests/test_validate_report.py`.
+- Verification: Running `python3 -m unittest discover business-conspect/scripts/tests` completes successfully in a clean workspace.
 
-### Step 8: Implement Report Renderer
-- **Goal**: Generate the final static page.
-- **Action**: Combine the analyzing JSON data with the HTML template to produce `index.html` in the target directory.
-- **Deliverable**: `scripts/renderer.py` module.
+### Task 8 — Create a Single Publish Entrypoint
+- Goal: Make the correct workflow the easiest workflow.
+- Deliverable: A publish script such as `business-conspect/scripts/publish_report.py` that runs validation, rendering, and index updates in the right order.
+- Verification: Running `python3 business-conspect/scripts/publish_report.py <report-dir>` validates the report, (re)generates `index.html`, and updates `business-conspect/index.json`.
 
-### Step 9: Build CLI Entrypoint
-- **Goal**: One command to run it all.
-- **Action**: accurate `main.py` to accept CLI arguments (URL) and orchestrate Scraping -> **Prompt Generation -> User Pause -> Response Parsing** -> Generation.
-- **Deliverable**: Working command `python scripts/main.py https://example.com`.
+### Task 9 — Define LLM Output Contracts (Parser, Strategist, Dialogue)
+- Goal: Make manual or semi-automated LLM usage consistent and testable.
+- Deliverable: Contract documents and/or JSON schemas under `business-conspect/spec/` that specify required fields for parser output, strategist output, and the dialogue section.
+- Verification: Each contract includes at least one minimal valid example and a short checklist that can be applied to raw LLM answers.
 
-### Step 10: Automatic Index Updater
-- **Goal**: Update the "Browse Reports" list.
-- **Action**: Scan the `business-conspect/` directory for reports and regenerate the main `business-conspect/index.html` list to include new reports.
-- **Implementation**: Script `business-conspect/scripts/update_index.py`.
-- **Implementation markers**: `<!-- REPORTS_LIST_START -->` and `<!-- REPORTS_LIST_END -->` in `business-conspect/index.html`.
-- **Implementation artifact**: `business-conspect/index.json` (machine-readable index).
-- **Usage**: `python3 business-conspect/scripts/update_index.py`
-- **Status**: Implemented.
+### Task 10 — Implement Content Scraping and Normalization (Offline)
+- Goal: Produce reproducible, auditable inputs for LLM reasoning.
+- Deliverable: A script such as `business-conspect/scripts/scrape.py` that saves normalized page snapshots into `raw/pages.json`.
+- Verification: Running the scraper against a known URL writes `raw/pages.json` with non-empty page content entries and timestamps.
 
-### Step 11: Report Search Page
-- **Goal**: Find reports quickly without scanning the full list.
-- **Action**: Create `business-conspect/search.html` that loads `business-conspect/index.json` and filters by domain and date.
-- **Integration**: Add a clear entry point from `business-conspect/index.html`.
-- **Status**: Implemented.
+### Task 11 — Implement LLM Answer Ingestion into Canonical Markdown
+- Goal: Convert raw LLM outputs into a contract-compliant `report.md`.
+- Deliverable: A script such as `business-conspect/scripts/ingest_llm_answers.py` that reads structured answers (for example `raw/llm-answers.json`) and produces a `report.md` scaffold that passes validation.
+- Verification: The generated `report.md` passes `validate_report.py` without manual edits for a valid fixture input.
+
+### Task 12 — Add Machine-Readable Summaries for LLMs
+- Goal: Improve discoverability and citation fidelity beyond HTML and Markdown.
+- Deliverable: A compact `summary.json` per report and an update to `business-conspect/index.json` generation to include key summary fields when present.
+- Verification: `summary.json` files are valid JSON and can be parsed by `python3 -m json.tool`, and the index contains summary-derived fields when available.
+
+### Task 13 — Ship LLM Discoverability Artifacts
+- Goal: Make the project easy for LLMs and AI search tools to understand and cite.
+- Deliverable: Add `llms.txt` (and optionally `llms-full.txt`) within `business-conspect/` that explains the purpose, structure, and canonical artifacts, and links to the browse and search pages.
+- Verification: The files exist, are plain text, and include correct public URLs under `https://merc1305.github.io/business-conspect/`.
+
+### Task 14 — Embed Structured Data in Generated Reports
+- Goal: Align human-readable reports with machine-readable hints used by search and AI systems.
+- Deliverable: The HTML renderer embeds a JSON-LD block (for example a `CreativeWork` or `Report` representation) that includes domain, date, canonical URLs, and a short summary.
+- Verification: The JSON-LD block can be extracted and parsed as valid JSON, and its canonical URL fields match the published report paths.
