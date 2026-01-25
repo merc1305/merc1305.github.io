@@ -123,10 +123,10 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Verification: `python3 business-conspect/scripts/validate_report.py business-conspect/reports/2026-01-25/google.com` (and the same for `elinext.com`, `emcd.com`, and `reports/fixtures/valid/report.md`) exits with code 0, while `reports/fixtures/invalid/report.md` exits non-zero.
 
 #### Task 8 — Add Search-Intent Fixtures and Query Sets
-- Status: Pending.
+- Status: Completed.
 - Goal: Make search-intent validation easy to test and evolve.
-- Deliverable: Add fixtures and/or query sets under `business-conspect/reports/fixtures/` that demonstrate both good and poor search-intent coverage.
-- Verification: The search-intent validator passes the "good coverage" fixture and fails the "poor coverage" fixture with clear, category-level errors.
+- Deliverable: Two new fixtures: `business-conspect/reports/fixtures/search_intent_good/report.md` (passes) and `business-conspect/reports/fixtures/search_intent_poor/report.md` (fails on missing pricing and constraints intents), designed to exercise the search-intent coverage checks.
+- Verification: `python3 business-conspect/scripts/validate_report.py business-conspect/reports/fixtures/search_intent_good/report.md` exits with code 0, while the same command against `.../search_intent_poor/report.md` exits non-zero with intent-specific errors.
 
 #### Task 9 — Backfill Reference Reports with Search-Style Queries
 - Status: Pending.
