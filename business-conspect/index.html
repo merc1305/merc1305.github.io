@@ -34,6 +34,10 @@
 
   <style>
     /* Custom styles for the input group */
+    .page-content {
+      margin-top: 4rem;
+    }
+
     .input-group {
       display: flex;
       gap: 1rem;
@@ -94,20 +98,7 @@
       font-size: 1.5rem;
     }
 
-    .breadcrumb {
-      margin-bottom: 2rem;
-      font-size: 0.9rem;
-      color: var(--text-secondary);
-    }
 
-    .breadcrumb a {
-      color: var(--text-secondary);
-      text-decoration: underline;
-    }
-
-    .breadcrumb a:hover {
-      color: var(--accent-color);
-    }
 
     @media (max-width: 600px) {
       .input-group {
@@ -134,12 +125,18 @@
     <div class="blob blob-2"></div>
   </div>
 
-  <main class="container">
+  <main class="container page-content">
+    <a href="../index.html" class="back-link">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round">
+        <line x1="19" y1="12" x2="5" y2="12"></line>
+        <polyline points="12 19 5 12 12 5"></polyline>
+      </svg>
+      Back to Lab
+    </a>
+
     <!-- Hero Section -->
     <section class="hero" style="min-height: 80vh;">
-      <div class="breadcrumb">
-        <a href="../index.html">Lab Home</a> / Business Conspect
-      </div>
       <span class="badge">SEO & GEO Intelligence</span>
       <h1>Business Conspect</h1>
       <p style="margin-bottom: 2rem; max-width: 800px;">
