@@ -249,7 +249,7 @@ as a request surface and showcase.
 - Verification: `business-conspect/llms.txt` and `business-conspect/llms-full.txt` exist, are plain text, and include correct public URLs under `https://merc1305.github.io/business-conspect/`.
 
 #### Task 21 — Embed Structured Data in Generated Reports
-- Status: Pending.
+- Status: Completed.
 - Goal: Align human-readable reports with machine-readable hints used by search and AI systems.
 - Deliverable: The HTML renderer embeds a JSON-LD block (for example a `CreativeWork` or `Report` representation) that includes domain, date, canonical URLs, and a short summary.
-- Verification: The JSON-LD block can be extracted and parsed as valid JSON, and its canonical URL fields match the published report paths.
+- Verification: Rendering a report produces a JSON-LD block that parses as JSON and includes `report.md` / `index.html` canonical paths plus domain and date.

@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import html
+import json
 import os
 from datetime import datetime, timezone
 from pathlib import Path
@@ -23,6 +24,11 @@ TITLE_PREFIX = "# Business Conspect — "
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.*?)\s*$")
 ORDERED_ITEM_RE = re.compile(r"^\s*\d+\.\s+(.*)$")
 UNORDERED_ITEM_RE = re.compile(r"^\s*-\s+(.*)$")
+WEBSITE_RE = re.compile(r"^\s*-\s*Website:\s*(.+?)\s*$", re.IGNORECASE)
+DOMAIN_RE = re.compile(r"^\s*-\s*Domain:\s*(.+?)\s*$", re.IGNORECASE)
+GENERATED_RE = re.compile(
+    r"^\s*-\s*Generated At \(UTC\):\s*(.+?)\s*$", re.IGNORECASE
+)
 
 
 def _now_iso_utc() -> str:
@@ -40,6 +46,69 @@ def _extract_title(lines: list[str]) -> str:
         if line.startswith(TITLE_PREFIX):
             return line.replace("# ", "").strip()
     return "Business Conspect Report"
+
+
+def _extract_metadata(lines: list[str]) -> dict[str, str]:
+    metadata: dict[str, str] = {}
+    in_metadata = False
+    for line in lines:
+        if line.strip() == "## 1) Report Metadata":
+            in_metadata = True
+            continue
+        if in_metadata and line.startswith("## "):
+            break
+        if in_metadata:
+            if match := WEBSITE_RE.match(line):
+                metadata["website"] = match.group(1).strip()
+            if match := DOMAIN_RE.match(line):
+                metadata["domain"] = match.group(1).strip()
+            if match := GENERATED_RE.match(line):
+                metadata["generated_at"] = match.group(1).strip()
+    return metadata
+
+
+def _extract_summary(lines: list[str]) -> str:
+    in_summary = False
+    summary_lines: list[str] = []
+    for line in lines:
+        if line.strip() == "## 2) Executive Summary":
+            in_summary = True
+            continue
+        if in_summary and line.startswith("## "):
+            break
+        if in_summary and line.strip():
+            summary_lines.append(line.strip())
+    return " ".join(summary_lines)
+
+
+def _build_json_ld(
+    *, title: str, metadata: dict[str, str], summary: str
+) -> str:
+    payload: dict[str, object] = {
+        "@context": "https://schema.org",
+        "@type": "Report",
+        "name": title,
+        "url": "index.html",
+        "mainEntityOfPage": "report.md",
+    }
+
+    generated = metadata.get("generated_at")
+    if generated:
+        payload["datePublished"] = generated
+
+    domain = metadata.get("domain")
+    if domain:
+        payload["identifier"] = domain
+
+    website = metadata.get("website")
+    if website:
+        payload["about"] = {"@type": "WebSite", "url": website, "name": domain or website}
+
+    if summary:
+        payload["abstract"] = summary
+
+    json_ld = json.dumps(payload, ensure_ascii=True, indent=2)
+    return f"<script type=\"application/ld+json\">{json_ld}</script>"
 
 
 def _close_paragraph(output: list[str], in_paragraph: bool) -> bool:
@@ -150,7 +219,10 @@ def render_report(report_path: Path, *, out_path: Path) -> Path:
 
     lines = report_path.read_text(encoding="utf-8").splitlines()
     title = _extract_title(lines)
+    metadata = _extract_metadata(lines)
+    summary = _extract_summary(lines)
     html_body = _markdown_to_html(lines)
+    json_ld = _build_json_ld(title=title, metadata=metadata, summary=summary)
 
     try:
         index_rel = os.path.relpath(ROOT_INDEX_PATH, report_path.parent)
@@ -163,6 +235,7 @@ def render_report(report_path: Path, *, out_path: Path) -> Path:
         .replace("{{REPORT_MD_REL}}", "report.md")
         .replace("{{INDEX_REL}}", _escape(index_rel))
         .replace("{{GENERATED_AT}}", _now_iso_utc())
+        .replace("{{JSON_LD}}", json_ld)
         .replace("{{CONTENT}}", html_body)
     )
 
