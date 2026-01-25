@@ -1,0 +1,18 @@
+{
+  "domain": "google.com",
+  "website": "https://www.google.com/",
+  "generatedAtUtc": "2026-01-25T20:45:36Z",
+  "summary": "Google provides web search as the public entry point, plus business products like Ads and Cloud for demand capture and infrastructure.",
+  "primaryServices": [
+    "Google Search",
+    "Google Ads",
+    "Google Cloud"
+  ],
+  "idealFor": "Consumers seeking information, marketers needing demand capture, and engineering teams running cloud workloads.",
+  "outcomes": [
+    "Find information quickly",
+    "Acquire customers via paid campaigns",
+    "Run scalable cloud infrastructure"
+  ]
+}
+

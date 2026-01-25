@@ -1,0 +1,18 @@
+{
+  "domain": "emcd.com",
+  "website": "https://emcd.com/",
+  "generatedAtUtc": "2026-01-25T20:45:36Z",
+  "summary": "EMCD is a crypto mining platform offering pool participation plus wallet and asset operations for miners.",
+  "primaryServices": [
+    "Mining Pool",
+    "Wallet and Asset Storage",
+    "Asset Conversion"
+  ],
+  "idealFor": "Crypto miners or small mining operations seeking stable payouts and integrated asset handling.",
+  "outcomes": [
+    "More predictable payouts",
+    "Simpler post-mining asset handling",
+    "Reduced operational friction"
+  ]
+}
+

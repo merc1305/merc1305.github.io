@@ -34,6 +34,8 @@ class ReportEntry:
     domain: str
     index_rel_path: str
     report_md_rel_path: str | None
+    summary_rel_path: str | None
+    summary_payload: dict | None
 
 
 def _parse_date(value: str) -> date | None:
@@ -82,12 +84,28 @@ def discover_reports(
             if not report_md_exists and not include_missing_report_md:
                 continue
 
+            summary_path = domain_dir / "summary.json"
+            summary_rel_path = (
+                str(summary_path.relative_to(root)) if summary_path.is_file() else None
+            )
+            summary_payload = None
+            if summary_path.is_file():
+                try:
+                    summary_payload = json.loads(summary_path.read_text(encoding="utf-8"))
+                except json.JSONDecodeError as exc:
+                    print(
+                        f"[warn] Failed to parse summary.json for {domain_dir.name}: {exc}",
+                        file=sys.stderr,
+                    )
+
             entry = ReportEntry(
                 report_date=parsed_date,
                 date_str=date_dir.name,
                 domain=domain_dir.name,
                 index_rel_path=str(index_file.relative_to(root)),
                 report_md_rel_path=report_md_rel_path,
+                summary_rel_path=summary_rel_path,
+                summary_payload=summary_payload,
             )
             entries.append(entry)
 
@@ -166,15 +184,21 @@ def update_index_html(root: Path, entries: List[ReportEntry]) -> None:
 
 def write_index_json(root: Path, entries: Iterable[ReportEntry]) -> None:
     index_json_path = root / "index.json"
-    payload = [
-        {
+    payload = []
+    for entry in entries:
+        item = {
             "date": entry.date_str,
             "domain": entry.domain,
             "indexPath": entry.index_rel_path,
             "reportMdPath": entry.report_md_rel_path,
         }
-        for entry in entries
-    ]
+        if entry.summary_rel_path and entry.summary_payload:
+            item["summaryPath"] = entry.summary_rel_path
+            item["summary"] = entry.summary_payload.get("summary")
+            item["primaryServices"] = entry.summary_payload.get("primaryServices")
+            item["outcomes"] = entry.summary_payload.get("outcomes")
+            item["idealFor"] = entry.summary_payload.get("idealFor")
+        payload.append(item)
     index_json_path.write_text(
         json.dumps(payload, ensure_ascii=True, indent=2) + "\n",
         encoding="utf-8",

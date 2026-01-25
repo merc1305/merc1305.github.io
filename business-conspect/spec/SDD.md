@@ -237,10 +237,10 @@ as a request surface and showcase.
 - Verification: Ingestion succeeds or fails with actionable messages across both clean and messy fixture inputs.
 
 #### Task 19 — Add Machine-Readable Summaries for LLMs
-- Status: Pending.
+- Status: Completed.
 - Goal: Improve discoverability and citation fidelity beyond HTML and Markdown.
 - Deliverable: A compact `summary.json` per report and an update to `business-conspect/index.json` generation to include key summary fields when present.
-- Verification: `summary.json` files are valid JSON and can be parsed by `python3 -m json.tool`, and the index contains summary-derived fields when available.
+- Verification: `summary.json` files are valid JSON (`python3 -m json.tool ...`), and `business-conspect/index.json` includes `summary`, `primaryServices`, and `outcomes` when present.
 
 #### Task 20 — Ship LLM Discoverability Artifacts
 - Status: Pending.

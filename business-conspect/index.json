@@ -3,18 +3,57 @@
     "date": "2026-01-25",
     "domain": "google.com",
     "indexPath": "reports/2026-01-25/google.com/index.html",
-    "reportMdPath": "reports/2026-01-25/google.com/report.md"
+    "reportMdPath": "reports/2026-01-25/google.com/report.md",
+    "summaryPath": "reports/2026-01-25/google.com/summary.json",
+    "summary": "Google provides web search as the public entry point, plus business products like Ads and Cloud for demand capture and infrastructure.",
+    "primaryServices": [
+      "Google Search",
+      "Google Ads",
+      "Google Cloud"
+    ],
+    "outcomes": [
+      "Find information quickly",
+      "Acquire customers via paid campaigns",
+      "Run scalable cloud infrastructure"
+    ],
+    "idealFor": "Consumers seeking information, marketers needing demand capture, and engineering teams running cloud workloads."
   },
   {
     "date": "2026-01-25",
     "domain": "emcd.com",
     "indexPath": "reports/2026-01-25/emcd.com/index.html",
-    "reportMdPath": "reports/2026-01-25/emcd.com/report.md"
+    "reportMdPath": "reports/2026-01-25/emcd.com/report.md",
+    "summaryPath": "reports/2026-01-25/emcd.com/summary.json",
+    "summary": "EMCD is a crypto mining platform offering pool participation plus wallet and asset operations for miners.",
+    "primaryServices": [
+      "Mining Pool",
+      "Wallet and Asset Storage",
+      "Asset Conversion"
+    ],
+    "outcomes": [
+      "More predictable payouts",
+      "Simpler post-mining asset handling",
+      "Reduced operational friction"
+    ],
+    "idealFor": "Crypto miners or small mining operations seeking stable payouts and integrated asset handling."
   },
   {
     "date": "2026-01-25",
     "domain": "elinext.com",
     "indexPath": "reports/2026-01-25/elinext.com/index.html",
-    "reportMdPath": "reports/2026-01-25/elinext.com/report.md"
+    "reportMdPath": "reports/2026-01-25/elinext.com/report.md",
+    "summaryPath": "reports/2026-01-25/elinext.com/summary.json",
+    "summary": "Elinext provides custom software development, dedicated teams, and modernization support for B2B organizations.",
+    "primaryServices": [
+      "Custom Software Development",
+      "Dedicated Development Teams",
+      "Modernization and Support"
+    ],
+    "outcomes": [
+      "Ship custom software faster",
+      "Scale engineering capacity",
+      "Reduce delivery risk"
+    ],
+    "idealFor": "Product leaders and engineering managers who need delivery capacity or modernization help."
   }
 ]
