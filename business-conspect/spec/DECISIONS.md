@@ -14,3 +14,8 @@
 - **Context**: The tool needs a way for users to provide target URLs.
 - **Decision**: Place a prominent, high-quality input group in the hero section.
 - **Consequence**: Clear call to action (CTA).
+
+## [DEC-004] Marker-Based Report Index Regeneration
+- **Context**: `business-conspect/index.html` must remain human-designed while still being updated automatically as new reports appear under `business-conspect/reports/`.
+- **Decision**: Introduce explicit HTML markers (`<!-- REPORTS_LIST_START -->` and `<!-- REPORTS_LIST_END -->`) and regenerate only the block between them via `business-conspect/scripts/update_index.py`.
+- **Consequence**: The page stays maintainable and design-safe, while a machine-readable `business-conspect/index.json` is produced for future search.

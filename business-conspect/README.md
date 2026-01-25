@@ -41,21 +41,49 @@ Every website analysis is a separate directory:
 
 ```text
 /business-conspect/
-  YYYY-MM-DD/
-    domain.tld/
-      index.html          # final human-readable report (showcase)
-      report.md           # markdown version (convenient for copying into LLM) (optional)
-      raw/                # everything for reproducibility (optional)
-        prompts.json      # prompts, roles, system instructions
-        llm-answers.json  # model responses (or dialogue tracing)
-        pages.json        # page content snapshots (text/structure)
-        meta.json         # time, versions, models, pipeline parameters
+  reports/
+    YYYY-MM-DD/
+      domain.tld/
+        index.html          # final human-readable report (showcase)
+        report.md           # markdown version (convenient for copying into LLM) (optional)
+        raw/                # everything for reproducibility (optional)
+          prompts.json      # prompts, roles, system instructions
+          llm-answers.json  # model responses (or dialogue tracing)
+          pages.json        # page content snapshots (text/structure)
+          meta.json         # time, versions, models, pipeline parameters
 ```
 
 Where:
 
+- `reports/` — container for generated reports
 - `YYYY-MM-DD` — report generation date  
 - `domain.tld` — domain of the analyzed website
+
+---
+
+## 2.1) Index Maintenance (Implemented)
+
+The main page `business-conspect/index.html` contains markers:
+
+- `<!-- REPORTS_LIST_START -->`
+- `<!-- REPORTS_LIST_END -->`
+
+The script `business-conspect/scripts/update_index.py` scans
+`business-conspect/reports/`
+and regenerates:
+
+- the HTML block between those markers (human-friendly list of reports);
+- `business-conspect/index.json` (machine-readable index for future search).
+
+Run it after adding or updating any report:
+
+```bash
+python3 business-conspect/scripts/update_index.py
+```
+
+Requirements:
+
+- Python 3.9+ (standard library only).
 
 ---
 
@@ -185,7 +213,6 @@ GitHub Pages is static only. Therefore:
 ## 7) Future Additions
 
 - `report.md` template with placeholders for model output
-- indexer `/business-conspect/index.json` for searching by domains/dates
 - general `business-conspect/search.html` (report search)
 - quality rules (checklist) before report publication
 

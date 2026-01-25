@@ -191,11 +191,21 @@
         <div
           style="font-family: 'Courier New', monospace; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid var(--glass-border); text-align: left;">
           <span style="color: var(--accent-color);">/business-conspect/</span><br>
-          &nbsp;&nbsp;└── <span style="color: var(--text-primary);">YYYY-MM-DD/</span><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color: var(--text-secondary);">domain.tld/</span><br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── index.html<br>
-          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── report.md
+          &nbsp;&nbsp;└── <span style="color: var(--text-primary);">reports/</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color: var(--text-primary);">YYYY-MM-DD/</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color: var(--text-secondary);">domain.tld/</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── index.html<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── report.md
         </div>
+        <!-- REPORTS_LIST_START -->
+        <div class="glass-card" style="text-align: left;">
+          <h3 style="margin-bottom: 0.75rem;">Generated Reports</h3>
+          <p style="margin: 0;">
+            No reports yet. Add one under <code>business-conspect/reports/YYYY-MM-DD/domain.tld/</code>
+            and run <code>python3 business-conspect/scripts/update_index.py</code>.
+          </p>
+        </div>
+        <!-- REPORTS_LIST_END -->
         <a href="https://github.com/merc1305/merc1305.github.io/tree/master/business-conspect" class="btn btn-outline"
           target="_blank">View on GitHub</a>
       </div>

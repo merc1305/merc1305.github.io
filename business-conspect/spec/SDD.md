@@ -41,15 +41,16 @@ Reports are stored as static artifacts to keep GitHub Pages simple and reproduci
 
 ```text
 /business-conspect/
-  YYYY-MM-DD/
-    domain.tld/
-      index.html
-      report.md (optional)
-      raw/ (optional)
-        prompts.json
-        llm-answers.json
-        pages.json
-        meta.json
+  reports/
+    YYYY-MM-DD/
+      domain.tld/
+        index.html
+        report.md (optional)
+        raw/ (optional)
+          prompts.json
+          llm-answers.json
+          pages.json
+          meta.json
 ```
 
 Artifacts in `raw/` support reproducibility and debugging for the offline pipeline.
@@ -111,6 +112,9 @@ These steps are designed to achieve a working MVP using the "Offline Generation"
 
 ### Step 10: Automatic Index Updater
 - **Goal**: Update the "Browse Reports" list.
-- **Action**: Create a script that scans the `business-conspect/` directory for reports and regenerates the main `business-conspect/index.html` list to include the new report.
-- **Current State**: `business-conspect/index.html` contains a static, demo listing only.
-- **Deliverable**: `scripts/update_index.py`.
+- **Action**: Scan the `business-conspect/` directory for reports and regenerate the main `business-conspect/index.html` list to include new reports.
+- **Implementation**: Script `business-conspect/scripts/update_index.py`.
+- **Implementation markers**: `<!-- REPORTS_LIST_START -->` and `<!-- REPORTS_LIST_END -->` in `business-conspect/index.html`.
+- **Implementation artifact**: `business-conspect/index.json` (machine-readable index).
+- **Usage**: `python3 business-conspect/scripts/update_index.py`
+- **Status**: Implemented.
