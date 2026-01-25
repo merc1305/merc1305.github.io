@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQ8PPSPZ1K"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'G-FQ8PPSPZ1K');
+  </script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Optimization -->
+  <meta name="description"
+    content="Business Conspect - SEO & GEO Intelligence. Transform your website into structured knowledge for humans and LLMs.">
+  <meta name="keywords" content="business conspect, SEO, GEO, LLM optimization, website analysis, AI search">
+  <meta name="author" content="merc1305">
+
+  <!-- Fonts & CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Link to root styles to maintain consistency, we will override specific parts -->
+  <link rel="stylesheet" href="../index.css">
+
+  <link rel="icon" type="image/png" href="https://github.com/merc1305.png">
+
+  <title>Business Conspect | Lab</title>
+
+  <style>
+    /* Custom styles for the input group */
+    .input-group {
+      display: flex;
+      gap: 1rem;
+      width: 100%;
+      max-width: 700px;
+      margin: 2rem auto;
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      padding: 0.75rem;
+      border-radius: 100px;
+      border: 1px solid var(--glass-border);
+      transition: var(--transition);
+    }
+
+    .input-group:focus-within {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 20px rgba(0, 242, 255, 0.2);
+    }
+
+    .input-group input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      padding: 0.5rem 1.5rem;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 1.1rem;
+      outline: none;
+      width: 100%;
+    }
+
+    .input-group input::placeholder {
+      color: var(--text-secondary);
+      opacity: 0.7;
+    }
+
+    .btn-start {
+      border-radius: 100px !important;
+      padding: 12px 28px !important;
+      white-space: nowrap;
+    }
+
+    .features-grid {
+      margin-top: 4rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      text-align: left;
+    }
+
+    .feature-card {
+      padding: 2rem;
+    }
+
+    .feature-card h3 {
+      color: var(--accent-color);
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+    }
+
+    .breadcrumb {
+      margin-bottom: 2rem;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+
+    .breadcrumb a {
+      color: var(--text-secondary);
+      text-decoration: underline;
+    }
+
+    .breadcrumb a:hover {
+      color: var(--accent-color);
+    }
+
+    @media (max-width: 600px) {
+      .input-group {
+        flex-direction: column;
+        border-radius: 24px;
+        padding: 1rem;
+      }
+
+      .input-group input {
+        padding: 0.75rem;
+      }
+
+      .btn-start {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-gradient"></div>
+  <div class="bg-blobs">
+    <div class="blob blob-1"></div>
+    <div class="blob blob-2"></div>
+  </div>
+
+  <main class="container">
+    <!-- Hero Section -->
+    <section class="hero" style="min-height: 80vh;">
+      <div class="breadcrumb">
+        <a href="../index.html">Lab Home</a> / Business Conspect
+      </div>
+      <span class="badge">SEO & GEO Intelligence</span>
+      <h1>Business Conspect</h1>
+      <p style="margin-bottom: 2rem; max-width: 800px;">
+        LLMs and AI Search don't know your website. We help them understand it.
+        Generate structured business briefs that convert and rank.
+      </p>
+
+      <div class="input-group">
+        <input type="url" id="site-url" placeholder="Enter your website URL (e.g., https://example.com)" required>
+        <button class="btn btn-primary btn-start" id="start-btn">Start Conspect</button>
+      </div>
+
+      <p style="font-size: 0.9rem; margin-top: 1rem; color: var(--text-secondary);">
+        Analyzing content, target audience, and USP for optimal LLM context.
+      </p>
+    </section>
+
+    <!-- Manifesto / How it works -->
+    <section id="how-it-works">
+      <div class="glass-card feature-card">
+        <h2 style="font-size: 2rem;">The Problem</h2>
+        <p>
+          Modern AI assistants (ChatGPT, Perplexity, SearchGPT) often hallucinate or provide vague
+          information about products because they lack a deep, structured understanding of the
+          business model and target audience behind a URL.
+        </p>
+      </div>
+
+      <div class="features-grid">
+        <div class="glass-card feature-card">
+          <h3>Deep Analysis</h3>
+          <p>We crawl and normalize your content, stripping away noise and focusing on the core business value.</p>
+        </div>
+        <div class="glass-card feature-card">
+          <h3>LLM Optimization</h3>
+          <p>Designed specifically for GEO (Generative Engine Optimization) to ensure AI models recommend you.</p>
+        </div>
+        <div class="glass-card feature-card">
+          <h3>Static Reports</h3>
+          <p>Every analysis is saved as a permanent static artifact, ready to be used as context in your AI prompts.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reports Link Section -->
+    <section id="reports" style="text-align: center;">
+      <div class="glass-card">
+        <h2>Browse Reports</h2>
+        <p style="margin-bottom: 2rem;">
+          View previously generated business conspects and see how they improve LLM understanding.
+        </p>
+        <div
+          style="font-family: 'Courier New', monospace; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem; border: 1px solid var(--glass-border); text-align: left;">
+          <span style="color: var(--accent-color);">/business-conspect/</span><br>
+          &nbsp;&nbsp;└── <span style="color: var(--text-primary);">YYYY-MM-DD/</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── <span style="color: var(--text-secondary);">domain.tld/</span><br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;├── index.html<br>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;└── report.md
+        </div>
+        <a href="https://github.com/merc1305/merc1305.github.io/tree/master/business-conspect" class="btn btn-outline"
+          target="_blank">View on GitHub</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 merc1305. Engineering the future of AI Search visibility.</p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('start-btn').addEventListener('click', () => {
+      const url = document.getElementById('site-url').value;
+      if (!url) {
+        alert('Please enter a valid URL');
+        return;
+      }
+      alert('Analysis started for: ' + url + '\n(Note: This is a frontend demo of the UI)');
+    });
+
+    // Smooth scroll for anchors
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        if (this.hash) {
+          e.preventDefault();
+          document.querySelector(this.hash).scrollIntoView({
+            behavior: 'smooth'
+          });
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
