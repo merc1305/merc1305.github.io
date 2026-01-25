@@ -207,10 +207,10 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/update_index.py` prints warnings for missing `report.md` when present and updates `business-conspect/index.json` with `reportMdPath` populated where available.
 
 #### Task 14 — Add Automated Tests for Indexing and Validation
-- Status: Pending.
+- Status: Completed.
 - Goal: Reduce regressions in the most important offline scripts.
 - Deliverable: A small unittest suite such as `business-conspect/scripts/tests/test_update_index.py` and `business-conspect/scripts/tests/test_validate_report.py`.
-- Verification: Running `python3 -m unittest discover business-conspect/scripts/tests` completes successfully in a clean workspace.
+- Verification: `python3 -m unittest discover business-conspect/scripts/tests` completes successfully in a clean workspace.
 
 #### Task 15 — Harden the Publish Entrypoint (After Fast Path)
 - Status: Pending.
