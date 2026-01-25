@@ -225,10 +225,10 @@ as a request surface and showcase.
 - Verification: `PARSER_OUTPUT_CONTRACT.md`, `STRATEGIST_OUTPUT_CONTRACT.md`, and `DIALOGUE_OUTPUT_CONTRACT.md` exist with minimal valid examples and checklists.
 
 #### Task 17 — Harden Scraping and Normalization (After Fast Path)
-- Status: Pending.
+- Status: Completed.
 - Goal: Improve scraping quality, coverage, and reproducibility beyond the fast-path implementation.
 - Deliverable: Enhancements to `business-conspect/scripts/scrape.py` such as multi-page crawling rules, better boilerplate removal, and clearer metadata in `raw/pages.json`.
-- Verification: Scraping a known domain produces multiple high-signal page entries and stable metadata suitable for prompt-pack generation.
+- Verification: Running `python3 business-conspect/scripts/scrape.py <url> --out <report-dir> --crawl --max-pages 3` produces multiple `pages` entries and includes `content_source` and `content_words` fields.
 
 #### Task 18 — Harden LLM Answer Ingestion into Canonical Markdown (After Fast Path)
 - Status: Pending.

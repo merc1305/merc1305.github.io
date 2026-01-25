@@ -21,7 +21,7 @@ from pathlib import Path
 import re
 import sys
 from typing import Iterable, List
-from urllib.parse import urlparse
+from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
 
@@ -94,7 +94,9 @@ class ExtractedPage:
     headings: list[str]
     content: str
     content_chars: int
+    content_words: int
     content_sha256: str
+    content_source: str
 
 
 class _HTMLTextExtractor(HTMLParser):
@@ -105,11 +107,14 @@ class _HTMLTextExtractor(HTMLParser):
         self._skip_depth = 0
         self._in_title = False
         self._current_heading: str | None = None
+        self._main_depth = 0
 
         self._title_chunks: list[str] = []
         self._text_chunks: list[str] = []
+        self._main_text_chunks: list[str] = []
         self._headings: list[str] = []
         self._description: str = ""
+        self._links: list[str] = []
 
     @property
     def title(self) -> str:
@@ -125,7 +130,17 @@ class _HTMLTextExtractor(HTMLParser):
 
     @property
     def content(self) -> str:
+        if self._main_text_chunks:
+            return _normalize_space(unescape(" ".join(self._main_text_chunks)))
         return _normalize_space(unescape(" ".join(self._text_chunks)))
+
+    @property
+    def content_source(self) -> str:
+        return "main" if self._main_text_chunks else "full"
+
+    @property
+    def links(self) -> list[str]:
+        return [link.strip() for link in self._links if link.strip()]
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         tag = tag.lower()
@@ -137,9 +152,17 @@ class _HTMLTextExtractor(HTMLParser):
             self._in_title = True
             return
 
+        if tag == "main":
+            self._main_depth += 1
+
         if tag in HEADING_TAGS:
             self._current_heading = tag
             return
+
+        if tag == "a":
+            for key, value in attrs:
+                if key and key.lower() == "href" and value:
+                    self._links.append(value)
 
         if tag == "meta" and not self._description:
             attrs_dict = {k.lower(): (v or "") for k, v in attrs}
@@ -158,6 +181,9 @@ class _HTMLTextExtractor(HTMLParser):
             self._in_title = False
             return
 
+        if tag == "main" and self._main_depth > 0:
+            self._main_depth -= 1
+
         if tag in HEADING_TAGS:
             self._current_heading = None
 
@@ -175,6 +201,14 @@ class _HTMLTextExtractor(HTMLParser):
                 self._headings.append(heading)
 
         self._text_chunks.append(data)
+        if self._main_depth > 0:
+            self._main_text_chunks.append(data)
+
+
+def _count_words(text: str) -> int:
+    if not text:
+        return 0
+    return len(re.findall(r"\b\w+\b", text))
 
 
 def _extract_page(
@@ -196,7 +230,9 @@ def _extract_page(
         headings=parser.headings,
         content=content,
         content_chars=len(content),
+        content_words=_count_words(content),
         content_sha256=_sha256(content),
+        content_source=parser.content_source,
     )
 
 
@@ -212,6 +248,26 @@ def _unique_urls(urls: Iterable[str]) -> list[str]:
     return ordered
 
 
+def _is_http_url(url: str) -> bool:
+    parsed = urlparse(url)
+    return parsed.scheme in {"http", "https"}
+
+
+def _normalize_url(url: str) -> str:
+    parsed = urlparse(url)
+    if not parsed.scheme:
+        return url
+    normalized = parsed._replace(fragment="").geturl()
+    return normalized.rstrip("/")
+
+
+def _extract_links(html: str) -> list[str]:
+    parser = _HTMLTextExtractor()
+    parser.feed(html)
+    parser.close()
+    return parser.links
+
+
 def scrape(
     urls: Iterable[str],
     *,
@@ -219,6 +275,9 @@ def scrape(
     max_chars: int,
     timeout: float,
     user_agent: str,
+    crawl: bool,
+    max_pages: int,
+    same_domain_only: bool,
 ) -> tuple[Path, int, int]:
     """Scrape the provided URLs into raw/pages.json.
 
@@ -233,7 +292,18 @@ def scrape(
     pages: list[ExtractedPage] = []
     errors: list[dict[str, str]] = []
 
-    for url in urls:
+    queue = _unique_urls(urls)
+    seen: set[str] = set()
+
+    while queue:
+        if crawl and max_pages > 0 and len(pages) >= max_pages:
+            break
+
+        url = queue.pop(0)
+        if url in seen:
+            continue
+        seen.add(url)
+
         fetched_at = _now_iso_utc()
         try:
             if _is_probably_local(url):
@@ -250,6 +320,22 @@ def scrape(
             )
             pages.append(page)
             print(f"[ok] scraped: {url}")
+
+            if crawl and _is_http_url(source_url):
+                links = _extract_links(html)
+                for link in links:
+                    if link.startswith(("mailto:", "tel:", "javascript:")):
+                        continue
+                    target = _normalize_url(urljoin(source_url, link))
+                    if not _is_http_url(target):
+                        continue
+                    if same_domain_only:
+                        source_host = urlparse(source_url).netloc.lower()
+                        target_host = urlparse(target).netloc.lower()
+                        if source_host and target_host and source_host != target_host:
+                            continue
+                    if target and target not in seen and target not in queue:
+                        queue.append(target)
         except Exception as exc:  # pragma: no cover - defensive
             errors.append({"url": url, "error": f"{type(exc).__name__}: {exc}"})
             print(f"[error] failed to scrape {url}: {exc}", file=sys.stderr)
@@ -292,6 +378,22 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Maximum content length per page (0 disables truncation). Default: 20000.",
     )
     parser.add_argument(
+        "--crawl",
+        action="store_true",
+        help="Crawl additional same-domain links starting from the provided URL.",
+    )
+    parser.add_argument(
+        "--max-pages",
+        type=int,
+        default=5,
+        help="Maximum number of pages to scrape when --crawl is enabled. Default: 5.",
+    )
+    parser.add_argument(
+        "--allow-external",
+        action="store_true",
+        help="Allow crawling links outside the starting domain when --crawl is enabled.",
+    )
+    parser.add_argument(
         "--timeout",
         type=float,
         default=20.0,
@@ -319,6 +421,9 @@ def main(argv: list[str]) -> int:
         max_chars=args.max_chars,
         timeout=args.timeout,
         user_agent=args.user_agent,
+        crawl=args.crawl,
+        max_pages=args.max_pages,
+        same_domain_only=not args.allow_external,
     )
 
     print(
@@ -330,4 +435,3 @@ def main(argv: list[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv[1:]))
-
