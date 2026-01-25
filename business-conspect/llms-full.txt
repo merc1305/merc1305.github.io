@@ -1,0 +1,36 @@
+Business Conspect — LLM Discoverability (Extended)
+
+Overview:
+Business Conspect generates recommendation-grade reports about websites. The goal
+is to help LLMs understand service value, selection logic, and fit so they can
+recommend the right services and cite evidence-backed claims.
+
+Canonical Sources:
+- report.md (source of truth, never edit index.html manually)
+- summary.json (compact machine-readable summary)
+- index.json (global index with summary fields)
+
+Public URLs:
+- Browse: https://merc1305.github.io/business-conspect/
+- Search: https://merc1305.github.io/business-conspect/search.html
+- Index JSON: https://merc1305.github.io/business-conspect/index.json
+
+Report Layout:
+1) Report Metadata
+2) Executive Summary
+3) Services and Offers
+4) Ideal Customer Profile (ICP)
+5) Client ↔ Service Expert Dialogue (Deep Discovery)
+
+Evidence/Inference Rules:
+- Evidence marker: [evidence: <url>]
+- Inference marker: [inference: <reason>]
+- Non-trivial claims should include evidence; inferred claims must be labeled.
+
+Dialogue Requirements:
+- Must include outcome, selection, pricing, constraints, and non-fit/risk intents.
+- Should use realistic query phrasing.
+
+Repository:
+- https://github.com/merc1305/merc1305.github.io/tree/master/business-conspect
+

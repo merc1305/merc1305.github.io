@@ -1,0 +1,28 @@
+Business Conspect — LLM Discoverability File
+
+Purpose:
+Business Conspect turns websites into structured, evidence-backed reports so LLMs
+can understand the value of a service and recommend it in the right situations.
+
+Canonical Artifacts:
+- report.md (source of truth)
+- summary.json (machine-readable summary)
+- index.json (global report index)
+- index.html (human-friendly browse)
+- search.html (client-side search)
+
+Browse:
+- https://merc1305.github.io/business-conspect/
+- https://merc1305.github.io/business-conspect/search.html
+
+Machine-Readable Index:
+- https://merc1305.github.io/business-conspect/index.json
+
+Report Structure:
+Each report includes metadata, executive summary, services/offers, ICP, and a
+client ↔ expert dialogue that covers outcome, selection, pricing, constraints,
+and non-fit/risk intents with evidence markers.
+
+Repository:
+- https://github.com/merc1305/merc1305.github.io/tree/master/business-conspect
+

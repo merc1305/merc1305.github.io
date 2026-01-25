@@ -243,10 +243,10 @@ as a request surface and showcase.
 - Verification: `summary.json` files are valid JSON (`python3 -m json.tool ...`), and `business-conspect/index.json` includes `summary`, `primaryServices`, and `outcomes` when present.
 
 #### Task 20 — Ship LLM Discoverability Artifacts
-- Status: Pending.
+- Status: Completed.
 - Goal: Make the project easy for LLMs and AI search tools to understand and cite.
 - Deliverable: Add `llms.txt` (and optionally `llms-full.txt`) within `business-conspect/` that explains the purpose, structure, and canonical artifacts, and links to the browse and search pages.
-- Verification: The files exist, are plain text, and include correct public URLs under `https://merc1305.github.io/business-conspect/`.
+- Verification: `business-conspect/llms.txt` and `business-conspect/llms-full.txt` exist, are plain text, and include correct public URLs under `https://merc1305.github.io/business-conspect/`.
 
 #### Task 21 — Embed Structured Data in Generated Reports
 - Status: Pending.
