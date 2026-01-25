@@ -219,10 +219,10 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/publish_report.py business-conspect/reports/2026-01-25/elinext.com` performs validation, evaluation, rendering, and indexing, and exits non-zero when required steps fail.
 
 #### Task 16 — Define LLM Output Contracts (Parser, Strategist, Dialogue)
-- Status: Pending.
+- Status: Completed.
 - Goal: Make manual or semi-automated LLM usage consistent and testable.
 - Deliverable: Contract documents and/or JSON schemas under `business-conspect/spec/` that specify required fields for parser output, strategist output, and the dialogue section.
-- Verification: Each contract includes at least one minimal valid example and a short checklist that can be applied to raw LLM answers.
+- Verification: `PARSER_OUTPUT_CONTRACT.md`, `STRATEGIST_OUTPUT_CONTRACT.md`, and `DIALOGUE_OUTPUT_CONTRACT.md` exist with minimal valid examples and checklists.
 
 #### Task 17 — Harden Scraping and Normalization (After Fast Path)
 - Status: Pending.

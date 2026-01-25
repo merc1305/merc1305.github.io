@@ -8,6 +8,9 @@ This directory contains the formal specifications for the Business Conspect tool
 - [REPORT_CONTRACT.md](REPORT_CONTRACT.md): Canonical, testable contract for `report.md` with evidence and inference rules.
 - [SEARCH_INTENT_CONTRACT.md](SEARCH_INTENT_CONTRACT.md): Best-practice contract for modeling how people search and turning that into recommendation-grade dialogues.
 - [LLM_ANSWER_TEMPLATE.md](LLM_ANSWER_TEMPLATE.md): Validator-friendly template for the manual LLM loop (no API fast path).
+- [PARSER_OUTPUT_CONTRACT.md](PARSER_OUTPUT_CONTRACT.md): Contract for the parser LLM output (business card JSON).
+- [STRATEGIST_OUTPUT_CONTRACT.md](STRATEGIST_OUTPUT_CONTRACT.md): Contract for the strategist LLM output (GEO/LLM optimization JSON).
+- [DIALOGUE_OUTPUT_CONTRACT.md](DIALOGUE_OUTPUT_CONTRACT.md): Contract for the dialogue output section (Markdown).
 - [RECOMMENDATION_EVAL.md](RECOMMENDATION_EVAL.md): Rubric for evaluating whether reports support recommendation-quality answers and qualified traffic.
 - Evaluation queries: `business-conspect/spec/eval_queries.json`
 - Index automation: `business-conspect/scripts/update_index.py` scans `business-conspect/reports/`, regenerates the report list in `business-conspect/index.html`, and writes `business-conspect/index.json`.
