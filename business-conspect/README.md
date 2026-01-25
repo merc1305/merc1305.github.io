@@ -73,7 +73,7 @@ The script `business-conspect/scripts/update_index.py` scans
 and regenerates:
 
 - the HTML block between those markers (human-friendly list of reports);
-- `business-conspect/index.json` (machine-readable index for future search).
+- `business-conspect/index.json` (machine-readable index used by report search).
 
 Run it after adding or updating any report:
 
@@ -84,6 +84,22 @@ python3 business-conspect/scripts/update_index.py
 Requirements:
 
 - Python 3.9+ (standard library only).
+
+---
+
+## 2.2) Report Search (Implemented)
+
+The page `business-conspect/search.html` provides a client-side report search:
+
+- reads `business-conspect/index.json`
+- filters by domain substring and exact date
+- links to `index.html` and `report.md` (when present)
+
+Keep the search index fresh by running:
+
+```bash
+python3 business-conspect/scripts/update_index.py
+```
 
 ---
 
@@ -213,7 +229,6 @@ GitHub Pages is static only. Therefore:
 ## 7) Future Additions
 
 - `report.md` template with placeholders for model output
-- general `business-conspect/search.html` (report search)
 - quality rules (checklist) before report publication
 
 ---

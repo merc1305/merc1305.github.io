@@ -19,7 +19,7 @@ Everything here is a work in progress and represents my journey of learning and 
 ## 🛠 Featured Tools
 
 - **[Stratum Pool Pinger](https://merc1305.github.io/mining-stratum/)**: A browser-based tool to discover and test the fastest mining pool endpoints by real-time latency.
-- **[Business Conspect](https://merc1305.github.io/business-conspect/)**: Structured GEO/LLM-ready website briefs with an auto-updated report index via `business-conspect/scripts/update_index.py`.
+- **[Business Conspect](https://merc1305.github.io/business-conspect/)**: Structured GEO/LLM-ready website briefs with an auto-updated report index and a report search page at `business-conspect/search.html`.
 
 ---
 *Created and maintained by [merc1305](https://github.com/merc1305).*

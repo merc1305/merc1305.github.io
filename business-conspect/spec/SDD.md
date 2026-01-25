@@ -12,6 +12,7 @@ Business Conspect is a tool designed to analyze websites and generate structured
   - **Current State**: The button triggers a demo interaction in the static UI only (no backend execution on GitHub Pages).
   - **Planned State**: The actual analysis is executed offline via CLI/scripts; the UI may later connect to a backend.
 - **Report Generation**: (Future) Generating reports in HTML/Markdown formats via offline scripts.
+- **Report Search**: (Implemented) `business-conspect/search.html` loads `index.json` and filters reports by domain and date.
 - **English Documentation**: All user-facing documentation must be in English.
 
 ### 2.2 Non-Functional Requirements
@@ -60,8 +61,9 @@ Artifacts in `raw/` support reproducibility and debugging for the offline pipeli
 - **Hero Section**: Modern title and subtitle.
 - **Input Group**: Styled text input for URL + Action button.
 - **Manifesto/Description**: Brief explanation of the tool's purpose.
+- **Report Search Page**: Client-side filtering over the machine-readable index.
 
-## 5. Implementation Roadmap (Next 10 Steps)
+## 5. Implementation Roadmap (Next Steps)
 
 These steps are designed to achieve a working MVP using the "Offline Generation" approach, compatible with the current GitHub Pages hosting.
 
@@ -117,4 +119,10 @@ These steps are designed to achieve a working MVP using the "Offline Generation"
 - **Implementation markers**: `<!-- REPORTS_LIST_START -->` and `<!-- REPORTS_LIST_END -->` in `business-conspect/index.html`.
 - **Implementation artifact**: `business-conspect/index.json` (machine-readable index).
 - **Usage**: `python3 business-conspect/scripts/update_index.py`
+- **Status**: Implemented.
+
+### Step 11: Report Search Page
+- **Goal**: Find reports quickly without scanning the full list.
+- **Action**: Create `business-conspect/search.html` that loads `business-conspect/index.json` and filters by domain and date.
+- **Integration**: Add a clear entry point from `business-conspect/index.html`.
 - **Status**: Implemented.
