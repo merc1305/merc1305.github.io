@@ -12,6 +12,7 @@
         gtag('config', 'G-FQ8PPSPZ1K');
     </script>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Free tool to discover and test the fastest SHA256 Stratum mining pool links. Benchmark network latency directly from your browser to find nodes closest to your network for maximum mining efficiency. Supports EMCD, ViaBTC, F2Pool, and more.">
     <meta name="keywords"
@@ -155,7 +156,7 @@
         @media (max-width: 768px) {
             .grid {
                 grid-template-columns: 1fr;
-                gap: 1rem;
+                gap: 1.25rem;
             }
         }
 
@@ -220,8 +221,19 @@
 
         @media (max-width: 768px) {
             .stats-table td {
-                padding: 12px 6px;
-                font-size: 1rem;
+                padding: 14px 8px;
+                font-size: 1.15rem;
+            }
+
+            button,
+            .back-link,
+            .pool-link {
+                padding: 14px 18px;
+                font-size: 1.1rem;
+            }
+
+            .description {
+                font-size: 1.25rem;
             }
         }
 

@@ -289,17 +289,18 @@ footer {
 /* Responsive */
 @media (max-width: 768px) {
   h1 {
-    font-size: 2.8rem;
-    line-height: 1.2;
+    font-size: 3.2rem;
+    line-height: 1.1;
   }
 
   h2 {
-    font-size: 2rem;
-    margin-bottom: 1.5rem;
+    font-size: 2.4rem;
+    margin-bottom: 2rem;
   }
 
   p {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
+    line-height: 1.7;
   }
 
   section {
@@ -307,6 +308,6 @@ footer {
   }
 
   .glass-card {
-    padding: 1.75rem;
+    padding: 2.25rem;
   }
 }
