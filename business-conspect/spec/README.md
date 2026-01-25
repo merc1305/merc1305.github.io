@@ -17,3 +17,4 @@ This directory contains the formal specifications for the Business Conspect tool
 - Build prompt pack: `python3 business-conspect/scripts/build_prompt_pack.py <report-dir>`
 - Initialize answer template: `python3 business-conspect/scripts/init_answer_template.py <report-dir> --domain <domain> --website <https://domain/>`
 - Ingest manual answer: `python3 business-conspect/scripts/ingest_llm_answers.py <report-dir>/raw/llm_answer.md --report-dir <report-dir>`
+- Publish (validation + index update): `python3 business-conspect/scripts/publish_report.py <report-dir>`

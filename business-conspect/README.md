@@ -126,6 +126,7 @@ python3 business-conspect/scripts/scrape.py <url-or-html> --out <report-dir>
 python3 business-conspect/scripts/build_prompt_pack.py <report-dir>
 python3 business-conspect/scripts/init_answer_template.py <report-dir> --domain <domain> --website <https://domain/>
 python3 business-conspect/scripts/ingest_llm_answers.py <report-dir>/raw/llm_answer.md --report-dir <report-dir>
+python3 business-conspect/scripts/publish_report.py <report-dir>
 ```
 
 Workflow:
@@ -133,6 +134,7 @@ Workflow:
 - paste `raw/prompt_pack.md` into any LLM manually
 - paste the LLM answer into `<report-dir>/raw/llm_answer.md`
 - ingest to `report.md` and validate before publishing or indexing
+- publish to generate (or keep) index.html and refresh index.json
 
 ### Step B — Content Collection and Normalization
 1) Scraping (HTTP + HTML parsing) or a headless browser (if the site is heavily JS-based).  

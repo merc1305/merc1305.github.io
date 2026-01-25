@@ -177,10 +177,10 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/ingest_llm_answers.py business-conspect/reports/fixtures/valid/report.md --out business-conspect/reports/fixtures/ingest-sample/report.md` produces `report.md` and prints `[PASS]`.
 
 #### Task 10F — Implement Minimal Publish Pipeline (Fast Path, Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Publish valid reports with one command, even before premium HTML rendering exists.
 - Deliverable: A publish script such as `business-conspect/scripts/publish_report.py` that runs validation, ensures an `index.html` exists (a minimal stub is acceptable), and runs `business-conspect/scripts/update_index.py`.
-- Verification: Running the publish script on a valid report directory updates `business-conspect/index.json` with the new report entry.
+- Verification: Running `python3 business-conspect/scripts/publish_report.py business-conspect/reports/2026-01-25/google.com` prints `[ok] Publish completed.` and updates `business-conspect/index.json` when needed.
 
 #### Task 10G — Add Public Request Flow Without Backend (Priority)
 - Status: Pending.
