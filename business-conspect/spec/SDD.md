@@ -231,7 +231,7 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/scrape.py <url> --out <report-dir> --crawl --max-pages 3` produces multiple `pages` entries and includes `content_source` and `content_words` fields.
 
 #### Task 18 — Harden LLM Answer Ingestion into Canonical Markdown (After Fast Path)
-- Status: Pending.
+- Status: Completed.
 - Goal: Make ingestion more resilient to real-world manual LLM outputs and reduce cleanup work.
 - Deliverable: Improvements to `business-conspect/scripts/ingest_llm_answers.py` such as clearer error reporting, normalization helpers, and optional repair suggestions when contracts are violated.
 - Verification: Ingestion succeeds or fails with actionable messages across both clean and messy fixture inputs.

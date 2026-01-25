@@ -8,12 +8,12 @@ report.md before running validation.
 from __future__ import annotations
 
 import argparse
+import importlib.util
 import json
 from pathlib import Path
 import re
 import sys
 from typing import Any, Iterable
-import subprocess
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -26,6 +26,18 @@ CODE_FENCE_RE = re.compile(r"^```")
 
 def _read_text(path: Path) -> str:
     return path.read_text(encoding="utf-8")
+
+
+def _load_validator_module() -> Any:
+    if not VALIDATOR_PATH.is_file():
+        raise FileNotFoundError(f"Missing validator: {VALIDATOR_PATH}")
+    spec = importlib.util.spec_from_file_location("validate_report", VALIDATOR_PATH)
+    if spec is None or spec.loader is None:
+        raise ImportError("Could not load validate_report module.")
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)  # type: ignore[call-arg]
+    return module
 
 
 def _unwrap_code_fences(lines: list[str]) -> list[str]:
@@ -168,6 +180,11 @@ def _build_parser() -> argparse.ArgumentParser:
         default="",
         help="Optional custom output path. Defaults to <report-dir>/report.md.",
     )
+    parser.add_argument(
+        "--no-suggest-fixes",
+        action="store_true",
+        help="Disable repair suggestions when validation fails.",
+    )
     return parser
 
 
@@ -190,16 +207,55 @@ def main(argv: list[str]) -> int:
         return 1
 
     print(f"Wrote report: {written}")
-
-    if not VALIDATOR_PATH.is_file():
-        print(f"Missing validator: {VALIDATOR_PATH}", file=sys.stderr)
+    try:
+        validator = _load_validator_module()
+    except Exception as exc:
+        print(f"Validation failed to run: {exc}", file=sys.stderr)
         return 1
 
-    result = subprocess.run(
-        [sys.executable, str(VALIDATOR_PATH), str(written)],
-        check=False,
-    )
-    return result.returncode
+    result = validator.validate_report(written)
+    validator._print_result(written, result)
+
+    if not result.ok and not args.no_suggest_fixes:
+        _suggest_fixes(result.errors)
+
+    return 0 if result.ok else 1
+
+
+def _suggest_fixes(errors: list[str]) -> None:
+    suggestions: list[str] = []
+    for error in errors:
+        if "Missing required heading" in error:
+            suggestions.append(
+                "Use the canonical template in business-conspect/README.md (Section 4.6)."
+            )
+        if "Missing metadata field" in error or "Generated At (UTC)" in error:
+            suggestions.append(
+                "Ensure all metadata fields are present; consider running init_answer_template.py."
+            )
+        if "Services section must include at least one ordered list item" in error:
+            suggestions.append("Add numbered services under the Services section.")
+        if "must include a '- Who it is for:'" in error:
+            suggestions.append("Add '- Who it is for:' to each service block.")
+        if "must include a '- Expected outcome:'" in error:
+            suggestions.append("Add '- Expected outcome:' to each service block.")
+        if "must contain at least one '[evidence:" in error:
+            suggestions.append("Add evidence markers with source URLs.")
+        if "ICP section must include a '- Situation trigger:'" in error:
+            suggestions.append("Add '- Situation trigger:' to the ICP section.")
+        if "Dialogue must cover search intent" in error:
+            suggestions.append(
+                "Add Client questions for missing intents (outcome, selection, pricing, constraints, non-fit)."
+            )
+        if "Dialogue section must contain at least one 'Client:'" in error:
+            suggestions.append("Add at least one 'Client:' line.")
+        if "Dialogue section must contain at least one 'Expert:'" in error:
+            suggestions.append("Add at least one 'Expert:' line.")
+
+    if suggestions:
+        print("\nSuggestions:")
+        for suggestion in sorted(set(suggestions)):
+            print(f"- {suggestion}")
 
 
 if __name__ == "__main__":
