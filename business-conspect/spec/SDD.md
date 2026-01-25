@@ -153,22 +153,22 @@ It assumes a manual LLM loop and offline publication, with the public site actin
 as a request surface and showcase.
 
 #### Task 10B — Implement Offline Scraper (Fast Path, Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Turn a URL into clean, reusable source material without any LLM API.
 - Deliverable: `business-conspect/scripts/scrape.py` that fetches one or more pages, extracts main content, and writes `raw/pages.json` under a target report directory.
-- Verification: Running `python3 business-conspect/scripts/scrape.py <url> --out <report-dir>` writes a non-empty `raw/pages.json` with timestamps and source URLs.
+- Verification: Running `python3 business-conspect/scripts/scrape.py business-conspect/scripts/fixtures/sample_site.html --out business-conspect/reports/fixtures/scrape-sample` writes a non-empty `raw/pages.json` with timestamps and source URLs at `business-conspect/reports/fixtures/scrape-sample/raw/pages.json`.
 
 #### Task 10C — Build Prompt Pack Generator (No API, Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Make the manual LLM step high-quality and consistent by generating a complete prompt pack from scraped sources and contracts.
 - Deliverable: A script such as `business-conspect/scripts/build_prompt_pack.py` that reads `raw/pages.json` and produces `raw/prompt_pack.md` (and optionally `raw/prompt_pack.json`) including the report contract, search-intent contract, and clear output requirements.
-- Verification: Running the prompt-pack builder produces `raw/prompt_pack.md` that explicitly references `REPORT_CONTRACT.md` and `SEARCH_INTENT_CONTRACT.md` and contains copy-pasteable instructions.
+- Verification: Running `python3 business-conspect/scripts/build_prompt_pack.py business-conspect/reports/fixtures/scrape-sample` produces `business-conspect/reports/fixtures/scrape-sample/raw/prompt_pack.md` that explicitly references `REPORT_CONTRACT.md` and `SEARCH_INTENT_CONTRACT.md` and contains copy-pasteable instructions.
 
 #### Task 10D — Define Manual LLM Answer Template (No API, Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Reduce variance in manual LLM outputs so they can be ingested and validated quickly.
 - Deliverable: A template such as `business-conspect/spec/LLM_ANSWER_TEMPLATE.md` plus a lightweight scaffold script (for example `business-conspect/scripts/init_answer_template.py`) that pre-fills metadata and required headings for a new report.
-- Verification: Filling the template for a fixture domain and running `validate_report.py` succeeds without structural errors.
+- Verification: Running `python3 business-conspect/scripts/init_answer_template.py business-conspect/reports/fixtures/scrape-sample --domain example.com --website https://example.com/` produces `business-conspect/reports/fixtures/scrape-sample/raw/llm_answer.md`, and `python3 business-conspect/scripts/validate_report.py business-conspect/reports/fixtures/scrape-sample/raw/llm_answer.md` exits with code 0.
 
 #### Task 10E — Implement Manual Answer Ingestion (Fast Path, Priority)
 - Status: Pending.
