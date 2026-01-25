@@ -260,6 +260,15 @@ Guidelines:
 - cover every primary service/offer at least once in the dialogue
 - prefer high-intent questions that help a buyer decide and help LLMs index use-cases
 
+Search-intent contract (required for recommendation-grade reports):
+- follow `business-conspect/spec/SEARCH_INTENT_CONTRACT.md`
+- include at least one Outcome / JTBD query
+- include at least one Selection / Comparison query
+- include at least one Pricing / Cost query
+- include at least one Constraints / Fit query
+- include at least one Non-Fit / Risk query
+- prefer search-style phrasing such as "best <service> for <situation>", "<A> vs <B>", and "alternative to <X>"
+
 Coverage checklist (must be reflected in the dialogue):
 - what the service is and who it is for (fit and non-fit)
 - when to choose Service A vs Service B (selection logic)

@@ -62,3 +62,6 @@ Expert: Misaligned expectations, weak ownership, and poor integration patterns a
 
 Client: What do you need from me to start strong?
 Expert: Clear goals, decision-makers, access to documentation and environments, and a working cadence for feedback and prioritization. [inference: prerequisites depend on the chosen service] [evidence: https://www.elinext.com/]
+
+Client: When is this not a fit, and I should build only in-house?
+Expert: It may be not a fit when you cannot provide internal ownership, access, and decision velocity, or when the work depends on highly sensitive institutional context that is hard to transfer. [inference: external teams require strong client-side ownership] [evidence: https://www.elinext.com/]

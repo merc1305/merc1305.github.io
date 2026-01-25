@@ -35,6 +35,17 @@ ORDERED_ITEM_RE = re.compile(r"^\s*\d+\.\s+")
 EVIDENCE_RE = re.compile(r"\[evidence:\s*([^\]]+)\]", re.IGNORECASE)
 INFERENCE_RE = re.compile(r"\[inference:\s*([^\]]+)\]", re.IGNORECASE)
 METADATA_FIELD_RE = re.compile(r"^\s*-\s*([^:]+):\s*(.+?)\s*$")
+WHO_FOR_RE = re.compile(r"^\s*-\s*Who it is for:\s+", re.IGNORECASE)
+EXPECTED_OUTCOME_RE = re.compile(r"^\s*-\s*Expected outcome:\s+", re.IGNORECASE)
+SITUATION_TRIGGER_RE = re.compile(r"^\s*-\s*Situation trigger:\s+", re.IGNORECASE)
+SELECTION_LOGIC_RE = re.compile(
+    r"\b(choose|vs|versus|alternative|which service|when should i|best option)\b",
+    re.IGNORECASE,
+)
+NON_FIT_RE = re.compile(
+    r"\b(non[- ]?fit|not (a )?fit|not suitable|not for|should not|shouldn't|avoid)\b",
+    re.IGNORECASE,
+)
 
 
 @dataclass(frozen=True)
@@ -202,12 +213,59 @@ def _validate_services_section(
         result.error("Services section is empty.")
         return
 
-    has_ordered_item = any(ORDERED_ITEM_RE.match(line) for line in section_text.splitlines())
+    section_lines = section_text.splitlines()
+    has_ordered_item = any(ORDERED_ITEM_RE.match(line) for line in section_lines)
     if not has_ordered_item:
         result.error("Services section must include at least one ordered list item (e.g., '1. Service').")
 
-    if not EVIDENCE_RE.search(section_text):
-        result.error("Services section must contain at least one '[evidence: ...]' marker.")
+    blocks: list[list[str]] = []
+    current_block: list[str] = []
+    for line in section_lines:
+        if ORDERED_ITEM_RE.match(line):
+            if current_block:
+                blocks.append(current_block)
+            current_block = [line]
+            continue
+        if current_block:
+            current_block.append(line)
+    if current_block:
+        blocks.append(current_block)
+
+    if not blocks:
+        return
+
+    for idx, block_lines in enumerate(blocks, start=1):
+        block_text = "\n".join(block_lines)
+
+        has_evidence = bool(EVIDENCE_RE.search(block_text))
+        if not has_evidence:
+            result.error(
+                f"Service #{idx} must contain at least one '[evidence: ...]' marker."
+            )
+
+        has_who_for = any(WHO_FOR_RE.match(line) for line in block_lines)
+        if not has_who_for:
+            result.error(f"Service #{idx} must include a '- Who it is for:' line.")
+
+        has_expected_outcome = any(
+            EXPECTED_OUTCOME_RE.match(line) for line in block_lines
+        )
+        if not has_expected_outcome:
+            result.error(
+                f"Service #{idx} must include a '- Expected outcome:' line."
+            )
+
+
+def _validate_icp_section(section_text: str, result: ValidationResult) -> None:
+    if not section_text:
+        result.error("Section is empty: '4) Ideal Customer Profile (ICP)'.")
+        return
+
+    has_situation_trigger = any(
+        SITUATION_TRIGGER_RE.match(line) for line in section_text.splitlines()
+    )
+    if not has_situation_trigger:
+        result.error("ICP section must include a '- Situation trigger:' line.")
 
 
 def _validate_dialogue_section(
@@ -224,6 +282,20 @@ def _validate_dialogue_section(
         result.error("Dialogue section must contain at least one 'Client:' line.")
     if not has_expert:
         result.error("Dialogue section must contain at least one 'Expert:' line.")
+
+    has_selection_logic = bool(SELECTION_LOGIC_RE.search(section_text))
+    if not has_selection_logic:
+        result.error(
+            "Dialogue section must include selection logic "
+            "(e.g., choose, vs, alternative, which service, when should I)."
+        )
+
+    has_non_fit = bool(NON_FIT_RE.search(section_text))
+    if not has_non_fit:
+        result.error(
+            "Dialogue section must include at least one non-fit signal "
+            "(e.g., not a fit, not suitable, should not, avoid)."
+        )
 
     if not (EVIDENCE_RE.search(section_text) or INFERENCE_RE.search(section_text)):
         result.warn(
@@ -273,7 +345,7 @@ def validate_report(report_path: Path) -> ValidationResult:
 
     if icp_heading:
         icp_text = _extract_section_text(lines, headings, icp_heading)
-        _validate_non_empty("4) Ideal Customer Profile (ICP)", icp_text, result)
+        _validate_icp_section(icp_text, result)
 
     if dialogue_heading:
         dialogue_text = _extract_section_text(lines, headings, dialogue_heading)
@@ -310,4 +382,3 @@ def main(argv: Sequence[str]) -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main(sys.argv))
-

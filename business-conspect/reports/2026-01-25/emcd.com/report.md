@@ -62,3 +62,6 @@ Expert: Platform and custody risk, changing terms, and jurisdictional constraint
 
 Client: What do you need from me to get started?
 Expert: You will need mining setup details, a clear payout destination strategy, and an understanding of the platform's rules and supported assets. [inference: prerequisites depend on the specific product configuration] [evidence: https://emcd.com/]
+
+Client: When is EMCD not suitable for me?
+Expert: It may be not suitable if regulation in your jurisdiction blocks usage, or if you require full self-custody and want to avoid any platform dependency. [inference: jurisdiction and custody preferences are common non-fit drivers] [evidence: https://emcd.com/]

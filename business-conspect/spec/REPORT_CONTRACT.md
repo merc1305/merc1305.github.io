@@ -9,6 +9,7 @@ Normative terms: MUST, MUST NOT, SHOULD, MAY.
 References:
 - Canonical template: `business-conspect/README.md` (section "4.6 Canonical Report Template")
 - Architecture decisions: `business-conspect/spec/DECISIONS.md`
+- Search intent contract: `business-conspect/spec/SEARCH_INTENT_CONTRACT.md`
 
 ## 1) Canonical Artifact and Location
 
@@ -81,18 +82,24 @@ These rules are intentionally simple so they can be validated by lightweight scr
 ### 5.2 Services and Offers
 
 - The section MUST include at least one ordered list item representing a service or offer.
-- Each service SHOULD describe what it is, who it is for, and expected outcomes.
+- Each service MUST include explicit fit and value signals.
+- Each service MUST include a `- Who it is for:` line.
+- Each service MUST include a `- Expected outcome:` line.
 - Each service MUST include at least one evidence marker somewhere within its block.
 
 ### 5.3 Ideal Customer Profile (ICP)
 
 - The ICP section MUST be present and non-empty.
 - The ICP SHOULD be concrete and decision-oriented rather than generic.
+- The ICP section MUST include a `- Situation trigger:` line.
 
 ### 5.4 Client ↔ Service Expert Dialogue
 
 - The dialogue section MUST contain at least one `Client:` line and one `Expert:` line.
+- The dialogue section MUST follow the required minimum search-intent coverage defined in `business-conspect/spec/SEARCH_INTENT_CONTRACT.md`.
 - The dialogue SHOULD cover selection logic, delivery, outcomes, pricing signals, risks, and prerequisites.
+- The dialogue section MUST include at least one selection-logic signal (for example: "which service", "when should I choose", "A vs B", "alternative to").
+- The dialogue section MUST include at least one non-fit signal that clarifies when the service is not appropriate (for example: "not a fit", "not suitable", "should not use").
 - Any speculative expert answer MUST include an inference marker.
 
 ## 6) Minimal Authoring Checklist (Testable)
@@ -105,7 +112,11 @@ Use this checklist before publishing:
 - `Generated At (UTC)` ends with `Z`.
 - The Services section includes at least one ordered list item.
 - Each service block contains an `[evidence: ...]` marker.
+- Each service includes `Who it is for` and `Expected outcome`.
+- The ICP section includes `Situation trigger`.
 - The dialogue includes both `Client:` and `Expert:` lines.
+- The dialogue satisfies the required minimum categories from `SEARCH_INTENT_CONTRACT.md`.
+- The dialogue includes selection logic and at least one non-fit signal.
 - Any inference is explicitly labeled with `[inference: ...]`.
 
 ## 7) Validator Targets (What Automation Will Enforce)
@@ -116,7 +127,9 @@ The future validator is expected to enforce at least the following:
 - Required metadata keys exist and have plausible formats.
 - At least one service exists.
 - At least one evidence marker exists in the Services section.
+- Services include `Who it is for` and `Expected outcome`.
+- ICP includes `Situation trigger`.
 - The dialogue section contains both `Client:` and `Expert:` lines.
+- The dialogue includes selection logic and a non-fit signal.
 
 Stricter checks MAY be added later, but should be introduced with fixtures.
-

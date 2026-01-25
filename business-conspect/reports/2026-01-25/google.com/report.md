@@ -65,3 +65,6 @@ Expert: The ecosystem is widely adopted and positioned as a primary platform for
 
 Client: What do you need from me to get started with Ads or Cloud?
 Expert: You need clear goals, a budget, and access to your assets or systems; exact requirements depend on the specific product and setup path. [inference: prerequisites vary by product] [evidence: https://ads.google.com/] [evidence: https://cloud.google.com/]
+
+Client: When is Google Ads not a fit for my business model?
+Expert: It may be not a fit when unit economics cannot support paid acquisition or when there is no clear conversion path to measure outcomes. [inference: paid acquisition requires viable conversion economics] [evidence: https://ads.google.com/]

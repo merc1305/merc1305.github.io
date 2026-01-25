@@ -29,3 +29,9 @@ Example.com is a documentation-style reference site often used for examples and 
 ## 5) Client ↔ Service Expert Dialogue (Deep Discovery)
 Client: I need a domain for documentation examples. Is this a safe default?
 Expert: Yes — example.com is designed to be a neutral, stable reference for examples. [inference: intent is widely understood but not fully stated on-page] [evidence: https://example.com/]
+
+Client: When should I choose example.com vs a real domain in documentation?
+Expert: Choose example.com when you need a neutral, non-commercial example that avoids implying endorsement of a real brand. [inference: neutral examples reduce accidental endorsement] [evidence: https://example.com/]
+
+Client: When is example.com not a fit?
+Expert: It is not a fit when you need to demonstrate a real product experience tied to your own domain and brand context. [inference: real demos usually require real domains] [evidence: https://example.com/]
