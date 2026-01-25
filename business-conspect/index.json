@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "date": "2026-01-25",
+    "domain": "google.com",
+    "indexPath": "reports/2026-01-25/google.com/index.html",
+    "reportMdPath": "reports/2026-01-25/google.com/report.md"
+  },
+  {
+    "date": "2026-01-25",
+    "domain": "emcd.com",
+    "indexPath": "reports/2026-01-25/emcd.com/index.html",
+    "reportMdPath": "reports/2026-01-25/emcd.com/report.md"
+  },
+  {
+    "date": "2026-01-25",
+    "domain": "elinext.com",
+    "indexPath": "reports/2026-01-25/elinext.com/index.html",
+    "reportMdPath": "reports/2026-01-25/elinext.com/report.md"
+  }
+]

@@ -79,13 +79,13 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Deliverable: A new contract document such as `business-conspect/spec/REPORT_CONTRACT.md` that references the canonical template and adds explicit evidence/inference conventions.
 - Verification: The contract includes all required sections and a short checklist that can be applied to any `report.md` without interpretation.
 
-### Pending Tasks (Do Next)
-
 #### Task 2 — Generate Three Reference Reports (Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Create real report artifacts early so the rest of the pipeline can be tested against non-trivial inputs.
-- Deliverable: Three report directories under `business-conspect/reports/YYYY-MM-DD/` for `google.com`, `elinext.com`, and `emcd.com`, each containing a canonical `report.md`.
-- Verification: After running `python3 business-conspect/scripts/update_index.py`, `business-conspect/index.json` includes entries for `google.com`, `elinext.com`, and `emcd.com`, and each report contains all required headings from `REPORT_CONTRACT.md`.
+- Deliverable: Three report directories under `business-conspect/reports/2026-01-25/` for `google.com`, `elinext.com`, and `emcd.com`, each containing a canonical `report.md` (and a temporary `index.html` stub for indexing).
+- Verification: Running `python3 business-conspect/scripts/update_index.py` discovers 3 reports, and `business-conspect/index.json` includes entries for `google.com`, `elinext.com`, and `emcd.com`.
+
+### Pending Tasks (Do Next)
 
 #### Task 3 — Implement a Report Validator
 - Status: Pending.
