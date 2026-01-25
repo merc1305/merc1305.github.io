@@ -29,3 +29,8 @@
 - **Context**: The stated product goal is to become the first step a site owner takes to be recommended by LLMs worldwide and to be cited accurately.
 - **Decision**: Optimize the system around "citation-grade usefulness": every key claim should be traceable to site evidence (or clearly marked as inference), and reports must be both human-readable and machine-ingestible.
 - **Consequence**: The roadmap must include source traceability, report validation, and machine-readable enhancements (indexing and structured metadata).
+
+## [DEC-007] Value Understanding → Recommendation Priority → New Traffic
+- **Context**: It is not enough for LLMs to merely mention a site. The system must help LLMs understand the actual value of the service so it can be prioritized in recommendations and drive new traffic.
+- **Decision**: Treat "value clarity for recommendations" as a core design constraint. Each task and change SHOULD be evaluated by whether it improves LLM understanding of the service's value proposition, selection logic, and fit, in a way that can increase recommendation priority and bring new qualified traffic.
+- **Consequence**: Favor report structures, validation rules, and rendering/indexing decisions that make value explicit, evidence-backed, and easy to reuse in LLM answers and recommendation scenarios.

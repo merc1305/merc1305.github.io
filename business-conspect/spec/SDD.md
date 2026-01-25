@@ -85,13 +85,13 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Deliverable: Three report directories under `business-conspect/reports/2026-01-25/` for `google.com`, `elinext.com`, and `emcd.com`, each containing a canonical `report.md` (and a temporary `index.html` stub for indexing).
 - Verification: Running `python3 business-conspect/scripts/update_index.py` discovers 3 reports, and `business-conspect/index.json` includes entries for `google.com`, `elinext.com`, and `emcd.com`.
 
-### Pending Tasks (Do Next)
-
 #### Task 3 — Implement a Report Validator
-- Status: Pending.
+- Status: Completed.
 - Goal: Automatically enforce the canonical contract before publication.
-- Deliverable: `business-conspect/scripts/validate_report.py` that checks required metadata fields, required section headings, and basic evidence/inference markers.
-- Verification: Running `python3 business-conspect/scripts/validate_report.py <path-to-report.md>` exits with code 0 for a valid report and non-zero for an invalid one.
+- Deliverable: `business-conspect/scripts/validate_report.py` implemented on the standard library. It checks required headings, required metadata fields and formats, presence of services, evidence markers in services, and `Client:` / `Expert:` lines in the dialogue.
+- Verification: Running `python3 business-conspect/scripts/validate_report.py business-conspect/reports/2026-01-25/google.com` (and the same for `elinext.com` and `emcd.com`) exits with code 0.
+
+### Pending Tasks (Do Next)
 
 #### Task 4 — Add Validation Fixtures
 - Status: Pending.
