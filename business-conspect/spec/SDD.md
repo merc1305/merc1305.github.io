@@ -129,10 +129,10 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Verification: `python3 business-conspect/scripts/validate_report.py business-conspect/reports/fixtures/search_intent_good/report.md` exits with code 0, while the same command against `.../search_intent_poor/report.md` exits non-zero with intent-specific errors.
 
 #### Task 9 — Backfill Reference Reports with Search-Style Queries
-- Status: Pending.
+- Status: Completed.
 - Goal: Improve confidence that the current reports can actually drive recommendation-quality answers and traffic.
-- Deliverable: Update the three reference reports (`google.com`, `elinext.com`, `emcd.com`) to include more search-style questions (for example: "best X for Y", "X vs Y", "alternative to X", constraint-heavy questions, and selection logic framed as search queries).
-- Verification: The reports pass both the base validator and the search-intent coverage validator.
+- Deliverable: The three reference reports now include additional search-style queries with constraints and comparisons (for example: best/versus/alternative phrasing, budget and deadline constraints, and fit checks) under their dialogue sections.
+- Verification: `python3 business-conspect/scripts/validate_report.py business-conspect/reports/2026-01-25/google.com` (and the same for `elinext.com` and `emcd.com`) exits with code 0.
 
 #### Task 10 — Add Recommendation Evaluation Bench (Priority)
 - Status: Pending.

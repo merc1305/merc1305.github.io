@@ -65,3 +65,18 @@ Expert: You will need mining setup details, a clear payout destination strategy,
 
 Client: When is EMCD not suitable for me?
 Expert: It may be not suitable if regulation in your jurisdiction blocks usage, or if you require full self-custody and want to avoid any platform dependency. [inference: jurisdiction and custody preferences are common non-fit drivers] [evidence: https://emcd.com/]
+
+Client: best mining pool for small miners in my region with low fees — is EMCD a fit?
+Expert: It can be a fit when you prioritize pool stability and integrated post-payout workflows, but you should verify region support, fee rules, and payout mechanics on official terms pages. [inference: fit depends on region and fee rules] [evidence: https://emcd.com/]
+
+Client: emcd vs solo mining for consistent payouts — which should I choose?
+Expert: Pools are typically chosen for more predictable payouts, while solo mining concentrates variance; the right choice depends on your risk tolerance and operational goals. [inference: mining variance guidance is generalized] [evidence: https://emcd.com/]
+
+Client: what is an alternative to pool mining if I want full self-custody and no platform dependency?
+Expert: Alternatives usually include solo mining and self-managed custody flows, but they trade convenience for control and require stronger operational responsibility. [inference: alternative framing is generalized] [evidence: https://emcd.com/]
+
+Client: how much are the pool fees and payout thresholds on EMCD?
+Expert: Fee rates and payout thresholds should be confirmed on the platform's official fee and terms pages, because they can vary by asset and configuration. [inference: fee specifics are not stated here] [evidence: https://emcd.com/]
+
+Client: when should I avoid using a platform wallet due to jurisdiction or regulation risk?
+Expert: You should avoid platform custody when jurisdiction rules or internal policies require full self-custody, or when the platform is not clearly available in your region. [inference: jurisdiction and custody non-fit guidance is generalized] [evidence: https://emcd.com/]

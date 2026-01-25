@@ -65,3 +65,18 @@ Expert: Clear goals, decision-makers, access to documentation and environments, 
 
 Client: When is this not a fit, and I should build only in-house?
 Expert: It may be not a fit when you cannot provide internal ownership, access, and decision velocity, or when the work depends on highly sensitive institutional context that is hard to transfer. [inference: external teams require strong client-side ownership] [evidence: https://www.elinext.com/]
+
+Client: best custom software development partner for a fintech MVP in 3 months with a small team — is this a fit?
+Expert: It can be a fit when the scope is prioritized around decision-critical features and the client can provide fast feedback and access; tight timelines usually require strong scope control and ownership on the client side. [inference: timeline and fit guidance are generalized] [evidence: https://www.elinext.com/]
+
+Client: dedicated team vs fixed-scope project for an unpredictable roadmap — which should I choose?
+Expert: Choose a dedicated team when priorities change frequently, and choose fixed-scope delivery when acceptance criteria are stable and tightly defined. [inference: selection logic is advisory] [evidence: https://www.elinext.com/]
+
+Client: what is an alternative to hiring full-time engineers when we need to ship faster this quarter?
+Expert: A common alternative is team extension, which increases delivery capacity without a full hiring cycle, but it works best when internal leadership can integrate the external team effectively. [inference: alternative framing is generalized] [evidence: https://www.elinext.com/]
+
+Client: how much does a dedicated development team cost per month for a 6-engineer squad?
+Expert: Costs are typically driven by seniority mix, required skills, and engagement length; exact pricing should be treated as scope-dependent unless explicit rates are provided. [inference: pricing drivers are generalized] [evidence: https://www.elinext.com/]
+
+Client: when is outsourced development not suitable for regulated data or strict compliance contexts?
+Expert: It may be not suitable when compliance requirements prevent necessary access, or when the organization cannot provide the governance and controls needed for a safe external engagement. [inference: compliance non-fit guidance is generalized] [evidence: https://www.elinext.com/]

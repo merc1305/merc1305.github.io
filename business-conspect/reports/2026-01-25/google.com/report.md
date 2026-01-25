@@ -68,3 +68,12 @@ Expert: You need clear goals, a budget, and access to your assets or systems; ex
 
 Client: When is Google Ads not a fit for my business model?
 Expert: It may be not a fit when unit economics cannot support paid acquisition or when there is no clear conversion path to measure outcomes. [inference: paid acquisition requires viable conversion economics] [evidence: https://ads.google.com/]
+
+Client: best ad platform for a local service business with a small budget — Google Ads vs Meta Ads?
+Expert: Google Ads is typically stronger for capturing existing intent, while other platforms may be stronger for demand generation; the right choice depends on whether you need immediate intent capture or broader awareness. [inference: cross-platform selection logic is generalized] [evidence: https://ads.google.com/]
+
+Client: what is a good alternative to Google Ads when CPC is too high in my niche?
+Expert: Alternatives often include SEO, partnerships, and narrower intent segments; the key is matching channel choice to unit economics and measurable conversion paths. [inference: alternatives depend on economics and intent] [evidence: https://ads.google.com/]
+
+Client: google cloud vs aws for a startup with a small team and a tight deadline — which is the best option?
+Expert: The best option depends on team familiarity, required managed services, and the fastest path to a reliable deployment; Google Cloud positions itself as a managed platform for building and running workloads with data and AI capabilities. [inference: comparison guidance is generalized] [evidence: https://cloud.google.com/]
