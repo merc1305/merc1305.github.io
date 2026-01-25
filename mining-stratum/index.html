@@ -137,13 +137,14 @@
         }
 
         .info-box {
-            background: rgba(88, 166, 255, 0.05);
-            border: 1px solid rgba(88, 166, 255, 0.2);
-            padding: 1rem;
-            border-radius: 8px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
             margin-bottom: 2rem;
             font-size: 0.9rem;
             color: var(--text-primary);
+            backdrop-filter: blur(12px);
         }
 
         .grid {
@@ -434,20 +435,22 @@
         }
 
         .warning-box {
-            background: rgba(248, 81, 73, 0.05);
-            border: 1px solid rgba(248, 81, 73, 0.2);
+            background: var(--glass-bg);
+            border: 1px solid rgba(248, 81, 73, 0.35);
             padding: 1.5rem;
-            border-radius: 8px;
+            border-radius: 12px;
             margin: 2rem 0;
             color: var(--text-primary);
+            backdrop-filter: blur(12px);
         }
 
         .tool-intro {
             margin-bottom: 2.5rem;
             padding: 1.5rem;
-            background: rgba(88, 166, 255, 0.03);
+            background: var(--glass-bg);
             border-radius: 12px;
-            border: 1px dashed rgba(88, 166, 255, 0.1);
+            border: 1px dashed var(--glass-border);
+            backdrop-filter: blur(12px);
         }
 
         .tool-intro p {
@@ -457,11 +460,12 @@
         }
 
         .tldr {
-            background: rgba(63, 185, 80, 0.05);
-            border: 1px solid rgba(63, 185, 80, 0.2);
+            background: var(--glass-bg);
+            border: 1px solid rgba(63, 185, 80, 0.35);
             padding: 1.5rem;
             border-radius: 12px;
             margin-bottom: 2rem;
+            backdrop-filter: blur(12px);
         }
 
         .tldr h4 {
@@ -542,7 +546,7 @@
                     <line x1="19" y1="12" x2="5" y2="12"></line>
                     <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
-                Back to Lab
+                back to lab
             </a>
             <h1>
                 <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -580,8 +584,7 @@
         </div>
 
         <section class="content-section" style="margin-top: 2rem; border-top: none; padding-top: 0;">
-            <div class="glass-card"
-                style="background: rgba(88, 166, 255, 0.05); border: 1px solid rgba(88, 166, 255, 0.1); padding: 2rem; border-radius: 12px;">
+            <div class="glass-card" style="padding: 2rem; border-radius: 12px;">
                 <h2
                     style="color: var(--accent-color); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 10px;">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

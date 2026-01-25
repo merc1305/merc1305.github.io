@@ -51,36 +51,19 @@
 
 
         .contact-card {
-            background: rgba(88, 166, 255, 0.05);
-            border: 1px solid rgba(88, 166, 255, 0.2);
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
             padding: 3rem;
             border-radius: 16px;
             text-align: center;
             margin-top: 4rem;
+            backdrop-filter: blur(12px);
         }
 
         .contact-card h3 {
             color: #fff;
             margin-bottom: 1rem;
             font-size: 1.8rem;
-        }
-
-        .btn-contact {
-            display: inline-block;
-            background: var(--accent-color);
-            color: #000;
-            padding: 1rem 2.5rem;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 1.1rem;
-            margin-top: 1.5rem;
-            transition: transform 0.2s, background 0.2s;
-        }
-
-        .btn-contact:hover {
-            transform: translateY(-2px);
-            background: #fff;
         }
 
         @media (max-width: 768px) {
@@ -109,6 +92,10 @@
 
 <body>
     <div class="bg-gradient"></div>
+    <div class="bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
     <main class="container article-content">
         <a href="../index.html" class="back-link">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -116,7 +103,7 @@
                 <line x1="19" y1="12" x2="5" y2="12"></line>
                 <polyline points="12 19 5 12 12 5"></polyline>
             </svg>
-            Back to Lab
+            back to lab
         </a>
 
         <header>
@@ -160,7 +147,7 @@
                     Please write a few lines about your setup if you're interested in getting access.
                 </p>
                 <a href="mailto:merc1305@gmail.com?subject=Inquiry about Stratum Proxy Access"
-                    class="btn-contact">Contact via Email</a>
+                    class="btn btn-primary">Contact via Email</a>
             </div>
         </section>
     </main>
