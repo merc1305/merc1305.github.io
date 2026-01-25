@@ -189,10 +189,10 @@ as a request surface and showcase.
 - Verification: Filling the request form on `business-conspect/index.html` and clicking "Open GitHub Issue" opens a prefilled issue URL containing the URL, constraints, and manual loop instructions.
 
 #### Task 11 — Implement Markdown → HTML Rendering
-- Status: Pending.
+- Status: Completed.
 - Goal: Eliminate double maintenance while preserving human-friendly reports.
 - Deliverable: A renderer such as `business-conspect/scripts/render_report.py` and a template such as `business-conspect/scripts/templates/report.html`.
-- Verification: Rendering a valid fixture produces `index.html` that includes the metadata, all section titles, and a canonical link back to `report.md`.
+- Verification: Running `python3 business-conspect/scripts/render_report.py business-conspect/reports/fixtures/valid/report.md --out business-conspect/reports/fixtures/valid/index.html` produces HTML that includes the metadata, all section titles, and a canonical link to `report.md`.
 
 #### Task 12 — Make Rendering Validation-Gated
 - Status: Pending.

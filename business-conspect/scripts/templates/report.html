@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{{TITLE}}</title>
+    <link rel="canonical" href="{{REPORT_MD_REL}}" />
+    <style>
+      body {
+        font-family: "Outfit", "Inter", system-ui, -apple-system, sans-serif;
+        background: #0d1117;
+        color: #e6edf3;
+        margin: 0;
+        padding: 2rem;
+      }
+      main {
+        max-width: 920px;
+        margin: 0 auto;
+        line-height: 1.6;
+      }
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+      }
+      header a {
+        color: #58a6ff;
+        text-decoration: none;
+      }
+      h1, h2, h3 {
+        color: #ffffff;
+        margin-top: 2rem;
+      }
+      h1 {
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+      }
+      h2 {
+        font-size: 1.5rem;
+        border-bottom: 1px solid #2f3742;
+        padding-bottom: 0.35rem;
+      }
+      ol, ul {
+        padding-left: 1.5rem;
+      }
+      li {
+        margin: 0.35rem 0;
+      }
+      .meta {
+        background: #161b22;
+        border: 1px solid #2f3742;
+        border-radius: 12px;
+        padding: 1rem 1.25rem;
+        margin: 1.5rem 0;
+      }
+      .meta p {
+        margin: 0.25rem 0;
+        color: #9da7b4;
+      }
+      a {
+        color: #58a6ff;
+      }
+      code {
+        background: #0b0f15;
+        padding: 0.15rem 0.35rem;
+        border-radius: 6px;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <header>
+        <a href="{{INDEX_REL}}">Business Conspect index</a>
+        <span>{{GENERATED_AT}}</span>
+      </header>
+      <div class="meta">
+        <p>Canonical report: <a href="{{REPORT_MD_REL}}">report.md</a></p>
+      </div>
+      {{CONTENT}}
+    </main>
+  </body>
+</html>
+
