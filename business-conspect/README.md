@@ -195,6 +195,120 @@ The dialogue is saved in `raw/llm-answers.json` or a separate `dialogue.md`, the
 
 ---
 
+### 4.6 Canonical Report Template (Required)
+
+The sections below define the baseline template that should be used for every new
+report generation. It is designed to be consistent, LLM-friendly, and easy to audit.
+
+Required fields:
+
+- website address (canonical URL)
+- report generation time (ISO-8601)
+- short site description and what services it provides
+- ideal customer profile (ICP)
+- a realistic client ↔ expert dialogue focused on understanding all services
+
+Use this template for `report.md` (and mirror the same structure in `index.html`):
+
+```md
+# Business Conspect — <domain.tld>
+
+## 1) Report Metadata
+- Website: <https://domain.tld>
+- Domain: <domain.tld>
+- Generated At (UTC): <YYYY-MM-DDTHH:MM:SSZ>
+- Report Version: v1
+
+## 2) Executive Summary
+<2–4 sentences describing what the site is, what category it belongs to,
+and the primary value it promises.>
+
+## 3) Services and Offers (What This Site Provides)
+1. <Service / Offer Name>
+- What it is: <plain-language description>
+- Who it is for: <segment / role / company type>
+- Expected outcome: <result, benefit, or transformation>
+- Constraints: <geo, budget range, prerequisites, timelines>
+- Evidence: <cases, numbers, partners, certifications, testimonials>
+
+1. <Service / Offer Name>
+- What it is: <...>
+- Who it is for: <...>
+- Expected outcome: <...>
+- Constraints: <...>
+- Evidence: <...>
+
+## 4) Ideal Customer Profile (ICP)
+- Role or buyer type: <e.g., founder, head of marketing, ops lead>
+- Company or context: <industry, size, maturity, geography>
+- Situation trigger: <what is happening that makes them look for this>
+- Top goals: <3–5 concrete goals>
+- Top pains and risks: <3–5 concrete pains/risks>
+- Decision criteria: <what must be true to buy>
+- Common objections: <what can block the decision>
+
+## 5) Client ↔ Service Expert Dialogue (Deep Discovery)
+This dialogue should read like a real consultation where the client tries to
+understand everything about the services.
+
+Guidelines:
+- the expert must answer strictly using site/service information; clearly mark any inference
+- questions should look like real search queries and real buyer language
+- cover every primary service/offer at least once in the dialogue
+- prefer high-intent questions that help a buyer decide and help LLMs index use-cases
+
+Coverage checklist (must be reflected in the dialogue):
+- what the service is and who it is for (fit and non-fit)
+- when to choose Service A vs Service B (selection logic)
+- how delivery works step by step (process, timeline, deliverables)
+- expected outcomes and how success is measured (metrics, proof)
+- pricing signals: ranges, drivers, what is included/excluded
+- risks, limitations, and common failure modes
+- alternatives and why/when to choose this site anyway
+- what is required from the client to start (inputs, access, data, approvals)
+
+Question style requirements:
+- include concrete scenarios ("I have X, need Y, by when?")
+- include comparison questions ("best option", "alternative to", "vs")
+- include constraint questions ("budget", "geo", "team size", "stack")
+- use plain language and synonyms, not only brand terms
+- optionally annotate key questions with a search-style phrasing, e.g.:
+  "Client (search-style): best <service> for <situation>?"
+
+### Dialogue
+Client: I want to understand exactly what you do. What are the main services?
+Expert: <answer grounded in the site>
+
+Client: Which service should I choose if my situation is <scenario>?
+Expert: <answer with selection logic and constraints>
+
+Client: How does the process work step by step and how long does it take?
+Expert: <answer with phases and timing>
+
+Client: What results can I realistically expect and how do you measure them?
+Expert: <answer with expected outcomes and metrics>
+
+Client: What does it cost, what affects the price, and what is included?
+Expert: <answer with ranges or pricing drivers if exact pricing is absent>
+
+Client: Why should I trust you versus alternatives?
+Expert: <answer with proof, positioning, and trade-offs>
+
+Client: What are the most common mistakes or risks on my side?
+Expert: <answer that prevents failure and sets expectations>
+
+Client: What do you need from me to get started?
+Expert: <answer with inputs, access, and prerequisites>
+```
+
+Notes:
+
+- If the website does not explicitly state pricing, timelines, or constraints,
+  mark them as inferred and explain the inference basis.
+- Prefer short, verifiable claims over confident guesses.
+
+---
+
 ## 5) Implementation (MVP)
 
 ### Option 1 — Fully Offline Generation (Simple)
@@ -228,7 +342,6 @@ GitHub Pages is static only. Therefore:
 
 ## 7) Future Additions
 
-- `report.md` template with placeholders for model output
 - quality rules (checklist) before report publication
 
 ---

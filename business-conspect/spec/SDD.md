@@ -13,6 +13,7 @@ Business Conspect is a tool designed to analyze websites and generate structured
   - **Planned State**: The actual analysis is executed offline via CLI/scripts; the UI may later connect to a backend.
 - **Report Generation**: (Future) Generating reports in HTML/Markdown formats via offline scripts.
 - **Report Search**: (Implemented) `business-conspect/search.html` loads `index.json` and filters reports by domain and date.
+- **Canonical Report Template**: (Documented) Every report should follow a consistent template in `report.md` (with `index.html` as a mirror) and must include website address, generation time, summary, services, ICP, and a client ↔ expert dialogue that covers full buyer discovery.
 - **English Documentation**: All user-facing documentation must be in English.
 
 ### 2.2 Non-Functional Requirements
