@@ -526,41 +526,10 @@
                 </svg>
                 Stratum Pool Pinger
             </h1>
-            <div class="description" style="margin-bottom: 1.5rem;">
+            <div class="description">
                 Professional Browser‑Based SHA256 Mining Pool Latency Checker.
             </div>
-            <div class="tool-intro">
-                <p><strong>Stratum Pool Pinger is a browser-based latency measurement tool for Bitcoin miners.</strong>
-                    It
-                    helps you identify the fastest Stratum endpoints for your mining hardware by measuring real-time
-                    network proximity from your location. Unlike pool selection based on geographic guesswork, this tool
-                    provides actual RTT measurements to make data-driven configuration decisions.</p>
-            </div>
-            <div class="tldr">
-                <h4>🚀 Quick Start:</h4>
-                <ol>
-                    <li>Let the tool run for 2-3 minutes to stabilize measurements.</li>
-                    <li>Pick the top 2 endpoints with lowest latency from your primary pool.</li>
-                    <li>Add a third endpoint from a backup pool for redundancy.</li>
-                    <li>Configure your miner's pool settings with these endpoints.</li>
-                </ol>
-            </div>
         </header>
-
-        <div class="info-box">
-            <b>How it works:</b> We measure the round-trip time (RTT) from your browser to each Stratum node.
-            Links with latency under <b>9ms</b> are typically flagged as invalid/unreachable (unless you are on a local
-            network).
-            <b>Click any row to copy the Stratum URL.</b>
-        </div>
-
-        <div class="warning-box">
-            <strong>Methodology Note:</strong> This tool measures network proximity using browser-based pings.
-            While highly accurate for finding the best nodes, it **cannot** establish a real Stratum/TCP connection due
-            to
-            browser security restrictions. For full protocol validation (handshakes and authorization),
-            specialized console/CLI-based tools are required.
-        </div>
 
         <div id="pool-grid" class="grid">
             <!-- Pool cards will be rendered here -->
@@ -622,6 +591,35 @@
         </section>
 
         <section class="content-section" id="why-this-tool">
+            <div class="tool-intro" style="margin-top: 2rem;">
+                <p><strong>Stratum Pool Pinger is a browser-based latency measurement tool for Bitcoin miners.</strong>
+                    It helps you identify the fastest Stratum endpoints for your mining hardware by measuring real-time
+                    network proximity from your location. Unlike pool selection based on geographic guesswork, this tool
+                    provides actual RTT measurements to make data-driven configuration decisions.</p>
+            </div>
+
+            <div class="info-box" style="margin-top: 1rem;">
+                <b>How it works:</b> We measure the round-trip time (RTT) from your browser to each Stratum node.
+                Links with latency under <b>9ms</b> are typically flagged as invalid/unreachable (unless you are on a
+                local network).
+            </div>
+
+            <div class="warning-box" style="margin-top: 1rem;">
+                <strong>Methodology Note:</strong> This tool measures network proximity using browser-based pings.
+                While highly accurate for finding the best nodes, it **cannot** establish a real Stratum/TCP connection
+                due to browser security restrictions.
+            </div>
+
+            <div class="tldr" style="margin-top: 2rem;">
+                <h4>🚀 Quick Start:</h4>
+                <ol>
+                    <li>Let the tool run for 2-3 minutes to stabilize measurements.</li>
+                    <li>Pick the top 2 endpoints with lowest latency from your primary pool.</li>
+                    <li>Add a third endpoint from a backup pool for redundancy.</li>
+                    <li>Configure your miner's pool settings with these endpoints.</li>
+                </ol>
+            </div>
+
             <h2>Why Stratum Pool Pinger Was Built</h2>
             <p>
                 Most miners choose pools based on advertised server locations or general advice like "use the closest
