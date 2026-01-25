@@ -141,7 +141,7 @@ This roadmap is structured as a sequence of testable tasks that can be completed
 - Verification: `python3 -m json.tool business-conspect/spec/eval_queries.json` succeeds, and the rubric explicitly references `DEC-006` and `DEC-007`.
 
 #### Task 10A — Add Offline Evaluation Runner (Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Make the evaluation bench executable in the current offline environment, so gaps are detected automatically rather than by manual review only.
 - Deliverable: A script such as `business-conspect/scripts/eval_report.py` that reads `business-conspect/spec/eval_queries.json`, checks that the report dialogue covers the query intents and key phrases, and prints a clear per-query pass/fail summary.
 - Verification: Running `python3 business-conspect/scripts/eval_report.py business-conspect/reports/2026-01-25/elinext.com` produces a per-query summary and a non-zero exit code when required coverage signals are missing.
