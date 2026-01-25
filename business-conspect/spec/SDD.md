@@ -171,10 +171,10 @@ as a request surface and showcase.
 - Verification: Running `python3 business-conspect/scripts/init_answer_template.py business-conspect/reports/fixtures/scrape-sample --domain example.com --website https://example.com/` produces `business-conspect/reports/fixtures/scrape-sample/raw/llm_answer.md`, and `python3 business-conspect/scripts/validate_report.py business-conspect/reports/fixtures/scrape-sample/raw/llm_answer.md` exits with code 0.
 
 #### Task 10E — Implement Manual Answer Ingestion (Fast Path, Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Convert manual LLM outputs into canonical `report.md` reliably without any LLM API.
 - Deliverable: `business-conspect/scripts/ingest_llm_answers.py` that takes a manual answer file (Markdown or JSON), normalizes it into `report.md`, and runs validation.
-- Verification: Running the ingestion script on a filled answer template produces a `report.md` that passes `validate_report.py`.
+- Verification: Running `python3 business-conspect/scripts/ingest_llm_answers.py business-conspect/reports/fixtures/valid/report.md --out business-conspect/reports/fixtures/ingest-sample/report.md` produces `report.md` and prints `[PASS]`.
 
 #### Task 10F — Implement Minimal Publish Pipeline (Fast Path, Priority)
 - Status: Pending.

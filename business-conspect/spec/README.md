@@ -16,4 +16,4 @@ This directory contains the formal specifications for the Business Conspect tool
 - Scrape sources: `python3 business-conspect/scripts/scrape.py <url-or-html> --out <report-dir>`
 - Build prompt pack: `python3 business-conspect/scripts/build_prompt_pack.py <report-dir>`
 - Initialize answer template: `python3 business-conspect/scripts/init_answer_template.py <report-dir> --domain <domain> --website <https://domain/>`
-- Validate a manual answer: `python3 business-conspect/scripts/validate_report.py <report-dir>/raw/llm_answer.md`
+- Ingest manual answer: `python3 business-conspect/scripts/ingest_llm_answers.py <report-dir>/raw/llm_answer.md --report-dir <report-dir>`
