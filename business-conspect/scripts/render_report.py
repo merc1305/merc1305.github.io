@@ -30,6 +30,7 @@ GENERATED_RE = re.compile(
     r"^\s*-\s*Generated At \(UTC\):\s*(.+?)\s*$", re.IGNORECASE
 )
 MARKER_RE = re.compile(r"\[(evidence|inference):\s*([^\]]+)\]", re.IGNORECASE)
+HEADING_PREFIX_RE = re.compile(r"^\s*\d+\)\s*")
 
 
 class EvidenceRegistry:
@@ -66,6 +67,10 @@ def _extract_title(lines: list[str]) -> str:
     return "Business Conspect Report"
 
 
+def _strip_heading_prefix(text: str) -> str:
+    return HEADING_PREFIX_RE.sub("", text).strip()
+
+
 def _extract_metadata(lines: list[str]) -> dict[str, str]:
     metadata: dict[str, str] = {}
     in_metadata = False
@@ -83,6 +88,22 @@ def _extract_metadata(lines: list[str]) -> dict[str, str]:
             if match := GENERATED_RE.match(line):
                 metadata["generated_at"] = match.group(1).strip()
     return metadata
+
+
+def _strip_metadata_section(lines: list[str]) -> list[str]:
+    filtered: list[str] = []
+    skipping = False
+    for line in lines:
+        if not skipping and line.strip() == "## 1) Report Metadata":
+            skipping = True
+            continue
+        if skipping:
+            if line.startswith("## "):
+                skipping = False
+            else:
+                continue
+        filtered.append(line)
+    return filtered
 
 
 def _extract_summary(lines: list[str]) -> str:
@@ -223,7 +244,8 @@ def _markdown_to_html(lines: list[str], registry: EvidenceRegistry) -> str:
             in_paragraph = _close_paragraph(output, in_paragraph)
             close_lists()
             level = len(heading_match.group(1))
-            text = _render_inline(heading_match.group(2), registry)
+            heading_text = _strip_heading_prefix(heading_match.group(2))
+            text = _render_inline(heading_text, registry)
             output.append(f"<h{level}>{text}</h{level}>")
             continue
 
@@ -281,7 +303,8 @@ def render_report(report_path: Path, *, out_path: Path) -> Path:
     metadata = _extract_metadata(lines)
     summary = _extract_summary(lines)
     registry = EvidenceRegistry()
-    html_body = _markdown_to_html(lines, registry)
+    render_lines = _strip_metadata_section(lines)
+    html_body = _markdown_to_html(render_lines, registry)
     evidence_section = _render_evidence_list(registry)
     if evidence_section:
         html_body = f"{html_body}\n{evidence_section}"
