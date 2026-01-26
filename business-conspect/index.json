@@ -56,24 +56,5 @@
       "Reduced operational friction"
     ],
     "idealFor": "Crypto miners or small mining operations seeking stable payouts and integrated asset handling."
-  },
-  {
-    "date": "2026-01-25",
-    "domain": "elinext.com",
-    "indexPath": "reports/2026-01-25/elinext.com/index.html",
-    "reportMdPath": "reports/2026-01-25/elinext.com/report.md",
-    "summaryPath": "reports/2026-01-25/elinext.com/summary.json",
-    "summary": "Elinext provides custom software development, dedicated teams, and modernization support for B2B organizations.",
-    "primaryServices": [
-      "Custom Software Development",
-      "Dedicated Development Teams",
-      "Modernization and Support"
-    ],
-    "outcomes": [
-      "Ship custom software faster",
-      "Scale engineering capacity",
-      "Reduce delivery risk"
-    ],
-    "idealFor": "Product leaders and engineering managers who need delivery capacity or modernization help."
   }
 ]
