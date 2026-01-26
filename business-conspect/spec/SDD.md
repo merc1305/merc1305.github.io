@@ -253,3 +253,33 @@ as a request surface and showcase.
 - Goal: Align human-readable reports with machine-readable hints used by search and AI systems.
 - Deliverable: The HTML renderer embeds a JSON-LD block (for example a `CreativeWork` or `Report` representation) that includes domain, date, canonical URLs, and a short summary.
 - Verification: Rendering a report produces a JSON-LD block that parses as JSON and includes `report.md` / `index.html` canonical paths plus domain and date.
+
+#### Task 22 — Prefill Request Form on Start Conspect (Priority)
+- Status: Pending.
+- Goal: Reduce friction so users can submit with zero extra typing if they have nothing to add.
+- Deliverable: Clicking "Start Conspect" pre-fills the request form fields (URL, outcome, ICP, constraints, competitors) using the available defaults, and keeps the request valid with no edits.
+- Verification: Enter a URL on the hero, click "Start Conspect," and the request form is prefilled; clicking the submit action without edits produces a valid request payload with those defaults.
+
+#### Task 23 — Replace GitHub Issue Requests with Email Submission (Priority)
+- Status: Pending.
+- Goal: Remove the GitHub account requirement for users.
+- Deliverable: The request form sends a structured email (mailto or email endpoint) that includes URL, outcome, ICP, constraints, competitors, and notification preference, instead of opening a GitHub issue.
+- Verification: Clicking the request submit action opens an email draft (or sends) to the configured service mailbox with all fields present and no GitHub login flow.
+
+#### Task 24 — Implement n8n Automation Triggered by Request Emails (Priority)
+- Status: Pending.
+- Goal: Automate the offline pipeline so reports can be produced quickly without manual coordination.
+- Deliverable: An exportable n8n workflow (JSON) plus setup notes that: parse inbound request email, create report directory, run `scrape.py`, run `build_prompt_pack.py`, store prompt pack, wait for manual LLM answer drop-in, run `ingest_llm_answers.py`, run `validate_report.py`, run `eval_report.py`, render HTML, and run `update_index.py`.
+- Verification: Running the workflow with a test email produces a new report directory containing `raw/pages.json`, `raw/prompt_pack.md`, `report.md`, and `index.html`, and logs show each step executed.
+
+#### Task 25 — Add "Email Me When Published" Opt-In + Explanation (Priority)
+- Status: Pending.
+- Goal: Let users choose notifications and clearly explain the email-triggered automation.
+- Deliverable: A default-checked checkbox labeled "Email me when published" with helper text explaining that requests are processed via email triggers and leaving it checked enables notifications; the request payload includes a `notify=true/false` flag.
+- Verification: The checkbox is checked by default on page load, toggling it changes the submitted payload, and the helper text is visible near the checkbox.
+
+#### Task 26 — Notify Users After Publication (Priority)
+- Status: Pending.
+- Goal: Close the loop by notifying requesters as soon as their report is published.
+- Deliverable: The n8n workflow sends a completion email to the requester with the public report URL and a short status summary after publishing succeeds.
+- Verification: After a test run completes, an email is delivered to the requester with the report link and a confirmation that publishing succeeded.
