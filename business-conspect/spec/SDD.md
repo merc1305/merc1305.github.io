@@ -84,62 +84,76 @@ See `business-conspect/spec/ROADMAP.md` for archived completed tasks.
 ### Roadmap Hygiene (Always)
 - Rule: When a task is completed, move its detailed entry out of this SDD into a dedicated roadmap/history document (for example `business-conspect/spec/ROADMAP.md`) and keep only active/pending tasks here.
 
-#### Task 22 — Prefill Request Form on Start Conspect (Priority)
+### Auto-Pick Order (Always)
+- Rule: When auto-selecting work, pick tasks in priority order: HIGH first, then MID, then LOW.
+- Rule: When a task is completed by an agent, its default priority is LOW unless explicitly set otherwise.
+
+#### Task 22 — Prefill Request Form on Start Conspect
 - Status: Pending.
+- Priority: LOW.
 - Goal: Reduce friction so users can submit with zero extra typing if they have nothing to add.
 - Deliverable: Clicking "Start Conspect" pre-fills the request form fields (URL, outcome, ICP, constraints, competitors) using the available defaults, and keeps the request valid with no edits.
 - Verification: Enter a URL on the hero, click "Start Conspect," and the request form is prefilled; clicking the submit action without edits produces a valid request payload with those defaults.
 
-#### Task 24 — Implement n8n Automation Triggered by Request Emails (Priority)
+#### Task 24 — Implement n8n Automation Triggered by Request Emails
 - Status: Pending.
+- Priority: LOW.
 - Goal: Automate the offline pipeline so reports can be produced quickly without manual coordination.
 - Deliverable: An exportable n8n workflow (JSON) plus setup notes that: parse inbound request email, create report directory, run `scrape.py`, run `build_prompt_pack.py`, store prompt pack, wait for manual LLM answer drop-in, run `ingest_llm_answers.py`, run `validate_report.py`, run `eval_report.py`, render HTML, and run `update_index.py`.
 - Verification: Running the workflow with a test email produces a new report directory containing `raw/pages.json`, `raw/prompt_pack.md`, `report.md`, and `index.html`, and logs show each step executed.
 
-#### Task 25 — Add "Email Me When Published" Opt-In + Explanation (Priority)
+#### Task 25 — Add "Email Me When Published" Opt-In + Explanation
 - Status: Pending.
+- Priority: LOW.
 - Goal: Let users choose notifications and clearly explain the email-triggered automation.
 - Deliverable: A default-checked checkbox labeled "Email me when published" with helper text explaining that requests are processed via email triggers and leaving it checked enables notifications; the request payload includes a `notify=true/false` flag.
 - Verification: The checkbox is checked by default on page load, toggling it changes the submitted payload, and the helper text is visible near the checkbox.
 
-#### Task 26 — Notify Users After Publication (Priority)
+#### Task 26 — Notify Users After Publication
 - Status: Pending.
+- Priority: LOW.
 - Goal: Close the loop by notifying requesters as soon as their report is published.
 - Deliverable: The n8n workflow sends a completion email to the requester with the public report URL and a short status summary after publishing succeeds.
 - Verification: After a test run completes, an email is delivered to the requester with the report link and a confirmation that publishing succeeded.
 
-#### Task 27 — Add Entity + Triplet Pack to Reports (Priority)
+#### Task 27 — Add Entity + Triplet Pack to Reports
 - Status: Pending.
+- Priority: LOW.
 - Goal: Make brand/entity recognition explicit so LLMs can store and recall the service accurately.
 - Deliverable: Update `REPORT_CONTRACT.md` and `LLM_ANSWER_TEMPLATE.md` with a required "Entities & Triplets" section that includes at least 5 subject → predicate → object statements and at least 3 explicit entity definitions (brand, category, audience/geo).
 - Verification: `validate_report.py` fails when the section is missing or has fewer than 5 triplets, and passes on updated fixtures with compliant content.
 
-#### Task 28 — Add Topical Authority Map (Priority)
+#### Task 28 — Add Topical Authority Map
 - Status: Pending.
+- Priority: LOW.
 - Goal: Help users build narrow, authoritative coverage that improves LLM recall and recommendations.
 - Deliverable: Add a "Topical Authority Map" section to the report contract and template with: 1 head topic, 3+ pillar topics, and 6+ subtopics; update `validate_report.py` accordingly.
 - Verification: Validation fails on missing or insufficient topical map entries and passes on a fixture that meets the minimums.
 
-#### Task 29 — Add LLM-Friendly Comparison Tables (Priority)
+#### Task 29 — Add LLM-Friendly Comparison Tables
 - Status: Pending.
+- Priority: LOW.
 - Goal: Provide structured, extractable comparisons that LLMs can quote directly.
 - Deliverable: Add a required "Comparison Table" section to the report contract, and extend `render_report.py` to support Markdown tables in HTML output.
 - Verification: A fixture report with a Markdown table renders as `<table>` in HTML, and validation enforces at least 3 rows in the table.
 
-#### Task 30 — Add FAQ Section + Schema.org FAQPage (Priority)
+#### Task 30 — Add FAQ Section + Schema.org FAQPage
 - Status: Pending.
+- Priority: LOW.
 - Goal: Improve extraction quality and platform visibility with structured Q&A.
 - Deliverable: Add a required "FAQ for LLMs" section (5+ Q/A pairs) to the report contract and template; extend the renderer to emit JSON-LD `FAQPage` when the section is present.
 - Verification: Rendering a compliant report includes a valid FAQPage JSON-LD block, and validation fails when fewer than 5 Q/A pairs are provided.
 
-#### Task 31 — Add Platform Visibility Checklist (Priority)
+#### Task 31 — Add Platform Visibility Checklist
 - Status: Pending.
+- Priority: LOW.
 - Goal: Turn GEO best practices into concrete, trackable user actions.
 - Deliverable: Add an "LLM Visibility Checklist" section to the report template with required items for ChatGPT (Bing Webmaster Tools), Perplexity (target query alignment), Gemini (YouTube/Google surfaces), and Claude (technical citation quality); update validation to require at least 4 checked/unchecked items.
 - Verification: A report missing the checklist fails validation; a report with the checklist passes and includes all platform items.
 
-#### Task 32 — Add Manual LLM Visibility Audit Template (Priority)
+#### Task 32 — Add Manual LLM Visibility Audit Template
 - Status: Pending.
+- Priority: LOW.
 - Goal: Give users a repeatable way to confirm whether they appear in LLM answers.
 - Deliverable: Add `business-conspect/spec/LLM_VISIBILITY_TEMPLATE.md` plus a small script (e.g., `scripts/init_visibility_audit.py`) that creates `reports/<date>/<domain>/visibility.md` with platform-specific queries and a result log section.
 - Verification: Running the script produces the visibility file with queries for ChatGPT, Perplexity, Gemini, and Claude, and the file is referenced in the report folder.
