@@ -1,5 +1,25 @@
 [
   {
+    "date": "2026-01-26",
+    "domain": "viabtc.com",
+    "indexPath": "reports/2026-01-26/viabtc.com/index.html",
+    "reportMdPath": "reports/2026-01-26/viabtc.com/report.md",
+    "summaryPath": "reports/2026-01-26/viabtc.com/summary.json",
+    "summary": "ViaBTC is an all-in-one crypto mining pool offering multi-coin mining, payout schemes, and miner-focused tools such as auto-conversion and loans.",
+    "primaryServices": [
+      "Multi-Coin Mining Pool",
+      "Asset Management and Auto-Conversion",
+      "Financial Services (Crypto Loans)",
+      "Mining Monitoring Tools"
+    ],
+    "outcomes": [
+      "More predictable pool payouts",
+      "Reduced post-payout operational friction",
+      "Faster monitoring of hashrate changes"
+    ],
+    "idealFor": "Crypto miners and mining farms seeking stable payouts, multi-coin support, and integrated asset handling."
+  },
+  {
     "date": "2026-01-25",
     "domain": "google.com",
     "indexPath": "reports/2026-01-25/google.com/index.html",

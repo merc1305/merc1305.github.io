@@ -195,6 +195,67 @@
           ]
         }
       ]
+    },
+    {
+      "domain": "viabtc.com",
+      "reportPath": "business-conspect/reports/2026-01-26/viabtc.com/report.md",
+      "queries": [
+        {
+          "id": "viabtc_vip_hashrate_fit",
+          "intent": "outcome_jtbd",
+          "query": "best mining pool for stable payouts and VIP miners with large hash rate — is ViaBTC a fit?",
+          "mustCover": [
+            "value_outcome",
+            "fit_constraints",
+            "selection_logic_or_alternative",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "viabtc_vs_competitors",
+          "intent": "selection_comparison",
+          "query": "viabtc vs antpool vs f2pool for a large mining farm — which should I choose?",
+          "mustCover": [
+            "selection_logic_or_alternative",
+            "fit_constraints",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "viabtc_fees_thresholds",
+          "intent": "pricing_cost",
+          "query": "how much are ViaBTC pool fees and payout thresholds, and what affects the cost?",
+          "mustCover": [
+            "pricing_cost",
+            "fit_constraints",
+            "non_fit_or_risk",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "viabtc_region_coin_fit",
+          "intent": "constraints_fit",
+          "query": "is ViaBTC suitable for miners in my region and for coins like BTC, LTC, or DOGE?",
+          "mustCover": [
+            "value_outcome",
+            "fit_constraints",
+            "selection_logic_or_alternative",
+            "evidence_or_inference"
+          ]
+        },
+        {
+          "id": "viabtc_non_fit_custody",
+          "intent": "non_fit_risk",
+          "query": "when is ViaBTC not a fit if I need full self-custody or face regulation risk?",
+          "mustCover": [
+            "non_fit_or_risk",
+            "fit_constraints",
+            "evidence_or_inference"
+          ]
+        }
+      ]
     }
   ]
 }
