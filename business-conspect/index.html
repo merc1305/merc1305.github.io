@@ -158,6 +158,12 @@
       font-size: 1rem;
     }
 
+    .request-form input.is-missing,
+    .request-form textarea.is-missing {
+      border-color: rgba(255, 93, 93, 0.9);
+      box-shadow: 0 0 0 1px rgba(255, 93, 93, 0.45);
+    }
+
     .request-form textarea {
       min-height: 120px;
       resize: vertical;
@@ -236,8 +242,8 @@
           I want to tell the LLM what to emphasize (optional)
         </label>
         <p class="request-hint">
-          Leave this off to send the request right after you enter your URL (press Enter or click the button). If you
-          already know how you want your site positioned in the LLM, enable this and add details below.
+          Leave this off to send the request right after you enter your URL (press Enter). If you already know how you
+          want your site positioned in the LLM, enable this and add details below.
         </p>
       </div>
 
@@ -375,6 +381,7 @@
     const startButton = document.getElementById('start-btn');
     const detailsToggle = document.getElementById('request-details-toggle');
     const optionalFields = document.getElementById('request-optional');
+    let isSyncing = false;
 
     function normalizeUrl(rawValue) {
       const value = (rawValue || '').trim();
@@ -401,11 +408,13 @@
       requestSection.classList.toggle('is-hidden', !detailsToggle.checked);
     }
 
-    function updateStartLabel() {
-      if (!detailsToggle) {
+    function syncUrlInputs(sourceInput, targetInput) {
+      if (isSyncing || !sourceInput || !targetInput) {
         return;
       }
-      startButton.textContent = detailsToggle.checked ? 'Start Conspect' : 'Conspect me';
+      isSyncing = true;
+      targetInput.value = sourceInput.value;
+      isSyncing = false;
     }
 
     function getOptionalDetails() {
@@ -421,25 +430,77 @@
       };
     }
 
-    function buildEmailLink() {
-      const urlValue = normalizeUrl(requestUrlInput.value);
+    function markMissingOptionalFields() {
+      if (!optionalFields) {
+        return;
+      }
+      const inputs = optionalFields.querySelectorAll('input, textarea');
+      inputs.forEach((field) => {
+        const isMissing = field.value.trim() === '';
+        field.classList.toggle('is-missing', isMissing);
+      });
+    }
+
+    function clearMissingHighlight(event) {
+      if (!event || !event.target) {
+        return;
+      }
+      if (event.target.value.trim()) {
+        event.target.classList.remove('is-missing');
+      }
+    }
+
+    function getValidatedUrl(rawValue) {
+      const urlValue = normalizeUrl(rawValue);
       if (!urlValue) {
         alert('Please enter a valid URL');
         return '';
       }
 
-      let domain = '';
+      let parsed;
       try {
-        domain = new URL(urlValue).hostname.replace(/^www\./, '');
+        parsed = new URL(urlValue);
       } catch (err) {
         alert('Please enter a valid URL');
         return '';
       }
 
-      const { outcome, icp, constraints, competitors } = getOptionalDetails();
+      if (!parsed.hostname || !parsed.hostname.includes('.')) {
+        alert('Please enter a valid public URL (including a domain).');
+        return '';
+      }
+
+      return parsed.href;
+    }
+
+    function syncValidatedUrl(rawValue) {
+      const validUrl = getValidatedUrl(rawValue);
+      if (!validUrl) {
+        return '';
+      }
+      siteUrlInput.value = validUrl;
+      requestUrlInput.value = validUrl;
+      return validUrl;
+    }
+
+    function buildEmailLink(urlValue) {
+      if (!urlValue) {
+        return '';
+      }
+
+      const domain = new URL(urlValue).hostname.replace(/^www\./, '');
+      let { outcome, icp, constraints, competitors } = getOptionalDetails();
+      const detailsEnabled = Boolean(detailsToggle && detailsToggle.checked);
+      if (!detailsEnabled) {
+        outcome = '';
+        icp = '';
+        constraints = '';
+        competitors = '';
+      }
       const hasOptionalDetails = Boolean(outcome || icp || constraints || competitors);
-      if (detailsToggle && detailsToggle.checked && !hasOptionalDetails) {
-        alert('Add at least one positioning detail or uncheck the box to send the request immediately.');
+      if (detailsEnabled && !hasOptionalDetails) {
+        markMissingOptionalFields();
+        alert("If you have nothing to add, uncheck the box and send the request so the LLMs can review the site on their own.");
         return '';
       }
 
@@ -469,8 +530,13 @@
       return `mailto:merc1305+business.conspect@gmail.com?${params.toString()}`;
     }
 
-    function sendEmailRequest() {
-      const emailLink = buildEmailLink();
+    function sendEmailRequest(sourceValue) {
+      const urlValue = sourceValue || requestUrlInput.value || siteUrlInput.value;
+      const validUrl = syncValidatedUrl(urlValue);
+      if (!validUrl) {
+        return false;
+      }
+      const emailLink = buildEmailLink(validUrl);
       if (!emailLink) {
         return false;
       }
@@ -479,14 +545,12 @@
     }
 
     startButton.addEventListener('click', () => {
-      const url = normalizeUrl(siteUrlInput.value);
-      if (!url) {
-        alert('Please enter a valid URL');
+      const validUrl = syncValidatedUrl(siteUrlInput.value || requestUrlInput.value);
+      if (!validUrl) {
         return;
       }
-      requestUrlInput.value = url;
       if (detailsToggle && !detailsToggle.checked) {
-        sendEmailRequest();
+        sendEmailRequest(validUrl);
         return;
       }
       if (requestSection) {
@@ -498,24 +562,50 @@
       sendEmailRequest();
     });
 
+    siteUrlInput.addEventListener('input', () => {
+      syncUrlInputs(siteUrlInput, requestUrlInput);
+    });
+
+    requestUrlInput.addEventListener('input', () => {
+      syncUrlInputs(requestUrlInput, siteUrlInput);
+    });
+
     siteUrlInput.addEventListener('keydown', (event) => {
       if (event.key !== 'Enter') {
         return;
       }
       event.preventDefault();
-      startButton.click();
+      if (detailsToggle && detailsToggle.checked) {
+        const validUrl = syncValidatedUrl(siteUrlInput.value || requestUrlInput.value);
+        if (!validUrl) {
+          return;
+        }
+        startButton.click();
+        return;
+      }
+      sendEmailRequest(siteUrlInput.value);
+    });
+
+    requestUrlInput.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') {
+        return;
+      }
+      event.preventDefault();
+      sendEmailRequest(requestUrlInput.value);
     });
 
     if (detailsToggle) {
       detailsToggle.addEventListener('change', () => {
         updateOptionalVisibility();
         updateRequestVisibility();
-        updateStartLabel();
       });
     }
     updateOptionalVisibility();
     updateRequestVisibility();
-    updateStartLabel();
+
+    if (optionalFields) {
+      optionalFields.addEventListener('input', clearMissingHighlight);
+    }
 
     // Smooth scroll for anchors
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
