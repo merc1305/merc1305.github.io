@@ -103,6 +103,38 @@
       text-align: left;
     }
 
+    #request.is-hidden {
+      display: none;
+    }
+
+    .request-toggle {
+      display: grid;
+      gap: 0.35rem;
+      max-width: 700px;
+      margin: 0 auto 1.5rem auto;
+      text-align: left;
+    }
+
+    .request-toggle label {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+    }
+
+    .request-toggle input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent-color);
+    }
+
+    .request-hint {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin: 0;
+    }
+
     .request-form {
       display: grid;
       gap: 1rem;
@@ -136,6 +168,15 @@
       gap: 1rem;
       flex-wrap: wrap;
       margin-top: 0.5rem;
+    }
+
+    .request-optional {
+      display: none;
+      gap: 1rem;
+    }
+
+    .request-optional.is-visible {
+      display: grid;
     }
 
 
@@ -189,6 +230,17 @@
         <button class="btn btn-primary btn-start" id="start-btn">Start Conspect</button>
       </div>
 
+      <div class="request-toggle">
+        <label for="request-details-toggle">
+          <input type="checkbox" id="request-details-toggle">
+          I want to tell the LLM what to emphasize (optional)
+        </label>
+        <p class="request-hint">
+          Leave this off to send the request right after you enter your URL (press Enter or click the button). If you
+          already know how you want your site positioned in the LLM, enable this and add details below.
+        </p>
+      </div>
+
       <p style="font-size: 0.9rem; margin-top: 1rem; color: var(--text-secondary);">
         Analyzing content, target audience, and USP for optimal LLM context.
       </p>
@@ -209,6 +261,11 @@
             <label for="request-url">Website URL (required)</label>
             <input type="url" id="request-url" placeholder="https://example.com" required>
           </div>
+          <p class="request-hint">
+            Leaving optional fields empty is fine — the LLM will propose how to fill them. To add your own positioning,
+            enable the checkbox above and the extra fields will appear.
+          </p>
+          <div class="request-optional" id="request-optional">
           <div>
             <label for="request-outcome">Desired outcome / value to highlight</label>
             <input type="text" id="request-outcome" placeholder="e.g., increase qualified leads by 30%">
@@ -226,8 +283,9 @@
             <label for="request-competitors">Competitors / alternatives</label>
             <input type="text" id="request-competitors" placeholder="e.g., competitor.com, in-house team">
           </div>
+          </div>
           <div class="request-actions">
-            <button class="btn btn-primary" id="request-btn">Send Email Request</button>
+            <button class="btn btn-primary" id="request-btn">Conspect me</button>
           </div>
         </div>
         <p style="font-size: 0.9rem; margin-top: 1.5rem; color: var(--text-secondary);">
@@ -315,6 +373,8 @@
     const requestSection = document.getElementById('request');
     const requestButton = document.getElementById('request-btn');
     const startButton = document.getElementById('start-btn');
+    const detailsToggle = document.getElementById('request-details-toggle');
+    const optionalFields = document.getElementById('request-optional');
 
     function normalizeUrl(rawValue) {
       const value = (rawValue || '').trim();
@@ -325,6 +385,40 @@
         return value;
       }
       return `https://${value}`;
+    }
+
+    function updateOptionalVisibility() {
+      if (!optionalFields || !detailsToggle) {
+        return;
+      }
+      optionalFields.classList.toggle('is-visible', detailsToggle.checked);
+    }
+
+    function updateRequestVisibility() {
+      if (!requestSection || !detailsToggle) {
+        return;
+      }
+      requestSection.classList.toggle('is-hidden', !detailsToggle.checked);
+    }
+
+    function updateStartLabel() {
+      if (!detailsToggle) {
+        return;
+      }
+      startButton.textContent = detailsToggle.checked ? 'Start Conspect' : 'Conspect me';
+    }
+
+    function getOptionalDetails() {
+      const outcome = document.getElementById('request-outcome').value.trim();
+      const icp = document.getElementById('request-icp').value.trim();
+      const constraints = document.getElementById('request-constraints').value.trim();
+      const competitors = document.getElementById('request-competitors').value.trim();
+      return {
+        outcome,
+        icp,
+        constraints,
+        competitors,
+      };
     }
 
     function buildEmailLink() {
@@ -342,19 +436,21 @@
         return '';
       }
 
-      const outcome = document.getElementById('request-outcome').value.trim();
-      const icp = document.getElementById('request-icp').value.trim();
-      const constraints = document.getElementById('request-constraints').value.trim();
-      const competitors = document.getElementById('request-competitors').value.trim();
+      const { outcome, icp, constraints, competitors } = getOptionalDetails();
+      const hasOptionalDetails = Boolean(outcome || icp || constraints || competitors);
+      if (detailsToggle && detailsToggle.checked && !hasOptionalDetails) {
+        alert('Add at least one positioning detail or uncheck the box to send the request immediately.');
+        return '';
+      }
 
       const bodyLines = [
         '## Business Conspect Request',
         `- Website: ${urlValue}`,
         `- Domain: ${domain}`,
-        `- Desired outcome / value: ${outcome || 'TODO'}`,
-        `- Audience / ICP: ${icp || 'TODO'}`,
-        `- Constraints: ${constraints || 'TODO'}`,
-        `- Competitors / alternatives: ${competitors || 'None provided'}`,
+        `- Desired outcome / value: ${outcome || 'Not provided — LLM will infer'}`,
+        `- Audience / ICP: ${icp || 'Not provided — LLM will infer'}`,
+        `- Constraints: ${constraints || 'Not provided — LLM will infer'}`,
+        `- Competitors / alternatives: ${competitors || 'Not provided — LLM will infer'}`,
         '',
         '## Manual LLM Loop (No API)',
         '- I understand this uses a manual LLM workflow and offline publishing.',
@@ -373,10 +469,25 @@
       return `mailto:merc1305+business.conspect@gmail.com?${params.toString()}`;
     }
 
+    function sendEmailRequest() {
+      const emailLink = buildEmailLink();
+      if (!emailLink) {
+        return false;
+      }
+      window.location.href = emailLink;
+      return true;
+    }
+
     startButton.addEventListener('click', () => {
-      const url = (siteUrlInput.value || '').trim();
-      if (url) {
-        requestUrlInput.value = url;
+      const url = normalizeUrl(siteUrlInput.value);
+      if (!url) {
+        alert('Please enter a valid URL');
+        return;
+      }
+      requestUrlInput.value = url;
+      if (detailsToggle && !detailsToggle.checked) {
+        sendEmailRequest();
+        return;
       }
       if (requestSection) {
         requestSection.scrollIntoView({ behavior: 'smooth' });
@@ -384,12 +495,27 @@
     });
 
     requestButton.addEventListener('click', () => {
-      const emailLink = buildEmailLink();
-      if (!emailLink) {
+      sendEmailRequest();
+    });
+
+    siteUrlInput.addEventListener('keydown', (event) => {
+      if (event.key !== 'Enter') {
         return;
       }
-      window.location.href = emailLink;
+      event.preventDefault();
+      startButton.click();
     });
+
+    if (detailsToggle) {
+      detailsToggle.addEventListener('change', () => {
+        updateOptionalVisibility();
+        updateRequestVisibility();
+        updateStartLabel();
+      });
+    }
+    updateOptionalVisibility();
+    updateRequestVisibility();
+    updateStartLabel();
 
     // Smooth scroll for anchors
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
