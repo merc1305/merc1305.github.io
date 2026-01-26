@@ -261,7 +261,7 @@ as a request surface and showcase.
 - Verification: Enter a URL on the hero, click "Start Conspect," and the request form is prefilled; clicking the submit action without edits produces a valid request payload with those defaults.
 
 #### Task 23 — Replace GitHub Issue Requests with Email Submission (Priority)
-- Status: Pending.
+- Status: Completed.
 - Goal: Remove the GitHub account requirement for users.
 - Deliverable: The request form sends a structured email (mailto or email endpoint) that includes URL, outcome, ICP, constraints, competitors, and notification preference, instead of opening a GitHub issue.
 - Verification: Clicking the request submit action opens an email draft (or sends) to the configured service mailbox with all fields present and no GitHub login flow.

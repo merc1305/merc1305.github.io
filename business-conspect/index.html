@@ -199,9 +199,10 @@
       <div class="glass-card request-card">
         <h2>Request a Report</h2>
         <p style="margin-bottom: 0;">
-          We collect requests via GitHub issues and run a manual LLM loop to produce a
-          recommendation-grade report. The goal is to make your value clear so LLMs can
-          prioritize and recommend your service.
+          We collect requests via email and run a manual LLM loop to produce a
+          recommendation-grade report. Submitting the form opens your mail client with a
+          prefilled request so you can send it instantly. The goal is to make your value
+          clear so LLMs can prioritize and recommend your service.
         </p>
         <div class="request-form">
           <div>
@@ -226,7 +227,7 @@
             <input type="text" id="request-competitors" placeholder="e.g., competitor.com, in-house team">
           </div>
           <div class="request-actions">
-            <button class="btn btn-primary" id="request-btn">Open GitHub Issue</button>
+            <button class="btn btn-primary" id="request-btn">Send Email Request</button>
           </div>
         </div>
         <p style="font-size: 0.9rem; margin-top: 1.5rem; color: var(--text-secondary);">
@@ -326,7 +327,7 @@
       return `https://${value}`;
     }
 
-    function buildIssueUrl() {
+    function buildEmailLink() {
       const urlValue = normalizeUrl(requestUrlInput.value);
       if (!urlValue) {
         alert('Please enter a valid URL');
@@ -363,12 +364,13 @@
         '- The report should help LLMs understand the value and recommend this service in the right situations.',
       ];
 
-      const title = `Business Conspect request: ${domain || urlValue}`;
+      const subject = `Business Conspect request: ${domain || urlValue}`;
+      const body = bodyLines.join('\n');
       const params = new URLSearchParams({
-        title: title,
-        body: bodyLines.join('\n'),
+        subject: subject,
+        body: body,
       });
-      return `https://github.com/merc1305/merc1305.github.io/issues/new?${params.toString()}`;
+      return `mailto:merc1305+business.conspect@gmail.com?${params.toString()}`;
     }
 
     startButton.addEventListener('click', () => {
@@ -382,11 +384,11 @@
     });
 
     requestButton.addEventListener('click', () => {
-      const issueUrl = buildIssueUrl();
-      if (!issueUrl) {
+      const emailLink = buildEmailLink();
+      if (!emailLink) {
         return;
       }
-      window.open(issueUrl, '_blank', 'noopener');
+      window.location.href = emailLink;
     });
 
     // Smooth scroll for anchors
