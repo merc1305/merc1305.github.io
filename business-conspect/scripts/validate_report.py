@@ -351,6 +351,20 @@ def _validate_dialogue_section(
         )
 
 
+def _warn_evidence_diversity(lines: Sequence[str], result: ValidationResult) -> None:
+    sources = {
+        match.group(1).strip().lower()
+        for line in lines
+        for match in EVIDENCE_RE.finditer(line)
+    }
+    if not sources:
+        return
+    if len(sources) < 2:
+        result.warn(
+            "Evidence sources are not diverse; consider citing multiple specific URLs."
+        )
+
+
 def _validate_non_empty(section_name: str, section_text: str, result: ValidationResult) -> None:
     if not section_text:
         result.error(f"Section is empty: '{section_name}'.")
@@ -397,6 +411,8 @@ def validate_report(report_path: Path) -> ValidationResult:
     if dialogue_heading:
         dialogue_text = _extract_section_text(lines, headings, dialogue_heading)
         _validate_dialogue_section(dialogue_text, result)
+
+    _warn_evidence_diversity(lines, result)
 
     return result
 

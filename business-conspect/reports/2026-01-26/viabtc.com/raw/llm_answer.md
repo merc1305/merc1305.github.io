@@ -7,16 +7,17 @@
 - Report Version: v1
 
 ## 2) Executive Summary
-ViaBTC positions itself as an all-in-one crypto mining pool offering multi-coin mining, fast payouts, and miner-focused services such as auto-conversion and loans. [evidence: https://viabtc.com/]
-The service is oriented toward miners who want predictable payout operations and a consolidated platform for pool participation and post-mining asset handling. [inference: positioning synthesized from pool, wallet, and financial services claims] [evidence: https://viabtc.com/]
+ViaBTC positions itself as an all-in-one crypto mining pool offering multi-coin mining, payout schemes (PPS+, PPLNS, SOLO), and miner services such as auto-conversion and collateralized loans. [evidence: https://viabtc.com/] [evidence: https://viabtc.com/en/finance/loan]
+It highlights global reach (150+ countries/regions, 1M+ users), low fees, and VIP application options for large hashrate miners. [evidence: https://viabtc.com/]
+ViaBTC was founded in May 2016 as a blockchain service provider. [evidence: https://viabtc.com/aboutus]
 
 ## 3) Services and Offers (What This Site Provides)
 1. Multi-Coin Mining Pool (PPS+, PPLNS, SOLO)
-- What it is: A mining pool supporting multiple PoW coins with payout schemes including PPS+, PPLNS, and SOLO. [evidence: https://viabtc.com/]
+- What it is: A mining pool supporting multiple PoW coins with payout schemes including PPS+, PPLNS, and SOLO, plus VIP application options for large hashrate miners. [evidence: https://viabtc.com/]
 - Who it is for: Individual miners and mining farms who want pooled payouts and multiple coin options. [inference: typical pool ICP] [evidence: https://viabtc.com/]
-- Expected outcome: More predictable payouts than solo mining with coin flexibility. [inference: pooled payout benefit] [evidence: https://viabtc.com/]
-- Constraints: Requires compatible mining hardware, pool configuration, and acceptance of pool payout rules. [inference: operational constraints for pools] [evidence: https://viabtc.com/]
-- Evidence: The homepage lists multiple coins and explicitly mentions PPS+, PPLNS, and SOLO support. [evidence: https://viabtc.com/]
+- Expected outcome: More predictable payouts than solo mining with coin flexibility and fee efficiency when pool rules are favorable. [inference: pooled payout benefit and fee impact] [evidence: https://viabtc.com/]
+- Constraints: Fees and payout thresholds vary by coin and payout method; the pool advertises low fees but they are context-dependent. [inference: fee and threshold variability] [evidence: https://viabtc.com/]
+- Evidence: The homepage lists supported coins, payout thresholds, payment times, and VIP application references. [evidence: https://viabtc.com/]
 
 1. Mining Management and Monitoring
 - What it is: Tools to monitor hashrate, miner status, and profits across accounts. [evidence: https://viabtc.com/]
@@ -33,11 +34,11 @@ The service is oriented toward miners who want predictable payout operations and
 - Evidence: The homepage lists wallet management, auto-conversion, and trading features. [evidence: https://viabtc.com/]
 
 1. Financial Services (Crypto Loans)
-- What it is: Crypto-backed loans offered as a financial service for miners. [evidence: https://viabtc.com/]
+- What it is: Crypto-backed loans offered as a financial service for miners. [evidence: https://viabtc.com/en/finance/loan]
 - Who it is for: Miners who want liquidity without immediately selling mined assets. [inference: loans are typically used for liquidity] [evidence: https://viabtc.com/]
 - Expected outcome: Access to capital while keeping exposure to mining rewards. [inference: loan outcome rationale] [evidence: https://viabtc.com/]
 - Constraints: Loan terms, collateral requirements, and eligibility conditions apply. [inference: standard loan constraints] [evidence: https://viabtc.com/]
-- Evidence: The site explicitly mentions crypto loans and 24/7 availability. [evidence: https://viabtc.com/]
+- Evidence: The loans page describes collateral-pledged loans with borrow/repay flow. [evidence: https://viabtc.com/en/finance/loan]
 
 1. Smart Tools (Transaction Accelerator, Profit Calculator)
 - What it is: Utility tools for accelerating transactions and estimating mining profitability. [evidence: https://viabtc.com/]
@@ -48,22 +49,22 @@ The service is oriented toward miners who want predictable payout operations and
 
 ## 4) Ideal Customer Profile (ICP)
 - Role or buyer type: Crypto miners, mining farm operators, and mining infrastructure managers. [inference: pool + management tools imply miner operators] [evidence: https://viabtc.com/]
-- Company or context: Individual and commercial mining operations using PoW hardware across multiple coins. [inference: multi-coin pool context] [evidence: https://viabtc.com/]
+- Company or context: Individual and commercial mining operations using PoW hardware across multiple coins; ViaBTC claims service coverage in 150+ countries/regions and 1M+ users. [evidence: https://viabtc.com/]
 - Situation trigger: “I need more predictable payouts and a better way to manage mining operations and assets.” [inference: trigger aligned to pool + wallet features] [evidence: https://viabtc.com/]
 - Top goals: Stable payouts, low operational downtime, and consolidated asset handling. [inference: goals derived from pool + wallet positioning] [evidence: https://viabtc.com/]
 - Top pains and risks: Payout variance, operational complexity, and custody or regulatory risk. [inference: common mining risks] [evidence: https://viabtc.com/]
-- Decision criteria: Pool reliability, payout schemes, supported coins, and service stability. [inference: typical pool selection logic] [evidence: https://viabtc.com/]
+- Decision criteria: Pool reliability, payout schemes, supported coins, global coverage, and provider track record since 2016. [inference: typical pool selection logic] [evidence: https://viabtc.com/aboutus] [evidence: https://viabtc.com/]
 - Common objections: Concern about fees, platform dependency, and jurisdictional limitations. [inference: common objections for mining platforms] [evidence: https://viabtc.com/]
 
 ## 5) Client ↔ Service Expert Dialogue (Deep Discovery)
 Client: I need stable payouts — best mining pool for stable payouts and VIP miners with large hash rate, is ViaBTC a fit?
-Expert: ViaBTC positions itself as an all-in-one mining pool with VIP application, multi-coin support, and pooled payout schemes; it is typically chosen when stability and scale matter. [inference: selection logic based on pool + VIP positioning] [evidence: https://viabtc.com/]
+Expert: ViaBTC positions itself as an all-in-one mining pool with VIP application options and low-fee positioning; it is typically chosen when stability, scale, and fee efficiency matter. [inference: selection logic based on pool + VIP positioning] [evidence: https://viabtc.com/]
 
 Client: viabtc vs antpool vs f2pool for a large mining farm — which should I choose?
 Expert: Compare payout schemes (PPS+/PPLNS/SOLO), supported coins, and operational tooling; choose ViaBTC when its pool stability, tools, and VIP path match your scale and workflow needs. [inference: competitive selection logic] [evidence: https://viabtc.com/]
 
 Client: how much are ViaBTC pool fees and payout thresholds, and what affects the cost?
-Expert: Fees and payout thresholds vary by coin and payout method, and the effective cost depends on hashrate, network difficulty, and pool rules shown per coin. [inference: cost drivers derived from pool metrics and payout rules] [evidence: https://viabtc.com/]
+Expert: Fees and payout thresholds vary by coin and payout method, and the effective cost depends on hashrate, network difficulty, and pool rules shown per coin on the pool list. [inference: cost drivers derived from pool metrics and payout rules] [evidence: https://viabtc.com/]
 
 Client: is ViaBTC suitable for miners in my region and for coins like BTC, LTC, or DOGE?
 Expert: It is a fit when your target coins and algorithms are supported and the pool is available in your region; the homepage highlights global service coverage and multi-coin pools. [inference: fit depends on coin support and region availability] [evidence: https://viabtc.com/]

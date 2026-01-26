@@ -29,6 +29,24 @@ DOMAIN_RE = re.compile(r"^\s*-\s*Domain:\s*(.+?)\s*$", re.IGNORECASE)
 GENERATED_RE = re.compile(
     r"^\s*-\s*Generated At \(UTC\):\s*(.+?)\s*$", re.IGNORECASE
 )
+MARKER_RE = re.compile(r"\[(evidence|inference):\s*([^\]]+)\]", re.IGNORECASE)
+
+
+class EvidenceRegistry:
+    def __init__(self) -> None:
+        self._sources: list[str] = []
+        self._index: dict[str, int] = {}
+
+    def register(self, source: str) -> int:
+        source = source.strip()
+        if source not in self._index:
+            self._sources.append(source)
+            self._index[source] = len(self._sources)
+        return self._index[source]
+
+    @property
+    def sources(self) -> list[str]:
+        return list(self._sources)
 
 
 def _now_iso_utc() -> str:
@@ -78,7 +96,12 @@ def _extract_summary(lines: list[str]) -> str:
             break
         if in_summary and line.strip():
             summary_lines.append(line.strip())
-    return " ".join(summary_lines)
+    return _strip_markers(" ".join(summary_lines))
+
+
+def _strip_markers(text: str) -> str:
+    cleaned = MARKER_RE.sub("", text)
+    return " ".join(cleaned.split())
 
 
 def _build_json_ld(
@@ -111,6 +134,42 @@ def _build_json_ld(
     return f"<script type=\"application/ld+json\">{json_ld}</script>"
 
 
+def _render_inline(text: str, registry: EvidenceRegistry) -> str:
+    parts: list[str] = []
+    cursor = 0
+    for match in MARKER_RE.finditer(text):
+        parts.append(_escape(text[cursor:match.start()]))
+        kind = match.group(1).lower()
+        content = match.group(2).strip()
+        if kind == "evidence":
+            index = registry.register(content)
+            parts.append(
+                f"<sup class=\"evidence-ref\" title=\"{_escape(content)}\">[{index}]</sup>"
+            )
+        else:
+            parts.append(
+                f"<span class=\"inference\">[inference: {_escape(content)}]</span>"
+            )
+        cursor = match.end()
+    parts.append(_escape(text[cursor:]))
+    return "".join(parts)
+
+
+def _render_evidence_list(registry: EvidenceRegistry) -> str:
+    if not registry.sources:
+        return ""
+    items = "\n".join(
+        f"<li><a href=\"{_escape(source)}\">{_escape(source)}</a></li>"
+        for source in registry.sources
+    )
+    return (
+        "<section class=\"evidence-section\">"
+        "<h2>Evidence Sources</h2>"
+        f"<ol class=\"evidence-list\">{items}</ol>"
+        "</section>"
+    )
+
+
 def _close_paragraph(output: list[str], in_paragraph: bool) -> bool:
     if in_paragraph:
         output.append("</p>")
@@ -118,7 +177,7 @@ def _close_paragraph(output: list[str], in_paragraph: bool) -> bool:
     return in_paragraph
 
 
-def _markdown_to_html(lines: list[str]) -> str:
+def _markdown_to_html(lines: list[str], registry: EvidenceRegistry) -> str:
     output: list[str] = []
     in_paragraph = False
     in_ordered = False
@@ -164,7 +223,7 @@ def _markdown_to_html(lines: list[str]) -> str:
             in_paragraph = _close_paragraph(output, in_paragraph)
             close_lists()
             level = len(heading_match.group(1))
-            text = _escape(heading_match.group(2))
+            text = _render_inline(heading_match.group(2), registry)
             output.append(f"<h{level}>{text}</h{level}>")
             continue
 
@@ -178,13 +237,13 @@ def _markdown_to_html(lines: list[str]) -> str:
                 output.append("<ol>")
                 in_ordered = True
             ordered_li_open = True
-            output.append(f"<li>{_escape(ordered_match.group(1))}")
+            output.append(f"<li>{_render_inline(ordered_match.group(1), registry)}")
             continue
 
         unordered_match = UNORDERED_ITEM_RE.match(line)
         if unordered_match:
             in_paragraph = _close_paragraph(output, in_paragraph)
-            item_text = _escape(unordered_match.group(1))
+            item_text = _render_inline(unordered_match.group(1), registry)
             if in_ordered and ordered_li_open:
                 if not in_nested_ul:
                     output.append("<ul>")
@@ -203,7 +262,7 @@ def _markdown_to_html(lines: list[str]) -> str:
 
         in_paragraph = _close_paragraph(output, in_paragraph)
         close_lists()
-        output.append(f"<p>{_escape(line)}</p>")
+        output.append(f"<p>{_render_inline(line, registry)}</p>")
 
     in_paragraph = _close_paragraph(output, in_paragraph)
     close_lists()
@@ -221,7 +280,11 @@ def render_report(report_path: Path, *, out_path: Path) -> Path:
     title = _extract_title(lines)
     metadata = _extract_metadata(lines)
     summary = _extract_summary(lines)
-    html_body = _markdown_to_html(lines)
+    registry = EvidenceRegistry()
+    html_body = _markdown_to_html(lines, registry)
+    evidence_section = _render_evidence_list(registry)
+    if evidence_section:
+        html_body = f"{html_body}\n{evidence_section}"
     json_ld = _build_json_ld(title=title, metadata=metadata, summary=summary)
 
     try:
