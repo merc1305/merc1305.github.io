@@ -216,11 +216,16 @@ def build_prompt_pack(report_dir: Path, *, max_content_chars: int, out_path: Pat
     source_urls = payload.get("source_urls", [])
     source_urls_block = "\n".join(f"- {url}" for url in source_urls) or "- (none)"
 
+    try:
+        report_dir_display = report_dir.relative_to(ROOT)
+    except ValueError:
+        report_dir_display = report_dir
+
     header = textwrap.dedent(
         f"""
         # Business Conspect Prompt Pack — {domain_hint or "unknown-domain"}
         Generated at (UTC): {generated_at}
-        Report directory: `{report_dir.relative_to(ROOT)}`
+        Report directory: `{report_dir_display}`
         Sources discovered: {sources_count}
 
         Source URLs:
