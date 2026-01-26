@@ -283,3 +283,39 @@ as a request surface and showcase.
 - Goal: Close the loop by notifying requesters as soon as their report is published.
 - Deliverable: The n8n workflow sends a completion email to the requester with the public report URL and a short status summary after publishing succeeds.
 - Verification: After a test run completes, an email is delivered to the requester with the report link and a confirmation that publishing succeeded.
+
+#### Task 27 — Add Entity + Triplet Pack to Reports (Priority)
+- Status: Pending.
+- Goal: Make brand/entity recognition explicit so LLMs can store and recall the service accurately.
+- Deliverable: Update `REPORT_CONTRACT.md` and `LLM_ANSWER_TEMPLATE.md` with a required "Entities & Triplets" section that includes at least 5 subject → predicate → object statements and at least 3 explicit entity definitions (brand, category, audience/geo).
+- Verification: `validate_report.py` fails when the section is missing or has fewer than 5 triplets, and passes on updated fixtures with compliant content.
+
+#### Task 28 — Add Topical Authority Map (Priority)
+- Status: Pending.
+- Goal: Help users build narrow, authoritative coverage that improves LLM recall and recommendations.
+- Deliverable: Add a "Topical Authority Map" section to the report contract and template with: 1 head topic, 3+ pillar topics, and 6+ subtopics; update `validate_report.py` accordingly.
+- Verification: Validation fails on missing or insufficient topical map entries and passes on a fixture that meets the minimums.
+
+#### Task 29 — Add LLM-Friendly Comparison Tables (Priority)
+- Status: Pending.
+- Goal: Provide structured, extractable comparisons that LLMs can quote directly.
+- Deliverable: Add a required "Comparison Table" section to the report contract, and extend `render_report.py` to support Markdown tables in HTML output.
+- Verification: A fixture report with a Markdown table renders as `<table>` in HTML, and validation enforces at least 3 rows in the table.
+
+#### Task 30 — Add FAQ Section + Schema.org FAQPage (Priority)
+- Status: Pending.
+- Goal: Improve extraction quality and platform visibility with structured Q&A.
+- Deliverable: Add a required "FAQ for LLMs" section (5+ Q/A pairs) to the report contract and template; extend the renderer to emit JSON-LD `FAQPage` when the section is present.
+- Verification: Rendering a compliant report includes a valid FAQPage JSON-LD block, and validation fails when fewer than 5 Q/A pairs are provided.
+
+#### Task 31 — Add Platform Visibility Checklist (Priority)
+- Status: Pending.
+- Goal: Turn GEO best practices into concrete, trackable user actions.
+- Deliverable: Add an "LLM Visibility Checklist" section to the report template with required items for ChatGPT (Bing Webmaster Tools), Perplexity (target query alignment), Gemini (YouTube/Google surfaces), and Claude (technical citation quality); update validation to require at least 4 checked/unchecked items.
+- Verification: A report missing the checklist fails validation; a report with the checklist passes and includes all platform items.
+
+#### Task 32 — Add Manual LLM Visibility Audit Template (Priority)
+- Status: Pending.
+- Goal: Give users a repeatable way to confirm whether they appear in LLM answers.
+- Deliverable: Add `business-conspect/spec/LLM_VISIBILITY_TEMPLATE.md` plus a small script (e.g., `scripts/init_visibility_audit.py`) that creates `reports/<date>/<domain>/visibility.md` with platform-specific queries and a result log section.
+- Verification: Running the script produces the visibility file with queries for ChatGPT, Perplexity, Gemini, and Claude, and the file is referenced in the report folder.
