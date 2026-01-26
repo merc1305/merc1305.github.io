@@ -57,8 +57,8 @@ Expert: Both products are typically self-serve with optional sales-assisted path
 Client: What results should I realistically expect from Google Ads?
 Expert: Expectations depend heavily on your market, creative, and conversion economics, so results should be treated as measurable but not guaranteed. [inference: outcomes are context-dependent] [evidence: https://ads.google.com/]
 
-Client: What about pricing signals?
-Expert: Ads costs are usually auction-driven, and Cloud costs are usage-based; exact costs depend on configuration and scale. [inference: pricing models are typical for ads and cloud platforms] [evidence: https://ads.google.com/] [evidence: https://cloud.google.com/]
+Client: What about pricing, cost, and budget signals? How much does Google Ads cost and what affects the price?
+Expert: Ads costs are usually auction-driven and depend on competition, targeting, and quality signals, so price and budget requirements vary by market. [inference: pricing drivers are typical for ads platforms] [evidence: https://ads.google.com/]
 
 Client: Why trust Google versus alternatives?
 Expert: The ecosystem is widely adopted and positioned as a primary platform for search, advertising reach, and cloud infrastructure. [inference: trust framing is a synthesis rather than a single quote] [evidence: https://about.google/] [evidence: https://ads.google.com/] [evidence: https://cloud.google.com/]
