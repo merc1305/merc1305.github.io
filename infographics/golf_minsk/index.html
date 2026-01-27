@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Golf in Minsk — История сообщества 2018-2025</title>
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FQ8PPSPZ1K"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-FQ8PPSPZ1K');
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Timeline styles */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--gold), var(--green-light), var(--gold));
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 60px;
+            background: var(--gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            z-index: 10;
+            box-shadow: 0 0 0 6px var(--green-dark), 0 0 20px rgba(212,175,55,0.5);
+        }
+
+        .timeline-content {
+            width: calc(50% - 60px);
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content {
+            padding-right: 40px;
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-content {
+            padding-left: 40px;
+            text-align: left;
+        }
+
+        .timeline-card {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px 30px;
+            border: 2px solid rgba(255,255,255,0.2);
+            transition: all 0.3s;
+        }
+
+        .timeline-content:hover .timeline-card {
+            transform: scale(1.02);
+            border-color: var(--gold);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .timeline-year {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--gold);
+            margin-bottom: 5px;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .timeline-highlights {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-highlights {
+            text-align: right;
+        }
+
+        .timeline-item:nth-child(even) .timeline-highlights {
+            text-align: left;
+        }
+
+        .timeline-highlights li {
+            padding: 6px 0;
+            color: rgba(255,255,255,0.8);
+            font-size: 0.95rem;
+        }
+
+        .timeline-cta {
+            display: inline-block;
+            padding: 10px 25px;
+            background: var(--gold);
+            color: var(--green-dark);
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .timeline-content:hover .timeline-cta {
+            background: var(--white);
+        }
+
+        /* Mobile timeline */
+        @media (max-width: 768px) {
+            .timeline::before {
+                left: 30px;
+            }
+
+            .timeline-dot {
+                left: 30px;
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .timeline-item,
+            .timeline-item:nth-child(odd),
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+            }
+
+            .timeline-content,
+            .timeline-item:nth-child(odd) .timeline-content,
+            .timeline-item:nth-child(even) .timeline-content {
+                width: calc(100% - 80px);
+                margin-left: 80px;
+                padding: 0;
+                text-align: left;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-highlights,
+            .timeline-item:nth-child(even) .timeline-highlights {
+                text-align: left;
+            }
+
+            .timeline-year {
+                font-size: 2rem;
+            }
+
+            .timeline-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav-bar">
+        <a href="index.html" class="nav-home">⛳ Golf in Minsk</a>
+        <div class="nav-years">
+            <a href="2018.html" class="nav-year">2018</a>
+            <a href="2019.html" class="nav-year">2019</a>
+            <a href="2020.html" class="nav-year">2020</a>
+            <a href="2021.html" class="nav-year">2021</a>
+            <a href="2022.html" class="nav-year">2022</a>
+            <a href="2023.html" class="nav-year">2023</a>
+            <a href="2024.html" class="nav-year">2024</a>
+            <a href="2025.html" class="nav-year">2025</a>
+        </div>
+    </nav>
+
+    <header>
+        <div class="logo">⛳</div>
+        <h1>Golf in Minsk</h1>
+        <p class="subtitle">История сообщества в инфографике</p>
+        <div class="year-badge">2018 — 2025</div>
+    </header>
+
+    <div class="container">
+        <div class="stats-row">
+            <div class="stat-box">
+                <div class="stat-number">8</div>
+                <div class="stat-label">лет истории</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">18</div>
+                <div class="stat-label">лунок с 2020</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">5+</div>
+                <div class="stat-label">HIO</div>
+            </div>
+            <div class="stat-box">
+                <div class="stat-number">∞</div>
+                <div class="stat-label">споров о гандикапах</div>
+            </div>
+        </div>
+
+        <section>
+            <h2 class="section-title">📅 Хроника сообщества</h2>
+
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot">🌱</div>
+                    <a href="2018.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2018</div>
+                            <h3 class="timeline-title">Рождение сообщества</h3>
+                            <ul class="timeline-highlights">
+                                <li>📱 Создание Telegram-чата (14 декабря)</li>
+                                <li>🔥 Скандал «Диктатура в Viber»</li>
+                                <li>✈️ Первые планы выездов в Болгарию</li>
+                                <li>👥 Халецкий, Денисов, Пригожий</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">🌍</div>
+                    <a href="2019.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2019</div>
+                            <h3 class="timeline-title">Международная экспансия</h3>
+                            <ul class="timeline-highlights">
+                                <li>🏆 Первая международная встреча</li>
+                                <li>📊 Переход на The Grint и гандикапы</li>
+                                <li>🔥 Спор о турнире в Грузии (2000€)</li>
+                                <li>💯 Немцов впервые «пробил сотню»</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">🎉</div>
+                    <a href="2020.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2020</div>
+                            <h3 class="timeline-title">18 лунок и пандемия</h3>
+                            <ul class="timeline-highlights">
+                                <li>⛳ Открытие второй девятки!</li>
+                                <li>🎯 HIO Алексея Гракова</li>
+                                <li>🔥 Великая «мулиганная» дискуссия</li>
+                                <li>🦠 «Неправильный карантин»</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">🏅</div>
+                    <a href="2021.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2021</div>
+                            <h3 class="timeline-title">Синглы и лига</h3>
+                            <ul class="timeline-highlights">
+                                <li>🎓 Халецкий стал «синглом» (HCP < 10)</li>
+                                <li>🎯 HIO Владимира Стратана</li>
+                                <li>🔥 «Звериный оскал монополиста»</li>
+                                <li>🏆 Запуск Гольф-Лиги 2021</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">🌴</div>
+                    <a href="2022.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2022</div>
+                            <h3 class="timeline-title">Маврикий и новые реалии</h3>
+                            <ul class="timeline-highlights">
+                                <li>🏝️ Гольф-тур на Маврикий</li>
+                                <li>📦 Логистический кризис с клюшками</li>
+                                <li>🔥 Споры о длине драйва</li>
+                                <li>💰 Цены «почти как в Британии»</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">⚖️</div>
+                    <a href="2023.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2023</div>
+                            <h3 class="timeline-title">Реформы и правила</h3>
+                            <ul class="timeline-highlights">
+                                <li>👔 Директор турниров (Надежда)</li>
+                                <li>🗳️ Скандал на выборах капитанов</li>
+                                <li>🔥 Великий спор о маркерах</li>
+                                <li>🎯 HIO в Словении (Igor)</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">🏆</div>
+                    <a href="2024.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2024</div>
+                            <h3 class="timeline-title">Международные победы</h3>
+                            <ul class="timeline-highlights">
+                                <li>🥉 Головач — 3 место BMW World Cup (ЮАР)</li>
+                                <li>🔄 Реформа выборов капитанов</li>
+                                <li>🔥 Спор о «синих ти» для женщин</li>
+                                <li>👑 Дина Хвостович — сингл</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-dot">🏆</div>
+                    <a href="2025.html" class="timeline-content">
+                        <div class="timeline-card">
+                            <div class="timeline-year">2025</div>
+                            <h3 class="timeline-title">Год взросления</h3>
+                            <ul class="timeline-highlights">
+                                <li>🌏 BMW World Cup Final — 19 место (Таиланд)</li>
+                                <li>⚡ Скандал года: «вброс мяча»</li>
+                                <li>🎯 HIO Николая Ярца</li>
+                                <li>👑 Ластовская — сингл + капитан Интерклаба</li>
+                            </ul>
+                            <span class="timeline-cta">Подробнее →</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section class="quotes-section">
+            <h2 class="section-title">💬 Легендарные цитаты</h2>
+            <div class="quotes-grid">
+                <div class="quote-card">
+                    <p class="quote-text">Кто гринкард дал?</p>
+                    <p class="quote-author">— Андрей Халецкий, 2020</p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">С пивом!</p>
+                    <p class="quote-author">— Универсальный ответ</p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">Диктатура — ладно... Самодурство — вот это плохо</p>
+                    <p class="quote-author">— Андрей Халецкий, 2018</p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">Ребята, отстаньте от гандикапа, учитесь играть</p>
+                    <p class="quote-author">— Андрей Халецкий, 2021</p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">Размер не имеет значения</p>
+                    <p class="quote-author">— Alex о дистанции драйва, 2022</p>
+                </div>
+                <div class="quote-card">
+                    <p class="quote-text">Клуб «Интрига» открывает двери</p>
+                    <p class="quote-author">— Евгений Шевченко, 2025</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="golf-balls">⛳🏌️‍♂️🏌️‍♀️⛳</div>
+        <p>Golf in Minsk • 2018-2025 • По материалам чата сообщества</p>
+    </footer>
+</body>
+</html>
